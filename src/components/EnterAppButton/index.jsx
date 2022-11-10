@@ -1,10 +1,8 @@
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import CustomTypography from "../CustomTypography";
 import CustomButton from "../CustomButton";
 
 export default function EnterAppButton() {
-  const role = useSelector((state) => state.accountSlice.role);
   return (
     <NavLink to="/login" style={{ textDecoration: "none" }}>
       <CustomButton

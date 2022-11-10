@@ -1,10 +1,8 @@
-
-
 export const toFixed = (num, fractionDigits = 0) => {
   num = Number(num);
-  if (num == 0) return num.toFixed(fractionDigits);
+  if (num === 0) return num.toFixed(fractionDigits);
   const fixedNum = num.toFixed(fractionDigits);
-  if (fixedNum == 0) return toFixed(num, fractionDigits + 1);
+  if (fixedNum === 0) return toFixed(num, fractionDigits + 1);
   return fixedNum;
 };
 
@@ -17,7 +15,8 @@ export const numberWithCommas = (x, fractionDigits) => {
     } else if (decimalPart.length >= fractionDigits) {
       out += "." + decimalPart.substr(0, fractionDigits);
     } else {
-      out += "." + decimalPart + "0".repeat(fractionDigits - decimalPart.length);
+      out +=
+        "." + decimalPart + "0".repeat(fractionDigits - decimalPart.length);
     }
   }
   return out;
@@ -33,14 +32,18 @@ export default function formatNumberAfterComma(n) {
 export const compactNumber = (value, fractionDigits = 1) => {
   const suffixes = ["", "k", "m", "b", "t"];
   const suffixNum = Math.floor((("" + parseInt(value)).length - 1) / 3);
-  let shortValue = parseFloat((value / Math.pow(1000, suffixNum)).toPrecision(fractionDigits + 1));
+  let shortValue = parseFloat(
+    (value / Math.pow(1000, suffixNum)).toPrecision(fractionDigits + 1)
+  );
   if (shortValue % 1 !== 0) shortValue = shortValue.toFixed(fractionDigits);
   return shortValue + suffixes[suffixNum];
 };
 
 export const formatAddress = (address, fractionDigits = 3) => {
   try {
-    return address.slice(0, fractionDigits) + "..." + address.slice(-fractionDigits);
+    return (
+      address.slice(0, fractionDigits) + "..." + address.slice(-fractionDigits)
+    );
   } catch (error) {
     return undefined;
   }
@@ -51,11 +54,20 @@ export const isNumeric = (num) => {
 };
 
 export const isObject = (item) => {
-  return item && typeof item === "object" && !Array.isArray(item) && item != null;
+  return (
+    item && typeof item === "object" && !Array.isArray(item) && item != null
+  );
 };
 
 export function formatNumber(number, options) {
-  const { fallback = "---", fractionDigits, delimiter, padZero, prefix, suffix } = options ?? {};
+  const {
+    fallback = "---",
+    fractionDigits,
+    delimiter,
+    padZero,
+    prefix,
+    suffix,
+  } = options ?? {};
 
   if (!isNumeric(number)) {
     return fallback;
@@ -150,7 +162,6 @@ export const getNonce = () => {
 //     };
 //   }
 // };
-
 
 export function mergeDeep(target, ...sources) {
   if (!sources.length) return target;

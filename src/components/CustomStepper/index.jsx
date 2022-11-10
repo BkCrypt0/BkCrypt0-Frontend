@@ -1,11 +1,8 @@
-import { Fragment } from "react";
 import {
   Box,
   Stepper,
   Step,
   StepLabel,
-  Button,
-  Typography,
   useMediaQuery,
   styled,
 } from "@mui/material";

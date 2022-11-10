@@ -9,6 +9,12 @@ const routeConfig = [
     layout: LayoutOptions.BLANK,
   },
   {
+    path: "/import",
+    exact: true,
+    component: React.lazy(() => import("../pages/ImportAccount")),
+    layout: LayoutOptions.BLANK,
+  },
+  {
     path: "/register",
     exact: true,
     component: React.lazy(() => import("../pages/Register")),

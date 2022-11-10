@@ -34,13 +34,17 @@ export const validateMnemonic12Phrases = (testMnemonic, mnemonic) => {
   }
   return result;
 };
-export const generatePairKeys = () => (dispatch) => {
-  const mnemonic = bip39.generateMnemonic();
-  const hdkey = HDKey.fromMasterSeed(Buffer.from(mnemonic, "hex"));
-  dispatch(generateMnemonic12PhrasesSuccess({ mnemonic: mnemonic }));
-  dispatch(generatePublicKeySuccess({ publicKey: hdkey.publicExtendedKey }));
-  dispatch(generatePrivateKeySuccess({ privateKey: hdkey.privateExtendedKey }));
-};
+export const generatePairKeys =
+  (input = undefined) =>
+  (dispatch) => {
+    const mnemonic = input === undefined ? bip39.generateMnemonic() : input;
+    const hdkey = HDKey.fromMasterSeed(Buffer.from(mnemonic, "hex"));
+    dispatch(generateMnemonic12PhrasesSuccess({ mnemonic: mnemonic }));
+    dispatch(generatePublicKeySuccess({ publicKey: hdkey.publicExtendedKey }));
+    dispatch(
+      generatePrivateKeySuccess({ privateKey: hdkey.privateExtendedKey })
+    );
+  };
 
 export const createNewPassword = (password) => (dispatch) => {
   dispatch(createNewPasswordSuccess({ password: password }));
