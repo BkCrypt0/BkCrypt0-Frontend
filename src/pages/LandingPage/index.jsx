@@ -25,7 +25,7 @@ export default function LandingPage() {
           }}
         />
         <Typography
-          variant={mobile ? "h5" : tablet ? "h4" : "h4"}
+          variant={mobile ? "h6" : tablet ? "h5" : "h4"}
           fontFamily="Ubuntu"
           sx={{
             ml: mobile ? 5 : tablet ? 15 : 20,
@@ -34,7 +34,7 @@ export default function LandingPage() {
             letterSpacing: "7px",
             lineHeight: 2,
             textAlign: "center",
-            marginBottom: 10,
+            marginBottom: 5,
           }}
         >
           The decentralized platform providing Zero-Knowledge Proof Verification

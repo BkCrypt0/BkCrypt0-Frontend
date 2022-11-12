@@ -1,9 +1,9 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled, useMediaQuery } from "@mui/material";
 import { Fragment } from "react";
 import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
 import { useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
@@ -14,7 +14,7 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   [theme.breakpoints.up("xs")]: {
-    marginLeft: 80,
+    marginLeft: 0,
     padding: theme.spacing(4, 2, 0, 2),
   },
   [theme.breakpoints.up("md")]: {
@@ -28,6 +28,7 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
 export default function MainLayout(props) {
   const { children } = props;
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
   return (
     <Fragment>
@@ -40,7 +41,7 @@ export default function MainLayout(props) {
           background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
         }}
       >
-        <Sidebar />
+        {!mobile && <Sidebar />}
         <MainContentWrapper>
           <Box sx={{ flexGrow: 1 }}>{children}</Box>
         </MainContentWrapper>

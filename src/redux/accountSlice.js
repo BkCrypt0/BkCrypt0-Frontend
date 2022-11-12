@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LS } from "src/constants";
 import store from "./store";
+import {
+  generatePublicAndPrivateKeyStringFromMnemonic,
+  signMessage,
+  verifyMessage,
+} from "src/service/utils";
 
 const bip39 = require("bip39");
 const HDKey = require("hdkey");
@@ -38,12 +43,13 @@ export const generatePairKeys =
   (input = undefined) =>
   (dispatch) => {
     const mnemonic = input === undefined ? bip39.generateMnemonic() : input;
-    const hdkey = HDKey.fromMasterSeed(Buffer.from(mnemonic, "hex"));
+    const { publicKeyString, privateKeyString } =
+      generatePublicAndPrivateKeyStringFromMnemonic(mnemonic);
+    const signature = signMessage(privateKeyString, "111");
+    console.log(verifyMessage("111", signature, publicKeyString));
     dispatch(generateMnemonic12PhrasesSuccess({ mnemonic: mnemonic }));
-    dispatch(generatePublicKeySuccess({ publicKey: hdkey.publicExtendedKey }));
-    dispatch(
-      generatePrivateKeySuccess({ privateKey: hdkey.privateExtendedKey })
-    );
+    dispatch(generatePublicKeySuccess({ publicKey: privateKeyString }));
+    dispatch(generatePrivateKeySuccess({ privateKey: publicKeyString }));
   };
 
 export const createNewPassword = (password) => (dispatch) => {

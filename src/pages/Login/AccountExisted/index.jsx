@@ -33,6 +33,7 @@ export default function AccountExisted() {
         {formatAddress(publicKey, 10)}
       </CustomTypography>
       <CustomForm
+        targetButtonId="login_button"
         type="password"
         id="inputpasswd"
         placeHolder={"Enter password..."}
@@ -44,6 +45,7 @@ export default function AccountExisted() {
         style={{ textDecoration: "none", width: "100%" }}
       >
         <CustomButton
+          id={"login_button"}
           fullWidth={true}
           minHeight="50px"
           mb={2}

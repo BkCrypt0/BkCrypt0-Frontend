@@ -1,7 +1,9 @@
-import { Box, styled } from "@mui/material";
+import { Box, styled, useMediaQuery } from "@mui/material";
 import Header from "./components/Header/index";
 import { useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import BackgroundDesktopDark from "src/assets/bg_desktop_dark_v2.png";
+import BackgroundDesktopLight from "src/assets/bg_desktop_light_v2.png";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 0, 0, 0),
@@ -16,6 +18,7 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
 export default function MainLayout(props) {
   const { children } = props;
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
   return (
     <Box
@@ -26,13 +29,18 @@ export default function MainLayout(props) {
         component="main"
         sx={{
           pt: { xsm: 7 },
-          background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          // background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          backgroundImage:
+            themeMode === THEME_MODE.DARK
+              ? `url(${BackgroundDesktopDark})`
+              : `url(${BackgroundDesktopLight})`,
           height: "100%",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: !mobile ? "120% 100%" : "170% 100%",
+          backgroundPosition: "top",
         }}
       >
-        <MainContentWrapper>
-          {children}
-        </MainContentWrapper>
+        <MainContentWrapper>{children}</MainContentWrapper>
       </Box>
     </Box>
   );

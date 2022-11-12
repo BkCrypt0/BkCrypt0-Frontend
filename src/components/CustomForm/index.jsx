@@ -17,13 +17,21 @@ export default function CustomForm({
   placeHolder,
   onChange,
   defaultValue,
+  autoComplete = "form",
+  targetButtonId = undefined,
   ...props
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
   return (
     <Box width="100%">
-      <form style={{ width: "100%" }}>
+      <form
+        style={{ width: "100%" }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          document.getElementById(targetButtonId).click();
+        }}
+      >
         <label htmlFor={id}>
           <CustomTypography>{label}</CustomTypography>
         </label>
@@ -34,6 +42,7 @@ export default function CustomForm({
           name={name}
           placeholder={placeHolder}
           onChange={onChange}
+          autoComplete={autoComplete}
           style={{
             color: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
             background: themeMode === THEME_MODE.LIGHT ? "white" : "#353535",

@@ -14,7 +14,7 @@ export default function Identity() {
   const dp = useDispatch();
 
   return (
-    <Box>
+    <Box width="100%">
       <CustomTypography variant="h4" mb={3}>
         My Identity
       </CustomTypography>
@@ -26,13 +26,15 @@ export default function Identity() {
             themeMode === THEME_MODE.DARK
               ? "2px solid #D8D8D8"
               : "2px solid #353535",
-          padding: 4,
+          paddingY: 3,
           mb: 3,
         }}
       >
-        {identity === undefined && "Undefined"}
+        {identity === undefined && (
+          <CustomTypography ml={3}>Undefined</CustomTypography>
+        )}
         {identity !== undefined && (
-          <>
+          <Box width="100%" ml={2}>
             <Box display="flex" alignItems="baseline">
               <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                 Name:{" "}
@@ -65,7 +67,7 @@ export default function Identity() {
                 {identity?.birthPlace}
               </CustomTypography>
             </Box>
-          </>
+          </Box>
         )}
       </Box>
       {identity === undefined && (

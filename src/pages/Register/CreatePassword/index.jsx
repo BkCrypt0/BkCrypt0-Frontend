@@ -48,6 +48,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
       />
       <Box mb={1} />
       <CustomForm
+        targetButtonId="create_password_button"
         label="Confirm password"
         type="password"
         id="cfpasswd"
@@ -61,6 +62,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
       />
       <Box mb={1} />
       <CustomButton
+        id="create_password_button"
         fullWidth={true}
         minHeight="50px"
         disabled={

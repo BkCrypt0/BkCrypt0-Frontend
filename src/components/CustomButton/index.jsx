@@ -8,12 +8,14 @@ export default function CustomButton({
   disabled,
   borderRadius,
   fullWidth,
+  id = undefined,
   ...props
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
   return (
     <Button
+      id={id}
       disabled={disabled}
       onClick={onClick}
       variant="contained"
