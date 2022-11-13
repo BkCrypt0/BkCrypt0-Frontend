@@ -26,7 +26,7 @@ export default function AccountExisted() {
       justifyContent="center"
       height="100%"
     >
-      <CustomTypography variant="h4" mb={5} fontWeight="bold">
+      <CustomTypography variant="h4" mb={2.5} mt={4} fontWeight="bold">
         Hello
       </CustomTypography>
       <CustomTypography variant="h5" mb={5}>
@@ -50,10 +50,20 @@ export default function AccountExisted() {
           minHeight="50px"
           mb={2}
           onClick={() => {
-            enqueueSnackbar("Login successfully!", {
-              variant: "success",
-              dense: "true",
-            });
+            if (input === password)
+              enqueueSnackbar("Login successfully!", {
+                variant: "success",
+                dense: "true",
+                preventDuplicate: true,
+                autoHideDuration: 2000,
+              });
+            else
+              enqueueSnackbar("Wrong password!", {
+                variant: "error",
+                dense: "true",
+                preventDuplicate: true,
+                autoHideDuration: 2000,
+              });
           }}
         >
           <CustomTypography buttonText>Login</CustomTypography>

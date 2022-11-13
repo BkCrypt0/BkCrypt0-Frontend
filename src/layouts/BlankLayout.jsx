@@ -34,7 +34,6 @@ export default function MainLayout(props) {
             themeMode === THEME_MODE.DARK
               ? `url(${BackgroundDesktopDark})`
               : `url(${BackgroundDesktopLight})`,
-          height: "100%",
           backgroundRepeat: "no-repeat",
           backgroundSize: !mobile ? "120% 100%" : "170% 100%",
           backgroundPosition: "top",

@@ -4,10 +4,12 @@ import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
 import { useSelector } from "react-redux";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import BackgroundDesktopDark from "src/assets/bg_desktop_dark.png";
+import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
-  marginLeft: 0,
+  marginLeft: 220,
   minHeight: "calc(100vh - 56px)",
   height: "100%",
   transition: "margin-left 300ms ease",
@@ -17,7 +19,7 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
     marginLeft: 0,
     padding: theme.spacing(4, 2, 0, 2),
   },
-  [theme.breakpoints.up("md")]: {
+  [theme.breakpoints.up("sm")]: {
     marginLeft: 220,
   },
   [theme.breakpoints.up("lg")]: {
@@ -38,7 +40,14 @@ export default function MainLayout(props) {
         sx={{
           pt: { xsm: 7 },
           minHeight: { xs: "calc(100vh - 55)", xsm: "100vh" },
-          background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          // background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          backgroundImage:
+            themeMode === THEME_MODE.DARK
+              ? `url(${BackgroundDesktopDark})`
+              : `url(${BackgroundDesktopLight})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: !mobile ? "120% 100%" : "170% 100%",
+          backgroundPosition: "top",
         }}
       >
         {!mobile && <Sidebar />}

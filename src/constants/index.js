@@ -21,3 +21,11 @@ export const FS = {
   SUCCESS: "success",
   FAILED: "failed",
 };
+
+export const BASE_COLOR = {
+  PAPER_LIGHT: "#BBBBBB",
+  PAPER_DARK: "#232323",
+  PRIMARY_LIGHT: "#D8D8D8",
+  PRIMARY_DARK: "#353535",
+  CONTRAST_LIGHT: "white",
+};

@@ -28,6 +28,11 @@ export default function Header() {
         anchor="top"
         PaperProps={{
           sx: {
+            boxShadow: `0px 0px 6px 1.5px ${
+              themeMode === THEME_MODE.DARK
+                ? "rgba(0, 0, 0, 0.5)"
+                : "rgba(53, 53, 53, 0.2)"
+            }`,
             background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
             zIndex: 1205,
             height: "55px",
@@ -67,12 +72,15 @@ export default function Header() {
             >
               {role}
             </Button>
-            {(path === "/welcome" ||
-              path === "/login" ||
-              path === "/import" ||
-              path === "/register") && (
-              <SwitchThemeButton style={{ marginRight: 3 }} />
-            )}
+
+            {!(
+              mobile &&
+              path !== "/welcome" &&
+              path !== "/login" &&
+              path !== "/import" &&
+              path !== "/register"
+            ) && <SwitchThemeButton style={{ marginRight: 3 }} />}
+
             {!mobile && path === "/welcome" && <EnterAppButton />}
             {mobile &&
               path !== "/welcome" &&

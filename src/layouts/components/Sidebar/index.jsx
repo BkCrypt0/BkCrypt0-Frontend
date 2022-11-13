@@ -13,8 +13,13 @@ export default function Sidebar() {
         variant="permanent"
         PaperProps={{
           sx: {
+            boxShadow: `0px 0px 6px 1.5px ${
+              themeMode === THEME_MODE.DARK
+                ? "rgba(0, 0, 0, 0.5)"
+                : "rgba(53, 53, 53, 0.2)"
+            }`,
             background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
-            width: { xs: 80, md: 220 },
+            width: 220,
             transition: "width 300ms ease",
             pt: 10,
             height: "calc(100% - 55px)",

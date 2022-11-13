@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
+import CustomForm from "src/components/CustomForm";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function ProofCreation() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -15,52 +17,82 @@ export default function ProofCreation() {
         Create a proof
       </CustomTypography>
       <Box
-        width={mobile ? "100%" : tablet ? "70%" : "50%"}
+        display="flex"
+        justifyContent="center"
         sx={{
+          background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+          width: mobile ? "100%" : tablet ? "90%" : "45%",
           borderRadius: "10px",
-          border:
+          boxShadow: `5px 5px 15px 3px ${
             themeMode === THEME_MODE.DARK
-              ? "2px solid #D8D8D8"
-              : "2px solid #353535",
+              ? "rgba(0, 0, 0, 0.7)"
+              : "rgba(53, 53, 53, 0.4)"
+          }`,
+          paddingY: 3,
           mb: 3,
         }}
       >
-        <ul
-          style={{
-            "&: li::marker": {
-              color:
-                themeMode === THEME_MODE.DARK
-                  ? "2px solid #D8D8D8"
-                  : "2px solid #353535",
-            },
-          }}
-        >
-          <li>
-            <Box width="100%">
-              <Box width="100%" display="flex">
-                <CustomTypography fontWeight="bold" mr={1}>
-                  Age:
-                </CustomTypography>
-                <CustomTypography>
-                  Prove that your age is in the following range
-                </CustomTypography>
-              </Box>
+        <Box width="90%">
+          <Box width="100%">
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection={mobile ? "column" : "row"}
+            >
+              <CustomTypography fontWeight="bold" mr={1}>
+                Age:
+              </CustomTypography>
+              <CustomTypography width={"100%"}>
+                Prove that your age is in the following range
+              </CustomTypography>
             </Box>
-          </li>
-          <li>
-            <Box width="100%">
-              <Box width="100%" display="flex">
-                <CustomTypography fontWeight="bold" mr={1}>
-                  Home:
-                </CustomTypography>
-                <CustomTypography>
-                  Prove that your home town belongs to one of these following
-                  provinces
-                </CustomTypography>
-              </Box>
+          </Box>
+          <Box
+            my={2}
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            <CustomForm placeHolder="Min" type="number" defaultValue={1} />
+            <Box
+              display="flex"
+              minWidth="50%"
+              alignItems="center"
+              justifyContent="space-evenly"
+            >
+              <ArrowBackIosIcon
+                sx={{
+                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                }}
+              />
+              <CustomTypography textAlign="center">Your age</CustomTypography>
+              <ArrowBackIosIcon
+                sx={{
+                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                }}
+              />
             </Box>
-          </li>
-        </ul>
+            <CustomForm placeHolder="Max" type="number" defaultValue={100} />
+          </Box>
+
+          <Box width="100%">
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection={mobile ? "column" : "row"}
+            >
+              <CustomTypography fontWeight="bold" mr={1}>
+                Home:
+              </CustomTypography>
+              <CustomTypography>
+                Prove that your home town belongs to one of these following
+                provinces
+              </CustomTypography>
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
