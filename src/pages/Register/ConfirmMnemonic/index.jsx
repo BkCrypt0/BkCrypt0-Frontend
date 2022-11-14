@@ -125,8 +125,8 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
             const res = validateMnemonic12Phrases(testMnemonic, mnemonic);
             if (res === true) {
               setErr(false);
-              sessionStorage.clear();
               setActiveStep(3);
+              sessionStorage.clear();
             } else {
               setErr(true);
             }
