@@ -4,6 +4,7 @@ import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomForm from "src/components/CustomForm";
+import CustomButton from "src/components/CustomButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function ProofCreation() {
@@ -91,6 +92,19 @@ export default function ProofCreation() {
                 provinces
               </CustomTypography>
             </Box>
+          </Box>
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="flex-end"
+            sx={{ mt: 5 }}
+          >
+            <CustomButton width={mobile ? "100%" : undefined} minHeight="50px">
+              <CustomTypography buttonText={true}>
+                Create Proof
+              </CustomTypography>
+            </CustomButton>
           </Box>
         </Box>
       </Box>

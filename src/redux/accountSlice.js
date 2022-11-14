@@ -3,12 +3,9 @@ import { LS } from "src/constants";
 import store from "./store";
 import {
   generatePublicAndPrivateKeyStringFromMnemonic,
-  signMessage,
-  verifyMessage,
 } from "src/service/utils";
 
 const bip39 = require("bip39");
-const HDKey = require("hdkey");
 
 const initialState = {
   account: undefined,
@@ -45,8 +42,6 @@ export const generatePairKeys =
     const mnemonic = input === undefined ? bip39.generateMnemonic() : input;
     const { publicKeyString, privateKeyString } =
       generatePublicAndPrivateKeyStringFromMnemonic(mnemonic);
-    const signature = signMessage(privateKeyString, "111");
-    console.log(verifyMessage("111", signature, publicKeyString));
     dispatch(generateMnemonic12PhrasesSuccess({ mnemonic: mnemonic }));
     dispatch(generatePublicKeySuccess({ publicKey: privateKeyString }));
     dispatch(generatePrivateKeySuccess({ privateKey: publicKeyString }));

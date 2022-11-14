@@ -2,6 +2,7 @@ import { Box, styled, useMediaQuery } from "@mui/material";
 import { Fragment } from "react";
 import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
+import Footer from "./components/Footer";
 import { useSelector } from "react-redux";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import BackgroundDesktopDark from "src/assets/bg_desktop_dark.png";
@@ -10,8 +11,7 @@ import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
   marginLeft: 220,
-  minHeight: "calc(100vh - 56px)",
-  height: "100%",
+  minHeight: "calc(100vh - 150px)",
   transition: "margin-left 300ms ease",
   display: "flex",
   flexDirection: "column",
@@ -54,6 +54,7 @@ export default function MainLayout(props) {
         <MainContentWrapper>
           <Box sx={{ flexGrow: 1 }}>{children}</Box>
         </MainContentWrapper>
+        <Footer />
       </Box>
     </Fragment>
   );

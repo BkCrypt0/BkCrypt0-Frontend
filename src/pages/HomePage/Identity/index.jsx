@@ -79,21 +79,33 @@ export default function Identity() {
             </Box>
           )}
         </Paper>
-        {identity === undefined && (
-          <CustomButton
-            minHeight="50px"
-            minWidth="150px"
-            mr={3}
-            onClick={() => setClickCreate(true)}
-          >
-            <CustomTypography buttonText>Create Identity</CustomTypography>
-          </CustomButton>
-        )}
-        {identity === undefined && (
-          <CustomButton minHeight="50px" minWidth="150px" mr={3}>
-            <CustomTypography buttonText>Import Identity</CustomTypography>
-          </CustomButton>
-        )}
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent={mobile ? "space-between" : "flex-start"}
+        >
+          {identity === undefined && (
+            <CustomButton
+              minHeight="50px"
+              minWidth={mobile ? undefined : "150px"}
+              width={mobile ? "47%" : undefined}
+              mr={mobile ? 0 : 3}
+              onClick={() => setClickCreate(true)}
+            >
+              <CustomTypography buttonText>Create Identity</CustomTypography>
+            </CustomButton>
+          )}
+          {identity === undefined && (
+            <CustomButton
+              minHeight="50px"
+              minWidth={mobile ? undefined : "150px"}
+              width={mobile ? "47%" : undefined}
+              mr={mobile ? 0 : 3}
+            >
+              <CustomTypography buttonText>Import Identity</CustomTypography>
+            </CustomButton>
+          )}
+        </Box>
         {identity !== undefined && (
           <CustomButton minHeight="50px" minWidth="150px" mr={3}>
             <CustomTypography buttonText>Claim Identity</CustomTypography>
