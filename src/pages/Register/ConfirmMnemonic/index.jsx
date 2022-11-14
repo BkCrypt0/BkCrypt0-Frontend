@@ -126,6 +126,7 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
             if (res === true) {
               setErr(false);
               sessionStorage.clear();
+              setActiveStep(3);
             } else {
               setErr(true);
             }

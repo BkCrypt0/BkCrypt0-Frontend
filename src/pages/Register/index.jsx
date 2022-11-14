@@ -4,6 +4,7 @@ import CustomSteppers from "src/components/CustomStepper";
 import CreatePassword from "./CreatePassword";
 import CreateMnemonic from "./CreateMnemonic";
 import ConfirmMnemonic from "./ConfirmMnemonic";
+import RegistrationCompleted from "./RegistrationCompleted";
 
 export default function Register() {
   const [activeStep, setActiveStep] = useState(0);
@@ -30,6 +31,7 @@ export default function Register() {
       <CreatePassword setActiveStep={setActiveStep} activeStep={activeStep} />
       <CreateMnemonic setActiveStep={setActiveStep} activeStep={activeStep} />
       <ConfirmMnemonic setActiveStep={setActiveStep} activeStep={activeStep} />
+      <RegistrationCompleted activeStep={activeStep} />
     </Box>
   );
 }
