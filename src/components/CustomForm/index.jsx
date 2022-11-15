@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 
 export default function CustomForm({
+  onSubmit,
   type,
   id,
   name,
@@ -27,10 +28,14 @@ export default function CustomForm({
     <Box width="100%">
       <form
         style={{ width: "100%" }}
-        onSubmit={(e) => {
-          e.preventDefault();
-          document.getElementById(targetButtonId).click();
-        }}
+        onSubmit={
+          onSubmit
+            ? onSubmit
+            : (e) => {
+                e.preventDefault();
+                document.getElementById(targetButtonId).click();
+              }
+        }
       >
         <label htmlFor={id}>
           <CustomTypography>{label}</CustomTypography>

@@ -1,12 +1,21 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { SCREEN_SIZE, LS } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import UndefinedAccount from "./UndefinedAccount";
 import AccountExisted from "./AccountExisted";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export default function Login() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
-  const publicKey = localStorage.getItem(LS.PUBLIC_KEY);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const dp = useDispatch();
+  console.log(accounts);
+
+  useEffect(() => {
+    dp(constructAccountsArrayFromLocalStorage());
+  }, []);
 
   return (
     <Box
@@ -25,10 +34,8 @@ export default function Login() {
         justifyContent="center"
         height="100%"
       >
-        {(publicKey === undefined || publicKey === null) && (
-          <UndefinedAccount />
-        )}
-        {publicKey !== undefined && publicKey !== null && <AccountExisted />}
+        {accounts.length === 0 && <UndefinedAccount />}
+        {accounts.length > 0 && <AccountExisted />}
       </Box>
     </Box>
   );

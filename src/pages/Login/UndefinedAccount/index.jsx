@@ -6,8 +6,7 @@ import { THEME_MODE } from "src/constants";
 import { useSelector } from "react-redux";
 
 export default function UndefinedAccount() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  
+  const themeMode = useSelector((state) => state.themeSlice.themeMode);  
 
   return (
     <Box

@@ -14,7 +14,7 @@ import MobileMenu from "../MobileMenu";
 
 export default function Header() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const role = useSelector((state) => state.accountSlice.role);
+  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const path = useLocation().pathname;
   const dp = useDispatch();

@@ -2,13 +2,14 @@ import { validateMnemonic12Phrases } from "src/redux/accountSlice";
 import { Box, Grid, styled, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SCREEN_SIZE, THEME_MODE } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { generateAccount } from "src/redux/accountSlice";
 
 export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
   const mnemonic = useSelector((state) => state.accountSlice.mnemonic);
@@ -17,6 +18,7 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const [err, setErr] = useState(false);
+  const dp = useDispatch();
 
   const convertArrayToMnemonic = () => {
     var res = "";
@@ -126,9 +128,11 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
             if (res === true) {
               setErr(false);
               setActiveStep(3);
+              dp(generateAccount());
               sessionStorage.clear();
             } else {
               setErr(true);
+              sessionStorage.clear();
             }
           }}
         >

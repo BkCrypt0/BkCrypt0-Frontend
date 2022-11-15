@@ -1,110 +1,159 @@
-import { Box } from "@mui/material";
-import { LS } from "src/constants";
+import { Box, IconButton, Dialog } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
 import CustomForm from "src/components/CustomForm";
 import { formatAddress } from "src/utility";
 import { THEME_MODE } from "src/constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useSnackbar } from "notistack";
+import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import { changeName } from "src/redux/accountSlice";
+
+const { verify } = require("password-hash");
 
 export default function AccountExisted() {
-  const publicKey = localStorage.getItem(LS.PUBLIC_KEY);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const password = localStorage.getItem(LS.PASSWORD);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
   const [input, setInput] = useState(undefined);
+  const [edit, setEdit] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+  const dp = useDispatch();
 
   return (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="100%"
-    >
-      <CustomTypography variant="h4" mb={2.5} mt={4} fontWeight="bold">
-        Hello
-      </CustomTypography>
-      <CustomTypography variant="h5" mb={5}>
-        {formatAddress(publicKey, 10)}
-      </CustomTypography>
-      <CustomForm
-        targetButtonId="login_button"
-        type="password"
-        id="inputpasswd"
-        placeHolder={"Enter password..."}
-        onChange={() => setInput(document.getElementById("inputpasswd").value)}
-      />
-      <Box mb={1} />
-      <NavLink
-        to={input === password ? "/home/identity" : "/login"}
-        style={{ textDecoration: "none", width: "100%" }}
-      >
-        <CustomButton
-          id={"login_button"}
-          fullWidth={true}
-          minHeight="50px"
-          mb={2}
-          onClick={() => {
-            if (input === password)
-              enqueueSnackbar("Login successfully!", {
-                variant: "success",
-                dense: "true",
-                preventDuplicate: true,
-                autoHideDuration: 2000,
-              });
-            else
-              enqueueSnackbar("Wrong password!", {
-                variant: "error",
-                dense: "true",
-                preventDuplicate: true,
-                autoHideDuration: 2000,
-              });
-          }}
-        >
-          <CustomTypography buttonText>Login</CustomTypography>
-        </CustomButton>
-      </NavLink>
+    <>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        HOHO
+      </Dialog>
       <Box
         width="100%"
         display="flex"
-        justifyContent="space-between"
+        flexDirection="column"
         alignItems="center"
+        justifyContent="center"
+        height="100%"
       >
-        <Box
-          sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
-          }}
-          width="45%"
-          height="2px"
+        <CustomTypography variant="h4" mb={2.5} mt={4} fontWeight="bold">
+          Hello
+        </CustomTypography>
+        <Box display="flex" alignItems="center" mb={2}>
+          {edit === false && (
+            <CustomTypography variant="h5" fontWeight="bold">
+              {accounts[activeAccount]?.name}
+            </CustomTypography>
+          )}
+          {edit === true && (
+            <CustomForm
+              id="change-name"
+              onSubmit={(e) => {
+                dp(
+                  changeName(
+                    activeAccount,
+                    document.getElementById("change-name").value
+                  )
+                );
+                e.preventDefault();
+                setEdit(false);
+              }}
+              placeHolder={"New name..."}
+              defaultValue={accounts[activeAccount]?.name}
+            />
+          )}
+          <IconButton onClick={() => setEdit(true)}>
+            <DriveFileRenameOutlineIcon ml={2} />
+          </IconButton>
+        </Box>
+        <Box onClick={() => setOpenDialog(true)} sx={{ cursor: "pointer" }}>
+          <CustomTypography variant="h5" mb={5}>
+            {formatAddress(accounts[activeAccount]?.publicKey, 10)}
+          </CustomTypography>
+        </Box>
+        <CustomForm
+          targetButtonId="login_button"
+          type="password"
+          id="inputpasswd"
+          placeHolder={"Enter password..."}
+          onChange={() =>
+            setInput(document.getElementById("inputpasswd").value)
+          }
         />
-        <CustomTypography>OR</CustomTypography>
+        <Box mb={1} />
+        <NavLink
+          to={
+            verify(input, accounts[0]?.password) ? "/home/identity" : "/login"
+          }
+          style={{ textDecoration: "none", width: "100%" }}
+        >
+          <CustomButton
+            id={"login_button"}
+            fullWidth={true}
+            minHeight="50px"
+            mb={2}
+            onClick={() => {
+              if (verify(input, accounts[0]?.password))
+                enqueueSnackbar("Login successfully!", {
+                  variant: "success",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                });
+              else
+                enqueueSnackbar("Wrong password!", {
+                  variant: "error",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                });
+            }}
+          >
+            <CustomTypography buttonText>Login</CustomTypography>
+          </CustomButton>
+        </NavLink>
         <Box
-          sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
-          }}
-          width="45%"
-          height="2px"
-        />
+          width="100%"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box
+            sx={{
+              background:
+                themeMode === THEME_MODE.DARK
+                  ? "rgba(216, 216, 216, 0.3)"
+                  : "rgba(53, 53, 53, 0.3)",
+              borderRadius: "20px",
+            }}
+            width="45%"
+            height="2px"
+          />
+          <CustomTypography>OR</CustomTypography>
+          <Box
+            sx={{
+              background:
+                themeMode === THEME_MODE.DARK
+                  ? "rgba(216, 216, 216, 0.3)"
+                  : "rgba(53, 53, 53, 0.3)",
+              borderRadius: "20px",
+            }}
+            width="45%"
+            height="2px"
+          />
+        </Box>
+        <Box mb={2} />
+        <NavLink
+          to="/register"
+          style={{ width: "100%", textDecoration: "none" }}
+        >
+          <CustomButton fullWidth={true} minHeight="50px" mb={3}>
+            <CustomTypography buttonText>Create a new account</CustomTypography>
+          </CustomButton>
+        </NavLink>
       </Box>
-      <Box mb={2} />
-      <NavLink to="/register" style={{ width: "100%", textDecoration: "none" }}>
-        <CustomButton fullWidth={true} minHeight="50px" mb={3}>
-          <CustomTypography buttonText>Create a new account</CustomTypography>
-        </CustomButton>
-      </NavLink>
-    </Box>
+    </>
   );
 }

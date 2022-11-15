@@ -5,6 +5,7 @@ import TeamLogo from "../../components/TeamLogo";
 import { SCREEN_SIZE } from "../../constants";
 import EnterAppButton from "src/components/EnterAppButton";
 
+
 export default function LandingPage() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);

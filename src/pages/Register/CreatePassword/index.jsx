@@ -7,7 +7,7 @@ import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { useSelector, useDispatch } from "react-redux";
 import CustomForm from "src/components/CustomForm";
 import { useState, useEffect } from "react";
-import { createNewPassword } from "src/redux/accountSlice";
+import { createNewPassword, generatePairKeys } from "src/redux/accountSlice";
 
 export default function CreatePassword({ setActiveStep, activeStep }) {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -18,6 +18,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
+
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
@@ -77,6 +78,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
             setError(true);
           } else {
             dp(createNewPassword(password));
+            dp(generatePairKeys());
             setActiveStep(1);
           }
         }}

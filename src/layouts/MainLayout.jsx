@@ -11,7 +11,7 @@ import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
   marginLeft: 220,
-  minHeight: "calc(100vh - 150px)",
+  minHeight: "calc(100vh - 87px)",
   transition: "margin-left 300ms ease",
   display: "flex",
   flexDirection: "column",
@@ -53,8 +53,8 @@ export default function MainLayout(props) {
         {!mobile && <Sidebar />}
         <MainContentWrapper>
           <Box sx={{ flexGrow: 1 }}>{children}</Box>
+          <Footer />
         </MainContentWrapper>
-        <Footer />
       </Box>
     </Fragment>
   );

@@ -10,8 +10,10 @@ import { NavLink } from "react-router-dom";
 
 export default function MobileMenu({ open, setOpen }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const publicKey = useSelector((state) => state.accountSlice.publicKey);
-  const role = useSelector((state) => state.accountSlice.role);
+  const publicKey = useSelector(
+    (state) => state.accountSlice.cachedPublicKeyBuffer
+  );
+  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
 
   return (
     <Drawer

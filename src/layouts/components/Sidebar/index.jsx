@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function Sidebar() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const role = useSelector((state) => state.accountSlice.role);
+  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
   return (
     <Fragment>
       <Drawer

@@ -15,8 +15,8 @@ export default function ImportAccount() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const publicKey = useSelector((state) => state.accountSlice.publicKey);
-  const privateKey = useSelector((state) => state.accountSlice.privateKey);
+  const publicKey = useSelector((state) => state.accountSlice.cachedPublicKeyBuffer);
+  const privateKey = useSelector((state) => state.accountSlice.cachedPrivateKeyBuffer);
 
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
