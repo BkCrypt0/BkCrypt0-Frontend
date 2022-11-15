@@ -11,7 +11,6 @@ export default function Login() {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const dp = useDispatch();
-  console.log(accounts);
 
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());

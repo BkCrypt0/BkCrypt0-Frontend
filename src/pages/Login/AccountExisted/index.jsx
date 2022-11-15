@@ -1,4 +1,4 @@
-import { Box, IconButton, Dialog } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useSnackbar } from "notistack";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { changeName } from "src/redux/accountSlice";
+import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 
 const { verify } = require("password-hash");
 
@@ -27,9 +28,11 @@ export default function AccountExisted() {
 
   return (
     <>
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        HOHO
-      </Dialog>
+      <ChangeAccountDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        setOpen={setOpenDialog}
+      />
       <Box
         width="100%"
         display="flex"
@@ -65,10 +68,23 @@ export default function AccountExisted() {
             />
           )}
           <IconButton onClick={() => setEdit(true)}>
-            <DriveFileRenameOutlineIcon ml={2} />
+            <DriveFileRenameOutlineIcon
+              ml={2}
+              sx={{
+                color:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 0.6)"
+                    : "rgba(53, 53, 53, 0.6)",
+              }}
+            />
           </IconButton>
         </Box>
-        <Box onClick={() => setOpenDialog(true)} sx={{ cursor: "pointer" }}>
+        <Box
+          onClick={() => setOpenDialog(true)}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
           <CustomTypography variant="h5" mb={5}>
             {formatAddress(accounts[activeAccount]?.publicKey, 10)}
           </CustomTypography>

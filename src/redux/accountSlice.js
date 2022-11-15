@@ -8,7 +8,7 @@ const { generate } = require("password-hash");
 
 const initialState = {
   cachedRoleBuffer: "user",
-  activeAccount: 1,
+  activeAccount: 0,
   mnemonic: undefined,
   cachedPublicKeyBuffer: localStorage.getItem(LS.PUBLIC_KEY),
   cachedPrivateKeyBuffer: localStorage.getItem(LS.PRIVATE_KEY),
