@@ -11,6 +11,7 @@ import { useSnackbar } from "notistack";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { changeName } from "src/redux/accountSlice";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
+import CopyToClipboardButton from "src/components/CopyToClipboardButton";
 
 const { verify } = require("password-hash");
 
@@ -22,6 +23,7 @@ export default function AccountExisted() {
   );
   const [input, setInput] = useState(undefined);
   const [edit, setEdit] = useState(false);
+  const [copy, setCopy] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
@@ -79,16 +81,41 @@ export default function AccountExisted() {
             />
           </IconButton>
         </Box>
-        <Box
-          onClick={() => setOpenDialog(true)}
-          sx={{
-            cursor: "pointer",
-          }}
-        >
-          <CustomTypography variant="h5" mb={5}>
-            {formatAddress(accounts[activeAccount]?.publicKey, 10)}
-          </CustomTypography>
+        <Box display="flex" alignItems="center" mb={5}>
+          <Box
+            onClick={() => setOpenDialog(true)}
+            sx={{
+              cursor: "pointer",
+            }}
+          >
+            <CustomTypography variant="h5">
+              {formatAddress(accounts[activeAccount]?.publicKey, 10)}
+            </CustomTypography>
+          </Box>
+          <CopyToClipboardButton
+            title="Copy"
+            setCopy={setCopy}
+            copy={copy}
+            targetText={accounts[activeAccount].publicKey}
+          />
+          {/* <Tooltip title="Copy address" placement="top" arrow={{}}>
+            <IconButton
+              sx={{
+                ml: 0.5,
+                color:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 0.6)"
+                    : "rgba(53, 53, 53, 0.6)",
+              }}
+              onClick={() =>
+                navigator.clipboard.writeText(accounts[activeAccount].publicKey)
+              }
+            >
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Tooltip> */}
         </Box>
+
         <CustomForm
           targetButtonId="login_button"
           type="password"

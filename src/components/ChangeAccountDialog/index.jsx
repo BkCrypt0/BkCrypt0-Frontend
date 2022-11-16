@@ -90,7 +90,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           </CustomTypography>
         </Box>
       ))}
-      <Tooltip title="Add another account" arrow="true">
+      <Tooltip title="Add another account" arrow={true}>
         <NavLink to="/register" style={{ textDecoration: "none" }}>
           <Box
             py={2}
