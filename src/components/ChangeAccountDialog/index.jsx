@@ -1,9 +1,11 @@
-import { Dialog, Box, useMediaQuery } from "@mui/material";
+import { Dialog, Box, useMediaQuery, Tooltip } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import { changeActiveAccount } from "src/redux/accountSlice";
+import AddIcon from "@mui/icons-material/Add";
+import { NavLink } from "react-router-dom";
 
 export default function ChangeAccountDialog({ open, onClose, setOpen }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -17,8 +19,8 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
   return (
     <Dialog
       display="flex"
-      flexDirection="column"
-      alignItems="center"
+      flexdirection="column"
+      alignitems="center"
       open={open}
       onClose={onClose}
       sx={{ backdropFilter: "blur(5px)" }}
@@ -55,7 +57,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
             <CustomTypography variant="h6" fontWeight="bold">
               {acc.name}
             </CustomTypography>
-            {activeAccount === index && (
+            {Number(activeAccount) === index && (
               <Box
                 ml={2}
                 px={1}
@@ -66,7 +68,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
                 </CustomTypography>
               </Box>
             )}
-            {activeAccount !== index && (
+            {Number(activeAccount) !== index && (
               <Box ml={2} px={1}>
                 <CustomTypography
                   variant="subtitle"
@@ -88,6 +90,35 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           </CustomTypography>
         </Box>
       ))}
+      <Tooltip title="Add another account" arrow="true">
+        <NavLink to="/register" style={{ textDecoration: "none" }}>
+          <Box
+            py={2}
+            px={2}
+            display="flex"
+            justifyContent="center"
+            sx={{
+              borderRadius: "10px",
+              "&:hover": {
+                background:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 0.1)"
+                    : "rgba(53, 53, 53, 0.1)",
+                cursor: "pointer",
+              },
+            }}
+          >
+            <AddIcon
+              sx={{
+                color:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 1)"
+                    : "rgba(53, 53, 53, 1)",
+              }}
+            />
+          </Box>
+        </NavLink>
+      </Tooltip>
     </Dialog>
   );
 }

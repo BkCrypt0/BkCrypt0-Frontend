@@ -8,7 +8,7 @@ const { generate } = require("password-hash");
 
 const initialState = {
   cachedRoleBuffer: "user",
-  activeAccount: 0,
+  activeAccount: localStorage.getItem(LS.ACTIVE_ACCOUNT),
   mnemonic: undefined,
   cachedPublicKeyBuffer: localStorage.getItem(LS.PUBLIC_KEY),
   cachedPrivateKeyBuffer: localStorage.getItem(LS.PRIVATE_KEY),
@@ -33,7 +33,7 @@ export const constructAccountsArrayFromLocalStorage = () => (dispatch) => {
     let publicKey = localStorage.getItem(`${LS.PUBLIC_KEY} ${count}`);
     let privateKey = localStorage.getItem(`${LS.PRIVATE_KEY} ${count}`);
     let password = localStorage.getItem(`${LS.PASSWORD} ${count}`);
-    let name = localStorage.getItem(`name ${count}`);
+    let name = localStorage.getItem(`${LS.NAME} ${count}`);
     if (
       publicKey !== undefined &&
       publicKey !== null &&
@@ -60,7 +60,7 @@ export const generateAccount = () => (dispatch) => {
 };
 export const changeName = (index, newName) => (dispatch) => {
   dispatch(changeNameSuccess({ index: index, newName: newName }));
-  localStorage.setItem(`name ${index + 1}`, newName);
+  localStorage.setItem(`${LS.NAME} ${index + 1}`, newName);
 };
 
 export const validateMnemonic12Phrases = (testMnemonic, mnemonic) => {
@@ -105,6 +105,10 @@ export const createNewPassword = (password) => (dispatch) => {
 
 export const changeActiveAccount = (index) => (dispatch) => {
   dispatch(changeActiveAccountSuccess({ index: index }));
+  localStorage.setItem(
+    LS.ACTIVE_ACCOUNT,
+    store.getState().accountSlice.activeAccount
+  );
 };
 
 const accountSlice = createSlice({

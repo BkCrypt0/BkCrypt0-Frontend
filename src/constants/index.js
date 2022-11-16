@@ -7,6 +7,8 @@ export const LS = {
   PUBLIC_KEY: "public key",
   PRIVATE_KEY: "private key",
   PASSWORD: "password",
+  ACTIVE_ACCOUNT: "active account",
+  NAME: "name",
 };
 
 export const SCREEN_SIZE = {
