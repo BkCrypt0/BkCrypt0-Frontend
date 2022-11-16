@@ -2,7 +2,7 @@
 
 **Installation requirement:**
 
-- Node v16+
+- Node v14+
 
 **Executional steps:**
 
