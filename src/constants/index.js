@@ -31,3 +31,5 @@ export const BASE_COLOR = {
   PRIMARY_DARK: "#353535",
   CONTRAST_LIGHT: "white",
 };
+
+export const BASE_API_URL = "localhost:8000";

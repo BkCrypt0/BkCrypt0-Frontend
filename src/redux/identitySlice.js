@@ -6,27 +6,35 @@ const initialState = {
   fetchingStatus: FS.IDLE,
 };
 
-export const saveIdentityToRedux =
-  (name, gender, dateOfBirth, birthPlace) => (dispatch) => {
+export const createNewIdentity =
+  (publicKey, id, firstName, lastName, gender, dateOfBirth, birthPlace) =>
+  (dispatch) => {
     dispatch(
-      saveIdentityToReduxSuccess({
-        name: name,
+      createNewIdentitySuccess({
+        publicKey: publicKey,
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
         gender: gender,
         dateOfBirth: dateOfBirth,
         birthPlace: birthPlace,
       })
     );
   };
+
 const identitySlice = createSlice({
   name: "identitySlice",
   initialState: initialState,
   reducers: {
-    saveIdentityToReduxSuccess: (state, action) => {
+    createNewIdentitySuccess: (state, action) => {
       const newIdentity = {
-        name: action.payload.name,
-        gender: action.payload.gender,
-        dateOfBirth: action.payload.dateOfBirth,
-        birthPlace: action.payload.birthPlace,
+        issuer: action.payload.publicKey,
+        id: action.payload.id,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
+        sex: action.payload.gender,
+        doB: action.payload.dateOfBirth,
+        poB: action.payload.birthPlace,
       };
       state.identity = newIdentity;
     },
@@ -34,4 +42,4 @@ const identitySlice = createSlice({
 });
 
 export default identitySlice.reducer;
-export const { saveIdentityToReduxSuccess } = identitySlice.actions;
+export const { createNewIdentitySuccess } = identitySlice.actions;

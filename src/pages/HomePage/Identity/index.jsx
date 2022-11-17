@@ -1,20 +1,26 @@
-import { Box, Button, useMediaQuery, Paper } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { saveIdentityToRedux } from "src/redux/identitySlice";
+import { Box, useMediaQuery, Paper } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { formatAddress } from "src/utility";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
-  const dp = useDispatch();
   const [clickCreate, setClickCreate] = useState(false);
+
+  const dp = useDispatch();
+
+  useEffect(() => {
+    dp(constructAccountsArrayFromLocalStorage());
+  }, []);
 
   return (
     <Box width="100%">
@@ -46,10 +52,35 @@ export default function Identity() {
             <Box width="100%" ml={2}>
               <Box display="flex" alignItems="baseline">
                 <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                  Name:{" "}
+                  Issuer:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" fontStyle="italic" mr={1}>
-                  {identity?.name}
+                  {formatAddress(identity?.issuer, 10)}
+                </CustomTypography>
+              </Box>
+              <Box display="flex" alignItems="baseline">
+                <CustomTypography variant="h6" fontWeight="bold" mr={1}>
+                  First name:{" "}
+                </CustomTypography>
+                <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  {identity?.firstName}
+                </CustomTypography>
+              </Box>
+              <Box display="flex" alignItems="baseline">
+                <CustomTypography variant="h6" fontWeight="bold" mr={1}>
+                  Last name:{" "}
+                </CustomTypography>
+                <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  {identity?.lastName}
+                </CustomTypography>
+              </Box>
+
+              <Box display="flex" alignItems="baseline">
+                <CustomTypography variant="h6" fontWeight="bold" mr={1}>
+                  Identity number:{" "}
+                </CustomTypography>
+                <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  {identity?.id}
                 </CustomTypography>
               </Box>
               <Box display="flex" alignItems="baseline">
@@ -57,7 +88,7 @@ export default function Identity() {
                   Gender:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" fontStyle="italic" mr={1}>
-                  {identity?.gender}
+                  {identity?.sex}
                 </CustomTypography>
               </Box>
               <Box display="flex" alignItems="baseline">
@@ -65,7 +96,7 @@ export default function Identity() {
                   Date Of Birth:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" fontStyle="italic" mr={1}>
-                  {identity?.dateOfBirth}
+                  {identity?.doB}
                 </CustomTypography>
               </Box>
               <Box display="flex" alignItems="baseline">
@@ -73,7 +104,7 @@ export default function Identity() {
                   Birth Place:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" fontStyle="italic" mr={1}>
-                  {identity?.birthPlace}
+                  {identity?.poB}
                 </CustomTypography>
               </Box>
             </Box>
@@ -111,13 +142,6 @@ export default function Identity() {
             <CustomTypography buttonText>Claim Identity</CustomTypography>
           </CustomButton>
         )}
-        <Button
-          onClick={() => {
-            dp(saveIdentityToRedux("minh", "Male", 2001, "Nam Dinh"));
-          }}
-        >
-          CLICK ME
-        </Button>
       </Box>
       <CreateIdentity
         clickCreate={clickCreate}

@@ -20,6 +20,7 @@ export default function CustomForm({
   defaultValue,
   autoComplete = "form",
   targetButtonId = undefined,
+  onFocus = undefined,
   ...props
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -41,6 +42,7 @@ export default function CustomForm({
           <CustomTypography>{label}</CustomTypography>
         </label>
         <input
+          onFocus={onFocus}
           defaultValue={defaultValue ? defaultValue : undefined}
           type={type}
           id={id}
