@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Checkbox } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
@@ -6,12 +6,17 @@ import CustomForm from "src/components/CustomForm";
 import { formatAddress } from "src/utility";
 import { THEME_MODE } from "src/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { changeName } from "src/redux/accountSlice";
+import {
+  changeActiveAccount,
+  changeName,
+  constructAccountsArrayFromLocalStorage,
+} from "src/redux/accountSlice";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import CopyToClipboardButton from "src/components/CopyToClipboardButton";
+import { LS } from "src/constants";
 
 const { verify } = require("password-hash");
 
@@ -28,6 +33,12 @@ export default function AccountExisted() {
   const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
 
+  useEffect(() => {
+    dp(constructAccountsArrayFromLocalStorage());
+    dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
+  }, []);
+
+  console.log(accounts);
   return (
     <>
       <ChangeAccountDialog
@@ -96,24 +107,8 @@ export default function AccountExisted() {
             title="Copy"
             setCopy={setCopy}
             copy={copy}
-            targetText={accounts[activeAccount].publicKey}
+            targetText={accounts[activeAccount]?.publicKey}
           />
-          {/* <Tooltip title="Copy address" placement="top" arrow={{}}>
-            <IconButton
-              sx={{
-                ml: 0.5,
-                color:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.6)"
-                    : "rgba(53, 53, 53, 0.6)",
-              }}
-              onClick={() =>
-                navigator.clipboard.writeText(accounts[activeAccount].publicKey)
-              }
-            >
-              <ContentCopyIcon fontSize="small" />
-            </IconButton>
-          </Tooltip> */}
         </Box>
 
         <CustomForm

@@ -9,8 +9,32 @@ import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { generatePairKeys } from "src/redux/accountSlice";
+import { generatePairKeys, generateAccount } from "src/redux/accountSlice";
 import { useDispatch } from "react-redux";
+
+// 1. awesome
+
+// 2. chat
+
+// 3. share
+
+// 4. arctic
+
+// 5. satoshi
+
+// 6. erosion
+
+// 7. planet
+
+// 8. wave
+
+// 9. hollow
+
+// 10. will
+
+// 11. three
+
+// 12. involve
 
 const bip39 = require("bip39");
 
@@ -115,37 +139,6 @@ export default function MnemonicInputTable({
           </CustomTypography>
         )}
       </Box>
-      {restore === false && (
-        <Box width="100%" display="flex" justifyContent="space-between">
-          <CustomButton
-            mt={3}
-            width="49%"
-            minHeight="50px"
-            onClick={() => {
-              setActiveStep(1);
-            }}
-          >
-            <CustomTypography buttonText>Go back</CustomTypography>
-          </CustomButton>
-          <CustomButton
-            mt={3}
-            width="49%"
-            minHeight="50px"
-            onClick={() => {
-              const testMnemonic = convertArrayToMnemonic();
-              const res = validateMnemonic12Phrases(testMnemonic, mnemonic);
-              if (res === true) {
-                setErr(false);
-                sessionStorage.clear();
-              } else {
-                setErr(true);
-              }
-            }}
-          >
-            <CustomTypography buttonText>Confirm</CustomTypography>
-          </CustomButton>
-        </Box>
-      )}
       {restore === true && (
         <Box width="100%" display="flex" justifyContent="space-between">
           <CustomButton
@@ -157,6 +150,7 @@ export default function MnemonicInputTable({
               const res = bip39.validateMnemonic(importMnemonic);
               if (res === true) {
                 dp(generatePairKeys(importMnemonic));
+                dp(generateAccount());
                 if (setDisplay !== undefined) {
                   setDisplay("block");
                 }

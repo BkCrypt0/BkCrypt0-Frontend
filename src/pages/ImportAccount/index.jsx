@@ -7,22 +7,35 @@ import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
-import { createNewPassword } from "src/redux/accountSlice";
+import {
+  createNewPassword,
+  generateAccount,
+  changeActiveAccount,
+  validateMnemonic12Phrases,
+} from "src/redux/accountSlice";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
+import store from "src/redux/store";
 
 export default function ImportAccount() {
   const [display, setDisplay] = useState("none");
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const publicKey = useSelector((state) => state.accountSlice.cachedPublicKeyBuffer);
-  const privateKey = useSelector((state) => state.accountSlice.cachedPrivateKeyBuffer);
+
+  const activeAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
+  if (activeAccount === null || activeAccount === undefined) {
+    localStorage.setItem(LS.ACTIVE_ACCOUNT, 0);
+  }
 
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
+
+  useEffect(() => {
+    dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
+  }, []);
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
@@ -77,34 +90,35 @@ export default function ImportAccount() {
         />
         <Box mb={1} />
 
-        <CustomButton
-          fullWidth={true}
-          minHeight="50px"
-          disabled={
-            error ||
-            password === undefined ||
-            confirmPassword === undefined ||
-            password === "" ||
-            confirmPassword === ""
-          }
-          onClick={() => {
-            if (password === undefined || confirmPassword === undefined) {
-              setError(true);
-            } else {
-              dp(createNewPassword(password));
-              localStorage.setItem(LS.PUBLIC_KEY, publicKey);
-              localStorage.setItem(LS.PRIVATE_KEY, privateKey);
-              localStorage.setItem(LS.PASSWORD, password);
+        <NavLink to="/login" style={{ width: "100%", textDecoration: "none" }}>
+          <CustomButton
+            fullWidth={true}
+            minHeight="50px"
+            disabled={
+              error ||
+              password === undefined ||
+              confirmPassword === undefined ||
+              password === "" ||
+              confirmPassword === ""
             }
-          }}
-        >
-          <NavLink
-            to="/login"
-            style={{ width: "100%", textDecoration: "none" }}
+            onClick={() => {
+              if (password === undefined || confirmPassword === undefined) {
+                setError(true);
+              } else {
+                dp(createNewPassword(password));
+                dp(
+                  validateMnemonic12Phrases(
+                    store.getState().accountSlice.mnemonic,
+                    store.getState().accountSlice.mnemonic, 0
+                  )
+                );
+                dp(generateAccount());
+              }
+            }}
           >
             <CustomTypography buttonText>Restore password</CustomTypography>
-          </NavLink>
-        </CustomButton>
+          </CustomButton>
+        </NavLink>
         <Box mb={2} />
         <NavLink
           to="/login"

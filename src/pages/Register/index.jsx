@@ -20,6 +20,7 @@ export default function Register() {
     setActiveStep(0);
   };
 
+
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center">
       <CustomSteppers

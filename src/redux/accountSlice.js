@@ -8,7 +8,9 @@ const { generate } = require("password-hash");
 
 const initialState = {
   cachedRoleBuffer: "user",
-  activeAccount: localStorage.getItem(LS.ACTIVE_ACCOUNT),
+  activeAccount: !localStorage.getItem(LS.ACTIVE_ACCOUNT)
+    ? 0
+    : localStorage.getItem(LS.ACTIVE_ACCOUNT),
   mnemonic: undefined,
   cachedPublicKeyBuffer: localStorage.getItem(LS.PUBLIC_KEY),
   cachedPrivateKeyBuffer: localStorage.getItem(LS.PRIVATE_KEY),
@@ -63,25 +65,32 @@ export const changeName = (index, newName) => (dispatch) => {
   localStorage.setItem(`${LS.NAME} ${index + 1}`, newName);
 };
 
-export const validateMnemonic12Phrases = (testMnemonic, mnemonic) => {
+export const validateMnemonic12Phrases = (testMnemonic, mnemonic, offset) => {
   const identical = testMnemonic === mnemonic;
   const result = bip39.validateMnemonic(testMnemonic) && identical;
   if (result === true) {
     localStorage.setItem(
-      `${LS.PUBLIC_KEY} ${store.getState().accountSlice.accounts.length + 1}`,
+      `${LS.PUBLIC_KEY} ${
+        store.getState().accountSlice.accounts.length + offset
+      }`,
       store.getState().accountSlice.cachedPublicKeyBuffer
     );
     localStorage.setItem(
-      `${LS.PRIVATE_KEY} ${store.getState().accountSlice.accounts.length + 1}`,
+      `${LS.PRIVATE_KEY} ${
+        store.getState().accountSlice.accounts.length + offset
+      }`,
       store.getState().accountSlice.cachedPrivateKeyBuffer
     );
     localStorage.setItem(
-      `${LS.PASSWORD} ${store.getState().accountSlice.accounts.length + 1}`,
+      `${LS.PASSWORD} ${
+        store.getState().accountSlice.accounts.length + offset
+      }`,
       store.getState().accountSlice.cachedPasswordBuffer
     );
   }
   return result;
 };
+
 export const generatePairKeys =
   (input = undefined) =>
   (dispatch) => {
@@ -123,6 +132,8 @@ const accountSlice = createSlice({
       state.mnemonic = action.payload.mnemonic;
     },
     generateAccountSuccess: (state) => {
+      console.log(state.cachedPrivateKeyBuffer);
+      console.log(state.cachedPublicKeyBuffer);
       state.accounts.push({
         name: `Account ${state.accounts.length + 1}`,
         role: state.cachedRoleBuffer,
@@ -130,6 +141,7 @@ const accountSlice = createSlice({
         privateKey: state.cachedPrivateKeyBuffer,
         password: state.cachedPasswordBuffer,
       });
+      console.log(state);
       localStorage.setItem(
         `name ${state.accounts.length}`,
         state.accounts[state.accounts.length - 1].name
@@ -143,6 +155,10 @@ const accountSlice = createSlice({
     },
     generatePasswordSuccess: (state, action) => {
       state.cachedPasswordBuffer = action.payload.cachedPasswordBuffer;
+      localStorage.setItem(
+        `${LS.PASSWORD} ${state.accounts.length + 1}`,
+        state.cachedPasswordBuffer
+      );
     },
     constructAccountsArrayFromLocalStorageSuccess: (state, action) => {
       state.accounts = action.payload.accountArray;

@@ -2,8 +2,8 @@ import { Box, useMediaQuery } from "@mui/material";
 import { SCREEN_SIZE } from "src/constants";
 import UndefinedAccount from "./UndefinedAccount";
 import AccountExisted from "./AccountExisted";
-import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 import { useEffect } from "react";
 
 export default function Login() {

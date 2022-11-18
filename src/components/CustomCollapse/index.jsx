@@ -5,11 +5,13 @@ import { THEME_MODE } from "src/constants";
 
 export default function CustomCollapse({
   open,
-  anchorEl,
   handleClose,
   data,
   targetFormId,
   setOpen,
+  select = false,
+  setProvinceList = undefined,
+  provinceList = undefined,
   ...props
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -19,7 +21,7 @@ export default function CustomCollapse({
       in={open}
       sx={{
         zIndex: 100,
-        position: "relative",
+        position: "fixed",
         paddingY: 1,
         paddingX: 1,
         display: "flex",
@@ -55,10 +57,20 @@ export default function CustomCollapse({
               cursor: "pointer",
             },
           }}
-          onClick={() => {
-            document.getElementById(targetFormId).value = e.toString();
-            setOpen(false);
-          }}
+          onClick={
+            select === false
+              ? () => {
+                  document.getElementById(targetFormId).value = e.toString();
+                  setOpen(false);
+                }
+              : () => {
+                  if (!provinceList.includes(e.toString())) {
+                    const newList = [e, ...provinceList];
+                    setProvinceList(newList);
+                  }
+                  setOpen(false);
+                }
+          }
         >
           <CustomTypography>{e}</CustomTypography>
         </Box>
