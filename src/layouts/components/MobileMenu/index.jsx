@@ -7,8 +7,9 @@ import SwitchThemeButton from "src/components/SwitchThemeButton";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { formatAddress } from "src/utility";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function MobileMenu({ open, setOpen }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -18,7 +19,11 @@ export default function MobileMenu({ open, setOpen }) {
   );
   const [openDialog, setOpenDialog] = useState(false);
 
-  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
+  useEffect(() => {
+    constructAccountsArrayFromLocalStorage();
+  }, []);
+
+  const role = accounts[activeAccount]?.role;
 
   return (
     <>

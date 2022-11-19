@@ -42,7 +42,6 @@ export default function MainLayout(props) {
     `${LS.PUBLIC_KEY} ${Number(activeAccount) + 1}`
   );
 
-  console.log(isLogin);
   const condition = () => {
     if (accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)] !== undefined) {
       if (
@@ -61,18 +60,11 @@ export default function MainLayout(props) {
     dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
   }, []);
 
-  console.log(isLogin);
   return (
     <Fragment>
-      {/* {accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)] !== undefined &&
-        isLogin !==
-          accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)].publicKey && (
-          <Redirect to="/login" />
-        )} */}
       {(condition() === true || login === undefined) && (
         <Redirect to="/login" />
       )}
-
       <Header />
       <Box
         component="main"

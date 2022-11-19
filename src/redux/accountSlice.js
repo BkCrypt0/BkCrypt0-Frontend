@@ -82,6 +82,7 @@ export const constructAccountsArrayFromLocalStorage = () => (dispatch) => {
     let privateKey = localStorage.getItem(`${LS.PRIVATE_KEY} ${count}`);
     let password = localStorage.getItem(`${LS.PASSWORD} ${count}`);
     let name = localStorage.getItem(`${LS.NAME} ${count}`);
+    let role = localStorage.getItem(`${LS.ROLE} ${count}`);
     if (
       publicKey !== undefined &&
       publicKey !== null &&
@@ -92,6 +93,7 @@ export const constructAccountsArrayFromLocalStorage = () => (dispatch) => {
     ) {
       arr.push({
         name: name,
+        role: role,
         publicKey: publicKey,
         privateKey: privateKey,
         password: password,
@@ -127,13 +129,18 @@ export const validateMnemonic12Phrases = (testMnemonic, mnemonic, offset) => {
       }`,
       store.getState().accountSlice.cachedPrivateKeyBuffer
     );
-    if (offset > 0)
-      localStorage.setItem(
-        `${LS.PASSWORD} ${
-          store.getState().accountSlice.accounts.length + offset
-        }`,
-        store.getState().accountSlice.cachedPasswordBuffer
-      );
+
+    localStorage.setItem(
+      `${LS.PASSWORD} ${
+        store.getState().accountSlice.accounts.length + offset
+      }`,
+      store.getState().accountSlice.cachedPasswordBuffer
+    );
+
+    localStorage.setItem(
+      `${LS.ROLE} ${store.getState().accountSlice.accounts.length + offset}`,
+      store.getState().accountSlice.cachedRoleBuffer
+    );
   }
   return result;
 };
@@ -161,7 +168,6 @@ export const createNewPassword = (password) => (dispatch) => {
 
 export const changeActiveAccount = (index) => (dispatch) => {
   dispatch(changeActiveAccountSuccess({ index: index }));
-  // dispatch(logoutSuccess());
 };
 
 const accountSlice = createSlice({
@@ -169,15 +175,14 @@ const accountSlice = createSlice({
   initialState: initialState,
   reducers: {
     toggleRoleSuccess: (state) => {
-      if (state.role === "user") state.role = "admin";
-      else if (state.role === "admin") state.role = "user";
+      if (state.cachedRoleBuffer === "user") state.cachedRoleBuffer = "admin";
+      else if (state.cachedRoleBuffer === "admin")
+        state.cachedRoleBuffer = "user";
     },
     generateMnemonic12PhrasesSuccess: (state, action) => {
       state.mnemonic = action.payload.mnemonic;
     },
     generateAccountSuccess: (state) => {
-      console.log(state.cachedPrivateKeyBuffer);
-      console.log(state.cachedPublicKeyBuffer);
       state.accounts.push({
         name: `Account ${state.accounts.length + 1}`,
         role: state.cachedRoleBuffer,
@@ -185,9 +190,8 @@ const accountSlice = createSlice({
         privateKey: state.cachedPrivateKeyBuffer,
         password: state.cachedPasswordBuffer,
       });
-      console.log(state);
       localStorage.setItem(
-        `name ${state.accounts.length}`,
+        `${LS.NAME} ${state.accounts.length}`,
         state.accounts[state.accounts.length - 1].name
       );
     },

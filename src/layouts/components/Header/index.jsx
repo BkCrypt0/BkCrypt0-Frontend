@@ -67,7 +67,7 @@ export default function Header() {
             <NavLink to="/welcome">
               <TeamLogo style={{ width: "222px", height: "auto" }} />
             </NavLink>
-            {role === "admin" && (
+            {accounts[activeAccount]?.role === "admin" && (
               <CustomTypography
                 variant="subtitle"
                 fontWeight="bold"

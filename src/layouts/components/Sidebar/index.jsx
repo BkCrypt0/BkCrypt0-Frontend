@@ -3,10 +3,20 @@ import { Fragment } from "react";
 import NavigationButton from "./NavigationButton";
 import { THEME_MODE } from "src/constants";
 import { useSelector } from "react-redux";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
+import { useEffect } from "react";
 
 export default function Sidebar() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
+  useEffect(() => {
+    constructAccountsArrayFromLocalStorage();
+  }, []);
+
+  const role = accounts[activeAccount]?.role;
   return (
     <Fragment>
       <Drawer
