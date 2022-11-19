@@ -3,7 +3,7 @@ import { Box, Grid, styled, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { NavLink } from "react-router-dom";
@@ -132,9 +132,14 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
               setErr(false);
               setActiveStep(3);
               dp(generateAccount());
-              if (activeAccount !== undefined)
-                dp(changeActiveAccount(Number(activeAccount) + 1));
-              else dp(changeActiveAccount(0));
+              if (localStorage.getItem(LS.ACTIVE_ACCOUNT) === null)
+                dp(changeActiveAccount(0));
+              else
+                dp(
+                  changeActiveAccount(
+                    Number(localStorage.getItem(LS.ACTIVE_ACCOUNT)) + 1
+                  )
+                );
               sessionStorage.clear();
             } else {
               setErr(true);
