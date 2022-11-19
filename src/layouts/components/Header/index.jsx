@@ -9,8 +9,10 @@ import { useLocation, NavLink } from "react-router-dom";
 import { toggleRole } from "src/redux/accountSlice";
 import CustomTypography from "src/components/CustomTypography";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu";
+import ChangeAccountDialog from "src/components/ChangeAccountDialog";
+import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function Header() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -19,9 +21,22 @@ export default function Header() {
   const path = useLocation().pathname;
   const dp = useDispatch();
   const [openMobileMenu, setOpenMobileMenu] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
+  useEffect(() => {
+    dp(constructAccountsArrayFromLocalStorage());
+  }, []);
 
   return (
     <>
+      <ChangeAccountDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        onClose={() => setOpenDialog(false)}
+      />
       <MobileMenu open={openMobileMenu} setOpen={setOpenMobileMenu} />
       <Drawer
         variant="permanent"
@@ -72,6 +87,33 @@ export default function Header() {
             >
               {role}
             </Button>
+            {path !== "/welcome" &&
+              path !== "/login" &&
+              path !== "/import" &&
+              !mobile && (
+                <Box
+                  onClick={() => {
+                    setOpenDialog(true);
+                  }}
+                  minWidth="100px"
+                  sx={{
+                    mr: 2,
+                    cursor: "pointer",
+                    background:
+                      themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#434343",
+                    py: "5px",
+                    border:
+                      themeMode === THEME_MODE.DARK
+                        ? "1px solid rgba(216, 216, 216, 0.4)"
+                        : "1px solid rgba(53, 53, 53, 0.4)",
+                    borderRadius: "10px",
+                  }}
+                >
+                  <CustomTypography textAlign="center">
+                    {accounts[activeAccount]?.name}
+                  </CustomTypography>
+                </Box>
+              )}
 
             {!(
               mobile &&

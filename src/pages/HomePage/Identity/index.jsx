@@ -1,13 +1,12 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { formatAddress } from "src/utility";
-import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -15,12 +14,6 @@ export default function Identity() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [clickCreate, setClickCreate] = useState(false);
-
-  const dp = useDispatch();
-
-  useEffect(() => {
-    dp(constructAccountsArrayFromLocalStorage());
-  }, []);
 
   return (
     <Box width="100%">

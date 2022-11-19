@@ -1,4 +1,4 @@
-import { Box, IconButton, Checkbox } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
@@ -10,13 +10,12 @@ import { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import {
-  changeActiveAccount,
   changeName,
   constructAccountsArrayFromLocalStorage,
 } from "src/redux/accountSlice";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import CopyToClipboardButton from "src/components/CopyToClipboardButton";
-import { LS } from "src/constants";
+import { login } from "src/redux/accountSlice";
 
 const { verify } = require("password-hash");
 
@@ -35,10 +34,8 @@ export default function AccountExisted() {
 
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());
-    dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
   }, []);
 
-  console.log(accounts);
   return (
     <>
       <ChangeAccountDialog
@@ -133,14 +130,16 @@ export default function AccountExisted() {
             minHeight="50px"
             mb={2}
             onClick={() => {
-              if (verify(input, accounts[0]?.password))
+              if (verify(input, accounts[0]?.password)) {
                 enqueueSnackbar("Login successfully!", {
                   variant: "success",
                   dense: "true",
                   preventDuplicate: true,
                   autoHideDuration: 2000,
                 });
-              else
+
+                dp(login(accounts[activeAccount].publicKey));
+              } else
                 enqueueSnackbar("Wrong password!", {
                   variant: "error",
                   dense: "true",

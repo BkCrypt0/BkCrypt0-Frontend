@@ -3,10 +3,13 @@ import { Fragment } from "react";
 import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
 import Footer from "./components/Footer";
-import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { THEME_MODE, SCREEN_SIZE, LS } from "src/constants";
 import BackgroundDesktopDark from "src/assets/bg_desktop_dark.png";
 import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
+import { Redirect } from "react-router-dom";
+import { useEffect } from "react";
+import { changeActiveAccount } from "src/redux/accountSlice";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
@@ -30,10 +33,46 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
 export default function MainLayout(props) {
   const { children } = props;
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const login = useSelector((state) => state.accountSlice.isLogin);
+  const isLogin = login === undefined ? localStorage.getItem(LS.LOGIN) : login;
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
+  const activeAccount = localStorage.getItem(`${LS.ACTIVE_ACCOUNT}`);
+  const activeAccountPublicKey = localStorage.getItem(
+    `${LS.PUBLIC_KEY} ${Number(activeAccount) + 1}`
+  );
 
+  console.log(isLogin);
+  const condition = () => {
+    if (accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)] !== undefined) {
+      if (
+        isLogin !== accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)].publicKey
+      )
+        return true;
+      else return false;
+    } else if (localStorage.getItem(LS.LOGIN) !== activeAccountPublicKey)
+      return true;
+    else if (localStorage.getItem(LS.LOGIN) === undefined) return true;
+    else return false;
+  };
+
+  const dp = useDispatch();
+  useEffect(() => {
+    dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
+  }, []);
+
+  console.log(isLogin);
   return (
     <Fragment>
+      {/* {accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)] !== undefined &&
+        isLogin !==
+          accounts[localStorage.getItem(LS.ACTIVE_ACCOUNT)].publicKey && (
+          <Redirect to="/login" />
+        )} */}
+      {(condition() === true || login === undefined) && (
+        <Redirect to="/login" />
+      )}
+
       <Header />
       <Box
         component="main"

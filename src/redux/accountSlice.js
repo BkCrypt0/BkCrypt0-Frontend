@@ -6,17 +6,63 @@ import { generatePublicAndPrivateKeyStringFromMnemonic } from "src/service/utils
 const bip39 = require("bip39");
 const { generate } = require("password-hash");
 
+const initialLogin = localStorage.getItem(LS.LOGIN);
+const initialActiveAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
+
+export const constructInitialAccounts = () => {
+  var arr = [];
+  var count = 1;
+  while (true) {
+    if (
+      localStorage.getItem(`${LS.PUBLIC_KEY} ${count}`) === undefined ||
+      localStorage.getItem(`${LS.PUBLIC_KEY} ${count}`) === null
+    )
+      break;
+    let publicKey = localStorage.getItem(`${LS.PUBLIC_KEY} ${count}`);
+    let privateKey = localStorage.getItem(`${LS.PRIVATE_KEY} ${count}`);
+    let password = localStorage.getItem(`${LS.PASSWORD} ${count}`);
+    let name = localStorage.getItem(`${LS.NAME} ${count}`);
+    if (
+      publicKey !== undefined &&
+      publicKey !== null &&
+      privateKey !== undefined &&
+      privateKey !== null &&
+      password !== undefined &&
+      password !== null
+    ) {
+      arr.push({
+        name: name,
+        publicKey: publicKey,
+        privateKey: privateKey,
+        password: password,
+      });
+    }
+    count++;
+  }
+
+  return arr;
+};
+
 const initialState = {
+  isLogin: initialLogin === null ? undefined : initialLogin,
+
   cachedRoleBuffer: "user",
-  activeAccount: !localStorage.getItem(LS.ACTIVE_ACCOUNT)
-    ? 0
-    : localStorage.getItem(LS.ACTIVE_ACCOUNT),
+  activeAccount:
+    initialActiveAccount === null ? undefined : initialActiveAccount,
   mnemonic: undefined,
   cachedPublicKeyBuffer: localStorage.getItem(LS.PUBLIC_KEY),
   cachedPrivateKeyBuffer: localStorage.getItem(LS.PRIVATE_KEY),
   cachedPasswordBuffer: localStorage.getItem(LS.PASSWORD),
   cachedNameBuffer: undefined,
-  accounts: [],
+  accounts: constructInitialAccounts(),
+};
+
+export const login = (publicKey) => (dispatch) => {
+  dispatch(loginSuccess({ publicKey: publicKey }));
+};
+
+export const logout = () => (dispatch) => {
+  dispatch(logoutSuccess());
 };
 
 export const toggleRole = () => (dispatch) => {
@@ -81,12 +127,13 @@ export const validateMnemonic12Phrases = (testMnemonic, mnemonic, offset) => {
       }`,
       store.getState().accountSlice.cachedPrivateKeyBuffer
     );
-    localStorage.setItem(
-      `${LS.PASSWORD} ${
-        store.getState().accountSlice.accounts.length + offset
-      }`,
-      store.getState().accountSlice.cachedPasswordBuffer
-    );
+    if (offset > 0)
+      localStorage.setItem(
+        `${LS.PASSWORD} ${
+          store.getState().accountSlice.accounts.length + offset
+        }`,
+        store.getState().accountSlice.cachedPasswordBuffer
+      );
   }
   return result;
 };
@@ -114,10 +161,7 @@ export const createNewPassword = (password) => (dispatch) => {
 
 export const changeActiveAccount = (index) => (dispatch) => {
   dispatch(changeActiveAccountSuccess({ index: index }));
-  localStorage.setItem(
-    LS.ACTIVE_ACCOUNT,
-    store.getState().accountSlice.activeAccount
-  );
+  // dispatch(logoutSuccess());
 };
 
 const accountSlice = createSlice({
@@ -155,10 +199,6 @@ const accountSlice = createSlice({
     },
     generatePasswordSuccess: (state, action) => {
       state.cachedPasswordBuffer = action.payload.cachedPasswordBuffer;
-      localStorage.setItem(
-        `${LS.PASSWORD} ${state.accounts.length + 1}`,
-        state.cachedPasswordBuffer
-      );
     },
     constructAccountsArrayFromLocalStorageSuccess: (state, action) => {
       state.accounts = action.payload.accountArray;
@@ -168,6 +208,15 @@ const accountSlice = createSlice({
     },
     changeActiveAccountSuccess: (state, action) => {
       state.activeAccount = action.payload.index;
+      localStorage.setItem(`${LS.ACTIVE_ACCOUNT}`, state.activeAccount);
+    },
+    loginSuccess: (state, action) => {
+      state.isLogin = action.payload.publicKey;
+      localStorage.setItem(`${LS.LOGIN}`, state.isLogin);
+    },
+    logoutSuccess: (state) => {
+      state.isLogin = undefined;
+      localStorage.setItem(LS.LOGIN, undefined);
     },
   },
 });
@@ -183,4 +232,6 @@ export const {
   constructAccountsArrayFromLocalStorageSuccess,
   changeNameSuccess,
   changeActiveAccountSuccess,
+  loginSuccess,
+  logoutSuccess,
 } = accountSlice.actions;

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
-import { changeActiveAccount } from "src/redux/accountSlice";
+import { changeActiveAccount, logout } from "src/redux/accountSlice";
 import AddIcon from "@mui/icons-material/Add";
 import { NavLink } from "react-router-dom";
 
@@ -39,6 +39,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           px={2}
           key={index}
           onClick={() => {
+            if (activeAccount !== index) dp(logout());
             dp(changeActiveAccount(index));
             setOpen(false);
           }}

@@ -3,14 +3,13 @@ import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
+import { SCREEN_SIZE, THEME_MODE } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
 import {
   createNewPassword,
   generateAccount,
-  changeActiveAccount,
   validateMnemonic12Phrases,
 } from "src/redux/accountSlice";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
@@ -22,10 +21,10 @@ export default function ImportAccount() {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
-  const activeAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
-  if (activeAccount === null || activeAccount === undefined) {
-    localStorage.setItem(LS.ACTIVE_ACCOUNT, 0);
-  }
+  // const activeAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
+  // if (activeAccount === null || activeAccount === undefined) {
+  //   localStorage.setItem(LS.ACTIVE_ACCOUNT, 0);
+  // }
 
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
@@ -33,9 +32,9 @@ export default function ImportAccount() {
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
 
-  useEffect(() => {
-    dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
-  }, []);
+  // useEffect(() => {
+  //   dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
+  // }, []);
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
@@ -82,6 +81,7 @@ export default function ImportAccount() {
           id="cfpasswd"
           name="confirm password"
           placeHolder="Confirm password..."
+          targetButtonId="restore-password"
           onChange={() =>
             setConfirmPassword(document.getElementById("cfpasswd").value)
           }
@@ -94,6 +94,7 @@ export default function ImportAccount() {
           <CustomButton
             fullWidth={true}
             minHeight="50px"
+            id="restore-password"
             disabled={
               error ||
               password === undefined ||
@@ -106,11 +107,10 @@ export default function ImportAccount() {
                 setError(true);
               } else {
                 dp(createNewPassword(password));
-                dp(
-                  validateMnemonic12Phrases(
-                    store.getState().accountSlice.mnemonic,
-                    store.getState().accountSlice.mnemonic, 0
-                  )
+                validateMnemonic12Phrases(
+                  store.getState().accountSlice.mnemonic,
+                  store.getState().accountSlice.mnemonic,
+                  1
                 );
                 dp(generateAccount());
               }

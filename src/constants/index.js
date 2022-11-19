@@ -9,6 +9,7 @@ export const LS = {
   PASSWORD: "password",
   ACTIVE_ACCOUNT: "active account",
   NAME: "name",
+  LOGIN: "is login",
 };
 
 export const SCREEN_SIZE = {
