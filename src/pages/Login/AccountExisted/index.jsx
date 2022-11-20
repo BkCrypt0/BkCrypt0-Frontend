@@ -120,7 +120,9 @@ export default function AccountExisted() {
         <Box mb={1} />
         <NavLink
           to={
-            verify(input, accounts[0]?.password) ? "/home/identity" : "/login"
+            verify(input, accounts[activeAccount]?.password)
+              ? "/home/identity"
+              : "/login"
           }
           style={{ textDecoration: "none", width: "100%" }}
         >
@@ -130,7 +132,7 @@ export default function AccountExisted() {
             minHeight="50px"
             mb={2}
             onClick={() => {
-              if (verify(input, accounts[0]?.password)) {
+              if (verify(input, accounts[activeAccount]?.password)) {
                 enqueueSnackbar("Login successfully!", {
                   variant: "success",
                   dense: "true",

@@ -13,9 +13,6 @@ import { generateAccount, changeActiveAccount } from "src/redux/accountSlice";
 
 export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
   const mnemonic = useSelector((state) => state.accountSlice.mnemonic);
-  const activeAccount = useSelector(
-    (state) => state.accountSlice.activeAccount
-  );
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);

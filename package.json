@@ -24,6 +24,7 @@
     "react-router-dom": "^5.3.3",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
+    "save-file": "^2.3.1",
     "web-vitals": "^2.1.4",
     "web3-utils": "^1.8.1",
     "webpack": "^5.74.0"

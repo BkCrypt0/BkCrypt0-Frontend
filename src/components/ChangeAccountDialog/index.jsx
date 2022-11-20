@@ -4,6 +4,7 @@ import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import { changeActiveAccount, logout } from "src/redux/accountSlice";
+import { clearIdentity } from "src/redux/identitySlice";
 import AddIcon from "@mui/icons-material/Add";
 import { NavLink } from "react-router-dom";
 
@@ -39,7 +40,10 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           px={2}
           key={index}
           onClick={() => {
-            if (activeAccount !== index) dp(logout());
+            if (activeAccount !== index) {
+              dp(logout());
+              dp(clearIdentity());
+            }
             dp(changeActiveAccount(index));
             setOpen(false);
           }}

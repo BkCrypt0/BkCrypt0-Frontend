@@ -1,13 +1,15 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { createNewIdentity } from "src/redux/identitySlice";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -19,10 +21,72 @@ export default function Identity() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  const { enqueueSnackbar } = useSnackbar();
+  const dp = useDispatch();
+
   const role = accounts[activeAccount]?.role;
+
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    inputRef.current.click();
+  };
+
+  const handleFileChange = async (event) => {
+    const fileObj = event.target.files && event.target.files[0];
+    if (!fileObj) {
+      return;
+    }
+    if (!fileObj.type.includes("json")) {
+      enqueueSnackbar("Unsupported file type! Please upload a JSON file", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+      return;
+    }
+    const identityJSON = await fileObj.text();
+    const importIdentity = JSON.parse(identityJSON);
+
+    if (importIdentity.publicKey !== accounts[activeAccount]?.publicKey) {
+      enqueueSnackbar("Unmatched publicKey! Please import your own identity", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+    } else if (
+      importIdentity.publicKey === accounts[activeAccount]?.publicKey
+    ) {
+      dp(
+        createNewIdentity(
+          importIdentity.publicKey,
+          importIdentity.id,
+          importIdentity.firstName,
+          importIdentity.lastName,
+          importIdentity.sex,
+          importIdentity.doB,
+          importIdentity.poB
+        )
+      );
+      enqueueSnackbar("Import identity successfully", {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+    }
+  };
 
   return (
     <>
+      <input
+        style={{ display: "none" }}
+        ref={inputRef}
+        type="file"
+        onChange={handleFileChange}
+      />
       {role === "admin" && <Redirect to="/home/claims-monitor" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
@@ -47,23 +111,25 @@ export default function Identity() {
             }}
           >
             {identity === undefined && (
-              <CustomTypography ml={3}>Undefined</CustomTypography>
+              <CustomTypography ml={3} variant="h5">
+                Undefined
+              </CustomTypography>
             )}
             {identity !== undefined && (
               <Box width="100%" ml={2}>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Issuer:{" "}
+                    Public Key:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
-                    {formatAddress(identity?.issuer, 10)}
+                  <CustomTypography variant="h6" mr={1}>
+                    {formatAddress(identity?.publicKey, 10)}
                   </CustomTypography>
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     First name:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.firstName}
                   </CustomTypography>
                 </Box>
@@ -71,7 +137,7 @@ export default function Identity() {
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Last name:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.lastName}
                   </CustomTypography>
                 </Box>
@@ -80,7 +146,7 @@ export default function Identity() {
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Identity number:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.id}
                   </CustomTypography>
                 </Box>
@@ -88,7 +154,7 @@ export default function Identity() {
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Gender:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.sex}
                   </CustomTypography>
                 </Box>
@@ -96,7 +162,7 @@ export default function Identity() {
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Date Of Birth:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.doB}
                   </CustomTypography>
                 </Box>
@@ -104,7 +170,7 @@ export default function Identity() {
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Birth Place:{" "}
                   </CustomTypography>
-                  <CustomTypography variant="h6" fontStyle="italic" mr={1}>
+                  <CustomTypography variant="h6" mr={1}>
                     {identity?.poB}
                   </CustomTypography>
                 </Box>
@@ -133,6 +199,9 @@ export default function Identity() {
                 minWidth={mobile ? undefined : "150px"}
                 width={mobile ? "47%" : undefined}
                 mr={mobile ? 0 : 3}
+                onClick={async () => {
+                  handleClick();
+                }}
               >
                 <CustomTypography buttonText>Import Identity</CustomTypography>
               </CustomButton>

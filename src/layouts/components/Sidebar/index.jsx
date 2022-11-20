@@ -54,6 +54,12 @@ export default function Sidebar() {
               link="/home/claims-monitor"
             />
           )}
+          {role === "admin" && (
+            <NavigationButton
+              label="ISSUE IDENTITY"
+              link="/home/issue-identity"
+            />
+          )}
           {role === "user" && (
             <NavigationButton label="MY PROOFS" link="/home/proofs" />
           )}
