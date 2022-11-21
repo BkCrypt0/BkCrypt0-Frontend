@@ -39,6 +39,12 @@ const routeConfig = [
     layout: LayoutOptions.MAIN,
   },
   {
+    path: "/home/issue-identity",
+    exact: true,
+    component: React.lazy(() => import("../pages/HomePage/IssueNewIdentity")),
+    layout: LayoutOptions.MAIN,
+  },
+  {
     path: "/home/proofs",
     exact: true,
     component: React.lazy(() => import("../pages/HomePage/Proofs")),

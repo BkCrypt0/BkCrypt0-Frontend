@@ -34,4 +34,4 @@ export const BASE_COLOR = {
   CONTRAST_LIGHT: "white",
 };
 
-export const BASE_API_URL = "localhost:8000";
+export const BASE_API_URL = "http://127.0.0.1:8000";

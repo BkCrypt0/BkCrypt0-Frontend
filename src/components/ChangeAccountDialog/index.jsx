@@ -40,11 +40,11 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           px={2}
           key={index}
           onClick={() => {
+            dp(changeActiveAccount(index));
             if (activeAccount !== index) {
               dp(logout());
               dp(clearIdentity());
             }
-            dp(changeActiveAccount(index));
             setOpen(false);
           }}
           sx={{

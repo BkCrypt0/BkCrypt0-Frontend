@@ -5,6 +5,7 @@ import { generatePublicAndPrivateKeyStringFromMnemonic } from "src/service/utils
 
 const bip39 = require("bip39");
 const { generate } = require("password-hash");
+const { eddsa, babyJub } = require("circomlib");
 
 const initialLogin = localStorage.getItem(LS.LOGIN);
 const initialActiveAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
@@ -67,6 +68,12 @@ export const logout = () => (dispatch) => {
 
 export const toggleRole = () => (dispatch) => {
   dispatch(toggleRoleSuccess());
+};
+
+export const generateSignature = (privateKeyString, msg) => {
+  const privateKeyBuffer = Buffer.from(privateKeyString, "hex");
+  const message = babyJub.F.e(msg);
+  return eddsa.signPoseidon(privateKeyBuffer, message);
 };
 
 export const constructAccountsArrayFromLocalStorage = () => (dispatch) => {

@@ -14,6 +14,7 @@ import { Redirect } from "react-router-dom";
 
 export default function ProofCreation() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const login = useSelector((state) => state.accountSlice.isLogin);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [open, setOpen] = useState(false);
@@ -27,7 +28,10 @@ export default function ProofCreation() {
 
   return (
     <>
-      {role === "admin" && <Redirect to="/home/claims-monitor" />}
+      {role === "admin" && login !== undefined && (
+        <Redirect to="/home/claims-monitor" />
+      )}
+      {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box>
         <CustomTypography variant="h4" mb={3}>
           Create a proof

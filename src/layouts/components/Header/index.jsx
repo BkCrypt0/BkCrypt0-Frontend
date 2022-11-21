@@ -67,16 +67,19 @@ export default function Header() {
             <NavLink to="/welcome">
               <TeamLogo style={{ width: "222px", height: "auto" }} />
             </NavLink>
-            {accounts[activeAccount]?.role === "admin" && (
-              <CustomTypography
-                variant="subtitle"
-                fontWeight="bold"
-                ml={-4}
-                mt={-3}
-              >
-                ADMIN
-              </CustomTypography>
-            )}
+            {accounts[activeAccount]?.role === "admin" &&
+              path !== "/login" &&
+              path !== "/register" &&
+              path !== "/import" && (
+                <CustomTypography
+                  variant="subtitle"
+                  fontWeight="bold"
+                  ml={-4}
+                  mt={-3}
+                >
+                  ADMIN
+                </CustomTypography>
+              )}
           </Box>
 
           <Box display="flex" alignItems="center">
@@ -90,6 +93,7 @@ export default function Header() {
             {path !== "/welcome" &&
               path !== "/login" &&
               path !== "/import" &&
+              path !== "/register" &&
               !mobile && (
                 <Box
                   onClick={() => {
