@@ -1,5 +1,6 @@
 const { eddsa, babyJub, poseidon } = require("circomlib");
 const HDKey = require("hdkey");
+const snarkjs = require("snarkjs");
 
 export const testServerObj = {
   rootRevoke: "0",
@@ -79,6 +80,7 @@ export const testServerObj = {
   key: "3",
   value:
     "13197145265225436101911056841517579786969287711584084771931077507892768845973",
+  challenge: 100,
 };
 
 export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
@@ -94,11 +96,11 @@ export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
     privateKeyString: privateKeyString,
   };
 }
-export function getSignMessage(
+export function getSignMessage({
   privateKeyString = "0000000000000000000000000000000000000000000000000000000000000003",
   expireTime,
-  value
-) {
+  value,
+}) {
   const mes = createMessage(value, expireTime);
   const signature = eddsa.signPoseidon(
     Buffer.from(privateKeyString, "hex"),
@@ -113,34 +115,30 @@ export function getSignMessage(
     R8y: R8y,
     S: S,
     expireTime: expireTime,
-    message: mes,
+    message: "0x" + mes.toString(),
   };
 }
 
-export function getAgeInput(
+export function getAgeInput({
   serverInfo,
   currentYear,
   currentMonth,
   currentDay,
   minAge,
   maxAge,
-  privateKeyString,
+  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000003",
   expireTime,
   infoObject,
-  publicKeyString = babyJub
-    .packPoint(
-      eddsa.prv2pub(
-        "0000000000000000000000000000000000000000000000000000000000000003"
-      )
-    )
-    .toString("hex")
-) {
+  publicKey = eddsa.prv2pub(
+    "0000000000000000000000000000000000000000000000000000000000000003"
+  ),
+}) {
   const info = {
     CCCD: infoObject.id,
     sex: infoObject.sex,
     DoBdate: infoObject.doB,
     BirthPlace: infoObject.poB,
-    publicKey: babyJub.unpackPoint(publicKeyString).map((e) => e.toString()),
+    publicKey: publicKey.map((e) => "0x" + e.toString()),
   };
   const ageInput = {
     minAge: minAge,
@@ -149,12 +147,12 @@ export function getAgeInput(
     currentMonth: currentMonth,
     currentDay: currentDay,
   };
-  const signMessageInput = getSignMessage(
-    privateKeyString,
-    expireTime,
-    hashValue(infoObject)
-  );
+  const signMessageInput = getSignMessage({
+    expireTime: expireTime,
+    value: hashValue(infoObject),
+  });
   const merge = { ...serverInfo, ...info, ...ageInput, ...signMessageInput };
+  console.log(merge);
   return merge;
 }
 
@@ -176,7 +174,13 @@ export function verifyMessage(
 }
 
 export function hashValue(infoObject) {
-  const publicKey = babyJub.unpackPoint(infoObject.publicKey);
+  // const publicKey = babyJub.unpackPoint(
+  //   Buffer.from(infoObject.publicKey, "hex")
+  // );
+  const publicKey = eddsa.prv2pub(
+    "0000000000000000000000000000000000000000000000000000000000000003"
+  );
+  console.log(publicKey);
   const CCCD = infoObject.id;
   const sex = infoObject.sex;
   const DoBdate = infoObject.doB;
@@ -198,4 +202,20 @@ export function hashKey(CCCD) {
 
 export function createMessage(value, expireTime) {
   return poseidon([value, expireTime]);
+}
+
+export async function calculateAgeProof(input) {
+  const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+    input,
+    "src/resource/kycAge.wasm",
+    "src/resource/circuit_final.zkey"
+  );
+
+  const vkey = await fetch("verification_key.json").then(function (res) {
+    return res.json();
+  });
+
+  const res = await snarkjs.groth16.verify(vkey, publicSignals, proof);
+
+  return { proof: JSON.stringify(proof, null, 1), result: res };
 }

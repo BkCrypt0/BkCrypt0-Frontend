@@ -8,14 +8,20 @@ import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SignMessageDialog from "src/components/SignMessageDialog";
+import {
+  getAgeInput,
+  testServerObj,
+  calculateAgeProof,
+} from "src/service/utils";
 
 export default function AgeProof() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const getCurrentDateAndExpireTime = () => {
+  const date = () => {
     var timestamp = Math.floor(Date.now() / 1000);
     var currentDate = new Date();
     var date = {
@@ -33,6 +39,21 @@ export default function AgeProof() {
         open={openDialog}
         setOpen={setOpenDialog}
         onClose={() => setOpenDialog(false)}
+        handler={async () => {
+          if (identity !== undefined) {
+            const input = getAgeInput({
+              serverInfo: testServerObj,
+              currentYear: date().currentYear,
+              currentMonth: date().currentMonth,
+              currentDay: date().currentDay,
+              minAge: Number(document.getElementById("min-age").value),
+              maxAge: Number(document.getElementById("max-age").value),
+              expireTime: date().expireTime,
+              infoObject: identity,
+            });
+            console.log(await calculateAgeProof(input));
+          }
+        }}
       />
       <Box
         display="flex"

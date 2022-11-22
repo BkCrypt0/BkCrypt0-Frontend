@@ -6,7 +6,7 @@ import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import ImportIdentityButton from "../CustomButton/ImportIdentityButton";
 import CustomButton from "../CustomButton";
 
-export default function SignMessageDialog({ open, onClose, setOpen }) {
+export default function SignMessageDialog({ open, onClose, handler }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -119,6 +119,7 @@ export default function SignMessageDialog({ open, onClose, setOpen }) {
           minHeight="50px"
           minWidth={!mobile ? "150px" : undefined}
           fullWidth={mobile}
+          onClick={handler}
         >
           <CustomTypography buttonText={true}>
             Sign & Create proof
