@@ -6,7 +6,7 @@ import CustomTypography from "src/components/CustomTypography";
 import CustomCollapse from "src/components/CustomCollapse";
 import ProvinceCode from "src/documents/provinces_code.json";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 export default function IssueNewIdentity() {
@@ -20,7 +20,6 @@ export default function IssueNewIdentity() {
     (state) => state.accountSlice.activeAccount
   );
   const accounts = useSelector((state) => state.accountSlice.accounts);
-  const dp = useDispatch();
 
   const checkValid = (id) =>
     document.getElementById(id) === null
