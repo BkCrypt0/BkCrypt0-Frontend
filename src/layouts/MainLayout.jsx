@@ -58,6 +58,7 @@ export default function MainLayout(props) {
   const dp = useDispatch();
   useEffect(() => {
     dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

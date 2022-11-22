@@ -50,9 +50,12 @@ export default function CustomForm({
           placeholder={placeHolder}
           onChange={onChange}
           autoComplete={autoComplete}
+          min={0}
           style={{
+            fontSize: "17px",
+            MozAppearance: "textfield",
+            WebkitAppearance: "textfield",
             color: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
-            background: themeMode === THEME_MODE.LIGHT ? "white" : "#353535",
             width: !width ? "100%" : width,
             height: !height ? "50px" : height,
             padding: !padding ? "12px 20px" : padding,
@@ -60,9 +63,10 @@ export default function CustomForm({
             display: "inline-block",
             border:
               themeMode === THEME_MODE.DARK
-                ? "2px solid #D8D8D8"
-                : "2px solid #353535",
-            borderRadius: "4px",
+                ? "1.5px solid rgba(216, 216, 216, 0.4)"
+                : "1.5px solid rgba(53, 53, 53, 0.4)",
+            background: themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#434343",
+            borderRadius: "10px",
             boxSizing: "border-box",
             ...props,
           }}

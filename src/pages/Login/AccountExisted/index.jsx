@@ -34,6 +34,7 @@ export default function AccountExisted() {
 
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

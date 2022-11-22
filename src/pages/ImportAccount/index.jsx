@@ -21,20 +21,11 @@ export default function ImportAccount() {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
-  // const activeAccount = localStorage.getItem(LS.ACTIVE_ACCOUNT);
-  // if (activeAccount === null || activeAccount === undefined) {
-  //   localStorage.setItem(LS.ACTIVE_ACCOUNT, 0);
-  // }
-
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
-
-  // useEffect(() => {
-  //   dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
-  // }, []);
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
