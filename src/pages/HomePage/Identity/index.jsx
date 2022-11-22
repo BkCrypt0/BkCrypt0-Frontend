@@ -1,15 +1,14 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import { createNewIdentity } from "src/redux/identitySlice";
+import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -21,72 +20,11 @@ export default function Identity() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
-  const { enqueueSnackbar } = useSnackbar();
-  const dp = useDispatch();
 
   const role = accounts[activeAccount]?.role;
 
-  const inputRef = useRef(null);
-
-  const handleClick = () => {
-    inputRef.current.click();
-  };
-
-  const handleFileChange = async (event) => {
-    const fileObj = event.target.files && event.target.files[0];
-    if (!fileObj) {
-      return;
-    }
-    if (!fileObj.type.includes("json")) {
-      enqueueSnackbar("Unsupported file type! Please upload a JSON file", {
-        variant: "error",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-      return;
-    }
-    const identityJSON = await fileObj.text();
-    const importIdentity = JSON.parse(identityJSON);
-
-    if (importIdentity.publicKey !== accounts[activeAccount]?.publicKey) {
-      enqueueSnackbar("Unmatched publicKey! Please import your own identity", {
-        variant: "error",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    } else if (
-      importIdentity.publicKey === accounts[activeAccount]?.publicKey
-    ) {
-      dp(
-        createNewIdentity(
-          importIdentity.publicKey,
-          importIdentity.id,
-          importIdentity.firstName,
-          importIdentity.lastName,
-          importIdentity.sex,
-          importIdentity.doB,
-          importIdentity.poB
-        )
-      );
-      enqueueSnackbar("Import identity successfully", {
-        variant: "success",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    }
-  };
-
   return (
     <>
-      <input
-        style={{ display: "none" }}
-        ref={inputRef}
-        type="file"
-        onChange={handleFileChange}
-      />
       {role === "admin" && <Redirect to="/home/claims-monitor" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
@@ -193,19 +131,7 @@ export default function Identity() {
                 <CustomTypography buttonText>Create Identity</CustomTypography>
               </CustomButton>
             )}
-            {identity === undefined && (
-              <CustomButton
-                minHeight="50px"
-                minWidth={mobile ? undefined : "150px"}
-                width={mobile ? "47%" : undefined}
-                mr={mobile ? 0 : 3}
-                onClick={async () => {
-                  handleClick();
-                }}
-              >
-                <CustomTypography buttonText>Import Identity</CustomTypography>
-              </CustomButton>
-            )}
+            {identity === undefined && <ImportIdentityButton />}
           </Box>
           {identity !== undefined && (
             <CustomButton minHeight="50px" minWidth="150px" mr={3}>

@@ -2,7 +2,7 @@ const { eddsa, babyJub } = require("circomlib");
 const bip39 = require("bip39");
 
 var HDKey = require("hdkey");
-const randMnemonic = bip39.generateMnemonic();
+const randMnemonic = "12321434";
 const hdkey = HDKey.fromMasterSeed(randMnemonic);
 const prvKey = hdkey.privateKey;
 
@@ -23,9 +23,15 @@ function main() {
   var privateKeyBuffer = Buffer.from(prvKeyString, "hex");
   var publicKeyBuffer = Buffer.from(pubKeyString, "hex");
   var publicKeyDecompress = babyJub.unpackPoint(publicKeyBuffer);
+  console.log(
+    "public decompress",
+    publicKeyDecompress.map((e) => e.toString())
+  );
   var mes = babyJub.F.e("1");
 
   var sign = eddsa.signPoseidon(privateKeyBuffer, mes);
+  console.log("0x" + sign.S.toString("16"));
+  console.log(sign.R8.map((e) => "0x" + e.toString("16")));
   var verify = eddsa.verifyPoseidon(mes, sign, publicKeyDecompress);
 
   if (verify) {
