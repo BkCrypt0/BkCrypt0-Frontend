@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createNewIdentity } from "src/redux/identitySlice";
 import { useMediaQuery } from "@mui/material";
 import { SCREEN_SIZE } from "src/constants";
+import CustomTypography from "src/components/CustomTypography";
 
 export default function ImportIdentityButton() {
   const inputRef = useRef(null);
@@ -13,6 +14,7 @@ export default function ImportIdentityButton() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  
   const dp = useDispatch();
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
@@ -83,7 +85,7 @@ export default function ImportIdentityButton() {
           handleClick();
         }}
       >
-        IMPORT IDENTITY
+        <CustomTypography buttonText={true}>IMPORT IDENTITY</CustomTypography>
       </CustomButton>
     </>
   );

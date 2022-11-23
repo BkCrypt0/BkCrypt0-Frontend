@@ -1,6 +1,7 @@
+import inputJSON from "./input_2.json";
 const { eddsa, babyJub, poseidon } = require("circomlib");
 const HDKey = require("hdkey");
-const snarkjs = require("snarkjs");
+const BigInt = require("big-integer");
 
 export const testServerObj = {
   rootRevoke: "0",
@@ -38,14 +39,14 @@ export const testServerObj = {
     "0",
     "0",
   ],
-  oldKeyRevoke: 0,
-  oldValueRevoke: 0,
+  oldKeyRevoke: "0",
+  oldValueRevoke: "0",
   isOld0Revoke: 1,
   rootClaims:
     "19569806975095406378064835597291763354914308113190092659833750474633745606260",
   siblingsClaims: [
-    "1077331994456924195664981960381312090400538890803523438230486454604767238825",
-    "17043824933121197599163685124675865108169760487734914178067313745985963839569",
+    "4010404085188256929231243812687980377907030773685080299761664899933251209493",
+    "16316732353140153004307099785377783892883687359882246771173250575442522096359",
     "0",
     "0",
     "0",
@@ -77,9 +78,7 @@ export const testServerObj = {
     "0",
     "0",
   ],
-  key: "3",
-  value:
-    "13197145265225436101911056841517579786969287711584084771931077507892768845973",
+  key: "0",
   challenge: 100,
 };
 
@@ -97,25 +96,31 @@ export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
   };
 }
 export function getSignMessage({
-  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000003",
+  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000000",
   expireTime,
   value,
 }) {
   const mes = createMessage(value, expireTime);
+  // const signature = eddsa.signPoseidon(
+  //   Buffer.from(privateKeyString, "hex"),
+  //   mes
+  // );
   const signature = eddsa.signPoseidon(
     Buffer.from(privateKeyString, "hex"),
-    mes
+    babyJub.F.e(mes.toString())
   );
-  const R8x = "0x" + signature.R8[0].toString("16");
-  const R8y = "0x" + signature.R8[1].toString("16");
-  const S = "0x" + signature.S.toString("16");
+  const R8x = signature.R8[0].toString();
+  const R8y = signature.R8[1].toString();
+  const S = signature.S.toString();
 
   return {
+    value: value,
     R8x: R8x,
     R8y: R8y,
     S: S,
-    expireTime: expireTime,
-    message: "0x" + mes.toString(),
+    // expireTime: expireTime,
+    expireTime: 1668852906,
+    message: mes.toString(),
   };
 }
 
@@ -126,47 +131,67 @@ export function getAgeInput({
   currentDay,
   minAge,
   maxAge,
-  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000003",
-  expireTime,
-  infoObject,
+  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000000",
+  expireTime = 1668852906,
+  infoObject = {
+    CCCD: 0,
+    sex: 0,
+    DoBdate: 20010201,
+    BirthPlace: 0,
+  },
   publicKey = eddsa.prv2pub(
-    "0000000000000000000000000000000000000000000000000000000000000003"
+    Buffer.from(
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "hex"
+    )
   ),
 }) {
   const info = {
-    CCCD: infoObject.id,
-    sex: infoObject.sex,
-    DoBdate: infoObject.doB,
-    BirthPlace: infoObject.poB,
-    publicKey: publicKey.map((e) => "0x" + e.toString()),
+    // CCCD: Number(infoObject.id),
+    // sex: infoObject.sex,
+    // DoBdate: Number(infoObject.doB),
+    // BirthPlace: Number(infoObject.poB),
+    CCCD: 0,
+    sex: 0,
+    DoBdate: 20010201,
+    BirthPlace: 0,
+    publicKey: publicKey.map((e) => e.toString()),
   };
   const ageInput = {
-    minAge: minAge,
-    maxAge: maxAge,
-    currentYear: currentYear,
-    currentMonth: currentMonth,
-    currentDay: currentDay,
+    // minAge: minAge,
+    // maxAge: maxAge,
+    // currentYear: currentYear,
+    // currentMonth: currentMonth,
+    // currentDay: currentDay,
+    minAge: 18,
+    maxAge: 100,
+    currentYear: 2022,
+    currentMonth: 11,
+    currentDay: 22,
   };
   const signMessageInput = getSignMessage({
     expireTime: expireTime,
-    value: hashValue(infoObject),
+    value: hashValue(infoObject).toString(),
   });
   const merge = { ...serverInfo, ...info, ...ageInput, ...signMessageInput };
   console.log(merge);
   return merge;
 }
 
-export function verifyMessage(
+export function verifyMessage({
   message,
   signature,
   publicKeyString = babyJub
     .packPoint(
       eddsa.prv2pub(
-        "0000000000000000000000000000000000000000000000000000000000000003"
+        Buffer.from(
+          "0000000000000000000000000000000000000000000000000000000000000000",
+          "hex"
+        )
       )
     )
-    .toString("hex")
-) {
+    .toString(),
+}) {
   const mes = babyJub.F.e(message);
   const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
   const publicKeyDecompress = babyJub.unpackPoint(publicKeyBuffer);
@@ -178,26 +203,26 @@ export function hashValue(infoObject) {
   //   Buffer.from(infoObject.publicKey, "hex")
   // );
   const publicKey = eddsa.prv2pub(
-    "0000000000000000000000000000000000000000000000000000000000000003"
+    Buffer.from(
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "hex"
+    )
   );
-  console.log(publicKey);
-  const CCCD = infoObject.id;
+  const CCCD = infoObject.CCCD;
   const sex = infoObject.sex;
-  const DoBdate = infoObject.doB;
-  const BirthPlace = infoObject.poB;
-  const hashedValue = poseidon([
-    publicKey[0],
-    publicKey[1],
-    CCCD,
-    sex,
-    DoBdate,
-    BirthPlace,
-  ]);
+  const DoBdate = infoObject.DoBdate;
+  const BirthPlace = infoObject.BirthPlace;
+  // const CCCD = 0;
+  // const sex = 0;
+  // const DoBdate = 20010201;
+  // const BirthPlace = 0;
+  const hashedValue = poseidon([1, 1, 1, 1, 1]);
+  console.log(hashedValue);
   return hashedValue;
 }
 
 export function hashKey(CCCD) {
-  return poseidon([CCCD]);
+  return poseidon([CCCD.toString()]);
 }
 
 export function createMessage(value, expireTime) {
@@ -205,17 +230,20 @@ export function createMessage(value, expireTime) {
 }
 
 export async function calculateAgeProof(input) {
-  const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+  const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
     input,
-    "src/resource/kycAge.wasm",
-    "src/resource/circuit_final.zkey"
+    "http://localhost:3000/kycAge.wasm",
+    "http://localhost:3000/circuit_final.zkey"
   );
 
-  const vkey = await fetch("verification_key.json").then(function (res) {
-    return res.json();
-  });
+  const vkey = await fetch("http://localhost:3000/verification_key.json").then(
+    function (res) {
+      return res.json();
+    }
+  );
 
-  const res = await snarkjs.groth16.verify(vkey, publicSignals, proof);
-
-  return { proof: JSON.stringify(proof, null, 1), result: res };
+  const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
+  const finalRes = { proof: JSON.stringify(proof, null, 1), result: res };
+  console.log(finalRes);
+  return finalRes;
 }

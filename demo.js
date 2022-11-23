@@ -1,9 +1,9 @@
-const { eddsa, babyJub } = require("circomlib");
-const bip39 = require("bip39");
+import { eddsa, babyJub } from "circomlib";
+import bip39 from "bip39";
 
-var HDKey = require("hdkey");
+import { fromMasterSeed } from "hdkey";
 const randMnemonic = "12321434";
-const hdkey = HDKey.fromMasterSeed(randMnemonic);
+const hdkey = fromMasterSeed(randMnemonic);
 const prvKey = hdkey.privateKey;
 
 function main() {

@@ -119,7 +119,9 @@ export default function SignMessageDialog({ open, onClose, handler }) {
           minHeight="50px"
           minWidth={!mobile ? "150px" : undefined}
           fullWidth={mobile}
-          onClick={handler}
+          onClick={() => {
+            handler();
+          }}
         >
           <CustomTypography buttonText={true}>
             Sign & Create proof

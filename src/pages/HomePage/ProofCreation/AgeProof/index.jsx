@@ -48,10 +48,10 @@ export default function AgeProof() {
               currentDay: date().currentDay,
               minAge: Number(document.getElementById("min-age").value),
               maxAge: Number(document.getElementById("max-age").value),
-              expireTime: date().expireTime,
-              infoObject: identity,
+              // expireTime: date().expireTime,
+              // infoObject: identity,
             });
-            console.log(await calculateAgeProof(input));
+            console.log(await calculateAgeProof(JSON.stringify(input)));
           }
         }}
       />
