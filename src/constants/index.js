@@ -35,3 +35,7 @@ export const BASE_COLOR = {
 };
 
 export const BASE_API_URL = "http://127.0.0.1:8000";
+
+export const CONTRACT_ADDRESS = "0x8CF60fa63B82Ab7f16eb4D79AEeAa1FdB4aa028F";
+
+export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";

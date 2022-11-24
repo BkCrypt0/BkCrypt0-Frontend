@@ -1,7 +1,6 @@
 import inputJSON from "./input_2.json";
 const { eddsa, babyJub, poseidon } = require("circomlib");
 const HDKey = require("hdkey");
-const BigInt = require("big-integer");
 
 export const testServerObj = {
   rootRevoke: "0",

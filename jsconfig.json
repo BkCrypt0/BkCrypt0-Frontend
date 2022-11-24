@@ -2,5 +2,5 @@
   "compilerOptions": {
     "baseUrl": "."
   },
-  "include": ["src", "public/resource"]
+  "include": ["src", "public/resource", "src/service/advance-crypto"]
 }

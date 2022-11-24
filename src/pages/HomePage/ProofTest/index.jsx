@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import CustomTypography from "src/components/CustomTypography";
+import TestAge from "./TestAge";
 
 export default function ProofTest() {
   const accounts = useSelector((state) => state.accountSlice.accounts);
@@ -15,7 +17,12 @@ export default function ProofTest() {
         <Redirect to="/home/claims-monitor" />
       )}
       {role === "admin" && login === undefined && <Redirect to="/login" />}
-      <Box>Test your proof</Box>
+      <Box>
+        <CustomTypography variant="h4" mb={3}>
+          Test your proofs
+        </CustomTypography>
+        <TestAge />
+      </Box>
     </>
   );
 }
