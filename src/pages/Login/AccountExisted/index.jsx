@@ -15,6 +15,8 @@ import {
 } from "src/redux/accountSlice";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import CopyToClipboardButton from "src/components/CopyToClipboardButton";
+import { authentication } from "src/redux/accountSlice";
+
 import { login } from "src/redux/accountSlice";
 
 const { verify } = require("password-hash");
@@ -34,7 +36,7 @@ export default function AccountExisted() {
 
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -133,6 +135,7 @@ export default function AccountExisted() {
             minHeight="50px"
             mb={2}
             onClick={() => {
+              authentication(accounts[activeAccount]?.publicKey);
               if (verify(input, accounts[activeAccount]?.password)) {
                 enqueueSnackbar("Login successfully!", {
                   variant: "success",
@@ -185,6 +188,11 @@ export default function AccountExisted() {
           />
         </Box>
         <Box mb={2} />
+        <NavLink to="/import" style={{ width: "100%", textDecoration: "none" }}>
+          <CustomButton fullWidth={true} minHeight="50px" mb={3}>
+            <CustomTypography buttonText>Import account</CustomTypography>
+          </CustomButton>
+        </NavLink>
         <NavLink
           to="/register"
           style={{ width: "100%", textDecoration: "none" }}

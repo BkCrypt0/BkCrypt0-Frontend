@@ -139,27 +139,27 @@ export default function TestAge() {
               width={mobile ? "100%" : undefined}
               minHeight="50px"
               onClick={() => {
-                verifyProof(
-                  "VERIFIER_AGE",
-                  [
-                    "0x2fbcf3ca67b090c3dc50c1711aafec61bad9f4e04ecd6786017d7ca1ba0bf920",
-                    "0x2cfe4e0afbc696e1587e2e234f7b18edbdf45304b898e3762e1c78748d1aa9e7",
+                verifyProof({
+                  optionName: "VERIFIER_AGE",
+                  pi_a: [
+                    "0x2600de3d9782c84bfda622a25897546e6c441359d1722e4f0d3b5da66f946e7b",
+                    "0x1bde4efc82baa0fce3497ae0f20ee2caefb65c3926ddfb9507eedb6a48ed9dae",
                   ],
-                  [
+                  pi_b: [
                     [
-                      "0x001c4f91d333de19e776ee2aaa41f5f323228f25c8e3ffc11aa588dc1a76bf92",
-                      "0x1e851a57661f001e27d3cf73e5ce74577d73d1cdd1b679cc002698eae5b6d94d",
+                      "0x0509b351e7da3d53a55dd510f429c685cf3556a315bf860640a9d6d269ed7b1c",
+                      "0x1e4845359c8a2d0d281b1484a1931e7727a0b02d6295fb23dd32044bb886782f",
                     ],
                     [
-                      "0x22b8f2fd57fe3dc682b32ce95def8f74c3667999a950d130fa24501a5dd8c769",
-                      "0x0ea79028b9ba11b1e5b321d3800bda827787cb765f55cfcb13bb6494f9518eb2",
+                      "0x2240123ac93ce517e133350de0778b285bb45fd2b639832759260e6b9d6e3b01",
+                      "0x22d02baba85d221190f33dc551f74d2566252f0a433882bbaeaaa82604e63263",
                     ],
                   ],
-                  [
-                    "0x24564ba46ca8c876ab8cd43fab8e640cd52883cfb3a6c1d37c8c0ad6e4596b23",
-                    "0x0ffb57fbefc36a44dc2112af9ce1787bc10c51350174dafe3624351967b1c2eb",
+                  pi_c: [
+                    "0x0d6cf77b20d306b309c1d5ee4eefc2b10c935e38089b727bae1d5e32ff36bb3b",
+                    "0x05ef04a07ef343e4e2bd8acc638b1317c177171b03cc58c5f303acdecec6f673",
                   ],
-                  [
+                  input: [
                     "0x142baa48ced500f1e342f173cb0cf6bcc940ceb8d68bb12ca2b199972021cfe8",
                     "0x12b380fc177f791a7287bf4c2cd6edbff5cfd0eeae6d0d93f99921354bbff8d1",
                     "0x1d5ac1f31407018b7d413a4f52c8f74463b30e6ac2238220ad8b254de4eaa3a2",
@@ -169,9 +169,9 @@ export default function TestAge() {
                     "0x7e6",
                     "0xb",
                     "0xf",
-                    "0x637f434a",
-                  ]
-                );
+                    "0x65616f42",
+                  ],
+                });
               }}
             >
               <CustomTypography buttonText={true}>Verify</CustomTypography>

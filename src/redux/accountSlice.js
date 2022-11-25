@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { LS } from "src/constants";
 import store from "./store";
 import { generatePublicAndPrivateKeyStringFromMnemonic } from "src/service/utils";
+import { BASE_API_URL } from "src/constants";
 
 const bip39 = require("bip39");
 const { generate } = require("password-hash");
@@ -58,6 +59,17 @@ const initialState = {
   accounts: constructInitialAccounts(),
 };
 
+export const authentication = async (publicKey) => {
+  const publicKeyBuffer = Buffer.from(publicKey, "hex");
+  var publicKeyPair = babyJub
+    .unpackPoint(publicKeyBuffer)
+    .map((e) => e.toString(16));
+  const request = await fetch(
+    `${BASE_API_URL}/authen?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
+  )
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+};
 export const login = (publicKey) => (dispatch) => {
   dispatch(loginSuccess({ publicKey: publicKey }));
 };

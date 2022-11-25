@@ -96,7 +96,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
         </Box>
       ))}
       <Tooltip title="Add another account" arrow={true}>
-        <NavLink to="/register" style={{ textDecoration: "none" }}>
+        <NavLink to="/login" style={{ textDecoration: "none" }}>
           <Box
             py={2}
             px={2}

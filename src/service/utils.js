@@ -1,4 +1,5 @@
 import inputJSON from "./input_2.json";
+import { BASE_API_URL } from "src/constants";
 const { eddsa, babyJub, poseidon } = require("circomlib");
 const HDKey = require("hdkey");
 
@@ -197,7 +198,7 @@ export function verifyMessage({
   return eddsa.verifyPoseidon(mes, signature, publicKeyDecompress);
 }
 
-export function hashValue(infoObject) {
+export async function hashValue(infoObject) {
   // const publicKey = babyJub.unpackPoint(
   //   Buffer.from(infoObject.publicKey, "hex")
   // );
@@ -216,7 +217,20 @@ export function hashValue(infoObject) {
   // const DoBdate = 20010201;
   // const BirthPlace = 0;
   const hashedValue = poseidon([1, 1, 1, 1, 1]);
-  console.log(hashedValue);
+  const response = await fetch(`${BASE_API_URL}/hash`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: {
+      array: [1, 1, 1, 1, 1],
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+
+  console.log(response);
+
   return hashedValue;
 }
 
