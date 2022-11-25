@@ -37,7 +37,7 @@ console.log(
   babyJub
     .unpackPoint(
       Buffer.from(
-        "8309f73322dd7a30fdf9f466582bee38b34b69d13cb9baed4332bf2ae55b6b84",
+        "7d36542f9f02558d31fb178973d8aae3d23cd51c36f42ad64ed80de58d04d1ae",
         "hex"
       )
     )

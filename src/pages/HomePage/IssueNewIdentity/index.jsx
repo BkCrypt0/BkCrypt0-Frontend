@@ -8,6 +8,10 @@ import ProvinceCode from "src/documents/provinces_code.json";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import Axios from "axios";
+import { useSnackbar } from "notistack";
+
+const { babyJub } = require("circomlib");
 
 export default function IssueNewIdentity() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -20,6 +24,7 @@ export default function IssueNewIdentity() {
     (state) => state.accountSlice.activeAccount
   );
   const accounts = useSelector((state) => state.accountSlice.accounts);
+  const { enqueueSnackbar } = useSnackbar();
 
   const checkValid = (id) =>
     document.getElementById(id) === null
@@ -119,12 +124,12 @@ export default function IssueNewIdentity() {
             </Box>
           </ClickAwayListener>
         </Box>
-        <Box width="100%" display="flex" alignItems="center">
+        <Box width="100%" display="flex" alignItems="center" mt={2}>
           <CustomButton
             minHeight="50px"
             minWidth="150px"
             mr={3}
-            onClick={() => {
+            onClick={async () => {
               setErr(
                 !checkValid("iden") ||
                   !checkValid("first-name") ||
@@ -134,11 +139,14 @@ export default function IssueNewIdentity() {
                   !checkValid("bp")
               );
               if (!err) {
-                fetch(`${BASE_API_URL}/issue/import`, {
-                  method: "POST",
-                  body: JSON.stringify({
-                    issuer: accounts[activeAccount].publicKey,
-                    id: document.getElementById("iden").value,
+                try {
+                  await Axios.post(`${BASE_API_URL}/issue/`, {
+                    issuer: babyJub
+                      .unpackPoint(
+                        Buffer.from(accounts[activeAccount].publicKey, "hex")
+                      )
+                      .map((e) => e.toString()),
+                    CCCD: document.getElementById("iden").value,
                     firstName: document.getElementById("first-name").value,
                     lastName: document.getElementById("last-name").value,
                     sex:
@@ -146,24 +154,29 @@ export default function IssueNewIdentity() {
                       "Male"
                         ? 1
                         : 0,
-                    doB: document
+                    DoBdate: document
                       .getElementById("dob")
                       .value.toString()
                       .replaceAll("/", ""),
-                    poB: ProvinceCode[
-                      document.getElementById("bp").value.toString()
-                    ],
-                  }),
-                })
-                  .then(function (response) {
-                    return response.json();
-                  })
-                  .then(function (data) {
-                    console.log(data);
-                  })
-                  .catch(function () {
-                    console.log("error");
+                    BirthPlace:
+                      ProvinceCode[
+                        document.getElementById("bp").value.toString()
+                      ],
                   });
+                  enqueueSnackbar("Issue a new identity successfully!", {
+                    variant: "success",
+                    dense: "true",
+                    preventDuplicate: true,
+                    autoHideDuration: 2000,
+                  });
+                } catch (err) {
+                  enqueueSnackbar(err.message, {
+                    variant: "error",
+                    dense: "true",
+                    preventDuplicate: true,
+                    autoHideDuration: 2000,
+                  });
+                }
               }
             }}
           >

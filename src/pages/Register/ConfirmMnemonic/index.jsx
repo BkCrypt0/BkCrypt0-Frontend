@@ -122,9 +122,13 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
           mt={3}
           width="49%"
           minHeight="50px"
-          onClick={() => {
+          onClick={async () => {
             const testMnemonic = convertArrayToMnemonic();
-            const res = validateMnemonic12Phrases(testMnemonic, mnemonic, 1);
+            const res = await validateMnemonic12Phrases(
+              testMnemonic,
+              mnemonic,
+              1
+            );
             if (res === true) {
               setErr(false);
               setActiveStep(3);

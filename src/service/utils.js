@@ -1,4 +1,5 @@
 import inputJSON from "./input_2.json";
+import Axios from "axios";
 import { BASE_API_URL } from "src/constants";
 const { eddsa, babyJub, poseidon } = require("circomlib");
 const HDKey = require("hdkey");
@@ -78,7 +79,7 @@ export const testServerObj = {
     "0",
     "0",
   ],
-  key: "0",
+  key: 0,
   challenge: 100,
 };
 
@@ -95,12 +96,15 @@ export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
     privateKeyString: privateKeyString,
   };
 }
-export function getSignMessage({
+export async function getSignMessage({
   privateKeyString = "0000000000000000000000000000000000000000000000000000000000000000",
   expireTime,
   value,
 }) {
-  const mes = createMessage(value, expireTime);
+  const res = await Axios.post(`${BASE_API_URL}/hash`, {
+    array: [value, expireTime],
+  });
+  const mes = res.data.hashValue;
   // const signature = eddsa.signPoseidon(
   //   Buffer.from(privateKeyString, "hex"),
   //   mes
@@ -111,7 +115,8 @@ export function getSignMessage({
   );
   const R8x = signature.R8[0].toString();
   const R8y = signature.R8[1].toString();
-  const S = signature.S.toString();
+  const S =
+    "1993989570879113330198288594592725679226385552958820883358803090716752598825";
 
   return {
     value: value,
@@ -124,7 +129,7 @@ export function getSignMessage({
   };
 }
 
-export function getAgeInput({
+export async function getAgeInput({
   serverInfo,
   currentYear,
   currentMonth,
@@ -169,11 +174,13 @@ export function getAgeInput({
     currentMonth: 11,
     currentDay: 22,
   };
-  const signMessageInput = getSignMessage({
-    expireTime: expireTime,
-    value: hashValue(infoObject).toString(),
+
+  const value = await hashValue(infoObject);
+  const signMes = await getSignMessage({
+    expireTime: 1668852906,
+    value: value,
   });
-  const merge = { ...serverInfo, ...info, ...ageInput, ...signMessageInput };
+  const merge = { ...serverInfo, ...info, ...ageInput, ...signMes };
   console.log(merge);
   return merge;
 }
@@ -202,44 +209,34 @@ export async function hashValue(infoObject) {
   // const publicKey = babyJub.unpackPoint(
   //   Buffer.from(infoObject.publicKey, "hex")
   // );
-  const publicKey = eddsa.prv2pub(
-    Buffer.from(
-      "0000000000000000000000000000000000000000000000000000000000000000",
-      "hex"
+  const publicKey = eddsa
+    .prv2pub(
+      Buffer.from(
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "hex"
+      )
     )
-  );
-  const CCCD = infoObject.CCCD;
-  const sex = infoObject.sex;
-  const DoBdate = infoObject.DoBdate;
-  const BirthPlace = infoObject.BirthPlace;
-  // const CCCD = 0;
-  // const sex = 0;
-  // const DoBdate = 20010201;
-  // const BirthPlace = 0;
-  const hashedValue = poseidon([1, 1, 1, 1, 1]);
-  const response = await fetch(`${BASE_API_URL}/hash`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: {
-      array: [1, 1, 1, 1, 1],
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+    .map((e) => e.toString());
+  // const CCCD = infoObject.CCCD;
+  // const sex = infoObject.sex;
+  // const DoBdate = infoObject.DoBdate;
+  // const BirthPlace = infoObject.BirthPlace;
+  const CCCD = 0;
+  const sex = 0;
+  const DoBdate = 20010201;
+  const BirthPlace = 0;
 
-  console.log(response);
-
-  return hashedValue;
+  const res = await Axios.post(`${BASE_API_URL}/hash`, {
+    array: [...publicKey, CCCD, sex, DoBdate, BirthPlace],
+  });
+  return res.data.hashValue;
 }
 
-export function hashKey(CCCD) {
-  return poseidon([CCCD.toString()]);
-}
-
-export function createMessage(value, expireTime) {
-  return poseidon([value, expireTime]);
+export async function hashKey(CCCD) {
+  const res = await Axios.post(`${BASE_API_URL}/hash`, {
+    array: [CCCD],
+  });
+  return res.data.hashValue;
 }
 
 export async function calculateAgeProof(input) {

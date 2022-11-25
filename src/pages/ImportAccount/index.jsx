@@ -3,7 +3,7 @@ import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
@@ -11,6 +11,7 @@ import {
   createNewPassword,
   generateAccount,
   validateMnemonic12Phrases,
+  changeActiveAccount,
 } from "src/redux/accountSlice";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import store from "src/redux/store";
@@ -93,7 +94,7 @@ export default function ImportAccount() {
               password === "" ||
               confirmPassword === ""
             }
-            onClick={() => {
+            onClick={async () => {
               if (password === undefined || confirmPassword === undefined) {
                 setError(true);
               } else {
@@ -104,6 +105,14 @@ export default function ImportAccount() {
                   1
                 );
                 dp(generateAccount());
+                if (localStorage.getItem(LS.ACTIVE_ACCOUNT) === null)
+                  dp(changeActiveAccount(0));
+                else
+                  dp(
+                    changeActiveAccount(
+                      Number(localStorage.getItem(LS.ACTIVE_ACCOUNT)) + 1
+                    )
+                  );
               }
             }}
           >

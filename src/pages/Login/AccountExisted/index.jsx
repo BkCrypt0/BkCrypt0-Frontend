@@ -15,7 +15,6 @@ import {
 } from "src/redux/accountSlice";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import CopyToClipboardButton from "src/components/CopyToClipboardButton";
-import { authentication } from "src/redux/accountSlice";
 
 import { login } from "src/redux/accountSlice";
 
@@ -135,7 +134,6 @@ export default function AccountExisted() {
             minHeight="50px"
             mb={2}
             onClick={() => {
-              authentication(accounts[activeAccount]?.publicKey);
               if (verify(input, accounts[activeAccount]?.password)) {
                 enqueueSnackbar("Login successfully!", {
                   variant: "success",

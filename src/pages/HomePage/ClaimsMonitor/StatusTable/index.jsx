@@ -7,11 +7,12 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  CircularProgress,
 } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE, FS } from "src/constants";
 
 export default function StatusTable({
   tableName,
@@ -19,6 +20,8 @@ export default function StatusTable({
   btn2,
   btn1Handler,
   btn2Handler,
+  data,
+  fetchingStatus,
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -59,27 +62,42 @@ export default function StatusTable({
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="left">
+              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">ID Card</CustomTypography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Issuer</CustomTypography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Object</CustomTypography>
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Issue at</CustomTypography>
               </TableCell>
-              <TableCell align="left">
-                <CustomTypography fontWeight="bold">Type</CustomTypography>
-              </TableCell>
-              <TableCell align="left">
+              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">State</CustomTypography>
               </TableCell>
             </TableRow>
           </TableHead>
+          <TableBody>
+            {fetchingStatus === FS.SUCCESS &&
+              data.map((e, index) => (
+                <TableRow key={index}>
+                  <TableCell sx={{ borderBottom: "none" }}>
+                    <CustomTypography>{e.CCCD}</CustomTypography>
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
         </Table>
+        {(fetchingStatus === FS.IDLE || fetchingStatus === FS.FETCHING) && (
+          <CircularProgress />
+        )}
+        {fetchingStatus === FS.FAILED && "FAILED"}
       </Paper>
       {mobile && (
         <Box

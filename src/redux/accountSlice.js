@@ -3,6 +3,7 @@ import { LS } from "src/constants";
 import store from "./store";
 import { generatePublicAndPrivateKeyStringFromMnemonic } from "src/service/utils";
 import { BASE_API_URL } from "src/constants";
+import Axios from "axios";
 
 const bip39 = require("bip39");
 const { generate } = require("password-hash");
@@ -47,8 +48,6 @@ export const constructInitialAccounts = () => {
 
 const initialState = {
   isLogin: initialLogin === null ? undefined : initialLogin,
-
-  cachedRoleBuffer: "user",
   activeAccount:
     initialActiveAccount === null ? undefined : initialActiveAccount,
   mnemonic: undefined,
@@ -59,27 +58,12 @@ const initialState = {
   accounts: constructInitialAccounts(),
 };
 
-export const authentication = async (publicKey) => {
-  const publicKeyBuffer = Buffer.from(publicKey, "hex");
-  var publicKeyPair = babyJub
-    .unpackPoint(publicKeyBuffer)
-    .map((e) => e.toString(16));
-  const request = await fetch(
-    `${BASE_API_URL}/authen?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
-  )
-    .then((response) => response.json())
-    .then((data) => console.log(data));
-};
 export const login = (publicKey) => (dispatch) => {
   dispatch(loginSuccess({ publicKey: publicKey }));
 };
 
 export const logout = () => (dispatch) => {
   dispatch(logoutSuccess());
-};
-
-export const toggleRole = () => (dispatch) => {
-  dispatch(toggleRoleSuccess());
 };
 
 export const generateSignature = (privateKeyString, msg) => {
@@ -124,17 +108,43 @@ export const constructAccountsArrayFromLocalStorage = () => (dispatch) => {
     constructAccountsArrayFromLocalStorageSuccess({ accountArray: arr })
   );
 };
-export const generateAccount = () => (dispatch) => {
-  dispatch(generateAccountSuccess());
+export const generateAccount = () => async (dispatch) => {
+  const publicKey = store.getState().accountSlice.cachedPublicKeyBuffer;
+  const publicKeyBuffer = Buffer.from(publicKey, "hex");
+  var publicKeyPair = babyJub
+    .unpackPoint(publicKeyBuffer)
+    .map((e) => e.toString(16));
+  const request = await Axios.get(
+    `${BASE_API_URL}/authen?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
+  );
+  const data = request.data;
+  const role = data.roles === 1 ? "admin" : "user";
+  dispatch(generateAccountSuccess({ role: role }));
 };
+
 export const changeName = (index, newName) => (dispatch) => {
   dispatch(changeNameSuccess({ index: index, newName: newName }));
   localStorage.setItem(`${LS.NAME} ${index + 1}`, newName);
 };
 
-export const validateMnemonic12Phrases = (testMnemonic, mnemonic, offset) => {
+export const validateMnemonic12Phrases = async (
+  testMnemonic,
+  mnemonic,
+  offset
+) => {
   const identical = testMnemonic === mnemonic;
   const result = bip39.validateMnemonic(testMnemonic) && identical;
+  const publicKey = store.getState().accountSlice.cachedPublicKeyBuffer;
+  const publicKeyBuffer = Buffer.from(publicKey, "hex");
+  var publicKeyPair = babyJub
+    .unpackPoint(publicKeyBuffer)
+    .map((e) => e.toString(16));
+  const request = await Axios.get(
+    `${BASE_API_URL}/authen?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
+  );
+  const data = request.data;
+  const role = data.roles === 1 ? "admin" : "user";
+
   if (result === true) {
     localStorage.setItem(
       `${LS.PUBLIC_KEY} ${
@@ -158,7 +168,7 @@ export const validateMnemonic12Phrases = (testMnemonic, mnemonic, offset) => {
 
     localStorage.setItem(
       `${LS.ROLE} ${store.getState().accountSlice.accounts.length + offset}`,
-      store.getState().accountSlice.cachedRoleBuffer
+      role
     );
   }
   return result;
@@ -193,18 +203,13 @@ const accountSlice = createSlice({
   name: "accountSlice",
   initialState: initialState,
   reducers: {
-    toggleRoleSuccess: (state) => {
-      if (state.cachedRoleBuffer === "user") state.cachedRoleBuffer = "admin";
-      else if (state.cachedRoleBuffer === "admin")
-        state.cachedRoleBuffer = "user";
-    },
     generateMnemonic12PhrasesSuccess: (state, action) => {
       state.mnemonic = action.payload.mnemonic;
     },
-    generateAccountSuccess: (state) => {
+    generateAccountSuccess: (state, action) => {
       state.accounts.push({
         name: `Account ${state.accounts.length + 1}`,
-        role: state.cachedRoleBuffer,
+        role: action.payload.role,
         publicKey: state.cachedPublicKeyBuffer,
         privateKey: state.cachedPrivateKeyBuffer,
         password: state.cachedPasswordBuffer,
@@ -246,7 +251,6 @@ const accountSlice = createSlice({
 
 export default accountSlice.reducer;
 export const {
-  toggleRoleSuccess,
   generateMnemonic12PhrasesSuccess,
   generatePublicKeySuccess,
   generatePrivateKeySuccess,

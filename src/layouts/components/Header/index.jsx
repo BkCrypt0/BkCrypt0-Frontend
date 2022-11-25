@@ -1,4 +1,4 @@
-import { Box, useMediaQuery, Drawer, Button, IconButton } from "@mui/material";
+import { Box, useMediaQuery, Drawer, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import TeamLogo from "src/components/TeamLogo";
@@ -6,7 +6,6 @@ import SwitchThemeButton from "src/components/SwitchThemeButton";
 import EnterAppButton from "src/components/EnterAppButton";
 import { SCREEN_SIZE } from "src/constants";
 import { useLocation, NavLink } from "react-router-dom";
-import { toggleRole } from "src/redux/accountSlice";
 import CustomTypography from "src/components/CustomTypography";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState, useEffect } from "react";
@@ -16,7 +15,6 @@ import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function Header() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const role = useSelector((state) => state.accountSlice.cachedRoleBuffer);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const path = useLocation().pathname;
   const dp = useDispatch();
@@ -28,7 +26,7 @@ export default function Header() {
   );
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -84,13 +82,6 @@ export default function Header() {
           </Box>
 
           <Box display="flex" alignItems="center">
-            <Button
-              onClick={() => {
-                dp(toggleRole());
-              }}
-            >
-              {role}
-            </Button>
             {path !== "/welcome" &&
               path !== "/login" &&
               path !== "/import" &&
