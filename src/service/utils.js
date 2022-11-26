@@ -1,8 +1,9 @@
 import inputJSON from "./input_2.json";
 import Axios from "axios";
 import { BASE_API_URL } from "src/constants";
-const { eddsa, babyJub, poseidon } = require("circomlib");
+const { eddsa, babyJub, poseidon, mimc7 } = require("circomlib");
 const HDKey = require("hdkey");
+const BigInt = require("big-integer");
 
 export const testServerObj = {
   rootRevoke: "0",
@@ -109,23 +110,30 @@ export async function getSignMessage({
   //   Buffer.from(privateKeyString, "hex"),
   //   mes
   // );
+  const mes1 = mimc7.multiHash([BigInt(value).value, BigInt(expireTime).value]);
   const signature = eddsa.signPoseidon(
     Buffer.from(privateKeyString, "hex"),
     babyJub.F.e(mes.toString())
   );
+
+  const signature1 = eddsa.signMiMC(Buffer.from(privateKeyString, "hex"), mes1);
   const R8x = signature.R8[0].toString();
   const R8y = signature.R8[1].toString();
   const S =
     "1993989570879113330198288594592725679226385552958820883358803090716752598825";
 
+  const R8x1 = signature1.R8[0].toString();
+  const R8y1 = signature1.R8[1].toString();
+  const S1 = signature1.S.toString();
+
   return {
     value: value,
-    R8x: R8x,
-    R8y: R8y,
-    S: S,
+    R8x: R8x1,
+    R8y: R8y1,
+    S: S1,
     // expireTime: expireTime,
     expireTime: 1668852906,
-    message: mes.toString(),
+    message: mes1.toString(),
   };
 }
 
@@ -181,7 +189,7 @@ export async function getAgeInput({
     value: value,
   });
   const merge = { ...serverInfo, ...info, ...ageInput, ...signMes };
-  console.log(merge);
+  console.log(JSON.stringify(merge));
   return merge;
 }
 
@@ -217,6 +225,12 @@ export async function hashValue(infoObject) {
       )
     )
     .map((e) => e.toString());
+  const publicKey1 = eddsa.prv2pub(
+    Buffer.from(
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "hex"
+    )
+  );
   // const CCCD = infoObject.CCCD;
   // const sex = infoObject.sex;
   // const DoBdate = infoObject.DoBdate;
@@ -229,13 +243,24 @@ export async function hashValue(infoObject) {
   const res = await Axios.post(`${BASE_API_URL}/hash`, {
     array: [...publicKey, CCCD, sex, DoBdate, BirthPlace],
   });
-  return res.data.hashValue;
+
+  const res1 = mimc7.multiHash([
+    ...publicKey1,
+    BigInt(CCCD).value,
+    BigInt(sex).value,
+    BigInt(DoBdate).value,
+  ]);
+  console.log(res1);
+  console.log(res.data.hashValue);
+  // return res.data.hashValue;
+  return res1.toString();
 }
 
 export async function hashKey(CCCD) {
   const res = await Axios.post(`${BASE_API_URL}/hash`, {
     array: [CCCD],
   });
+
   return res.data.hashValue;
 }
 
