@@ -5,6 +5,7 @@ import CustomTypography from "src/components/CustomTypography";
 import StatusTable from "./StatusTable";
 import { fetchData } from "src/redux/adminSlice";
 import { useEffect } from "react";
+import { signMessage } from "src/service/connect-wallet";
 
 export default function ClaimsMonitor() {
   const accounts = useSelector((state) => state.accountSlice.accounts);
@@ -41,6 +42,7 @@ export default function ClaimsMonitor() {
           btn2="New claim"
           data={issueList.filter((e) => e.status === 0)}
           fetchingStatus={fetchingStatus}
+          btn1Handler={async () => signMessage({ message: "hello" })}
         />
         <StatusTable
           tableName="Published"

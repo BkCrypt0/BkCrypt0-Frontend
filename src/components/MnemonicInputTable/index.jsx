@@ -68,13 +68,13 @@ export default function MnemonicInputTable({
         flexDirection="column"
         alignItems="center"
         sx={{
-          borderRadius: "10px",
+          borderRadius: "20px",
           pt: 3,
           pb: 3,
           border: !mobile
             ? themeMode === THEME_MODE.DARK
-              ? "3px solid #D8D8D8"
-              : "3px solid #353535"
+              ? "2px solid rgba(216, 216, 216, 0.7)"
+              : "2px solid rgba(53, 53, 53, 0.7)"
             : undefined,
         }}
       >

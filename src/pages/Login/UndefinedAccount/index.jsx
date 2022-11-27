@@ -1,12 +1,13 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
-import { THEME_MODE } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import { useSelector } from "react-redux";
 
 export default function UndefinedAccount() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);  
+  const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
   return (
     <Box
@@ -15,9 +16,9 @@ export default function UndefinedAccount() {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      height="100%"
+      height="80vh"
     >
-      <CustomTypography variant="h5" mb={5}>
+      <CustomTypography variant={mobile ? "h5" : "h4"} mb={5}>
         Login to BKCrypt0 Platform
       </CustomTypography>
       <NavLink to="/import" style={{ textDecoration: "none", width: "100%" }}>

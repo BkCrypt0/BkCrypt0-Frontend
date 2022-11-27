@@ -16,6 +16,7 @@
     "bip39": "^3.0.4",
     "circomlib": "^0.2.3",
     "circomlibjs": "^0.1.7",
+    "ethers": "^5.7.2",
     "hdkey": "^2.0.1",
     "notistack": "^2.0.8",
     "password-hash": "^1.2.2",

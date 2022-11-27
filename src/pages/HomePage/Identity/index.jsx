@@ -1,14 +1,17 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
 import { useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
-import { SCREEN_SIZE } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE, BASE_API_URL } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
 import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
+import Axios from "axios";
+import { useSnackbar } from "notistack";
+
+const { babyJub } = require("circomlib");
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -20,9 +23,64 @@ export default function Identity() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  const [body, setBody] = useState({});
+  useEffect(() => {
+    setBody(generateRequestBody());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [identity]);
 
   const role = accounts[activeAccount]?.role;
+  const { enqueueSnackbar } = useSnackbar();
 
+  const generatePublicKeyPair = () => {
+    if (identity === undefined) return undefined;
+    else
+      return babyJub
+        .unpackPoint(Buffer.from(identity?.publicKey, "hex"))
+        .map((e) => e.toString());
+  };
+
+  const generateRequestBody = () => {
+    return {
+      publicKey: generatePublicKeyPair(),
+      CCCD: identity?.id,
+      firstName: identity?.firstName,
+      lastName: identity?.lastName,
+      sex: identity?.sex,
+      DoBdate: identity?.doB,
+      BirthPlace: identity?.poB,
+    };
+  };
+
+  const claimIdentity = async () => {
+    try {
+      const res = await Axios.post(`${BASE_API_URL}/claimed`, {
+        publicKey: [
+          "16508917144752610602145963506823743115557101240265470506805505298395529637033",
+          "18631654747796370155722974221085383534170330422926471002342567715267253236113",
+        ],
+        CCCD: "012345678910",
+        firstName: "Nguyen Trung",
+        lastName: "Hieu",
+        sex: 0,
+        DoBdate: 20010102,
+        BirthPlace: 38,
+      });
+      enqueueSnackbar(res.data, {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+    } catch (err) {
+      enqueueSnackbar(err.message, {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+    }
+  };
   return (
     <>
       {role === "admin" && <Redirect to="/home/claims-monitor" />}
@@ -37,7 +95,7 @@ export default function Identity() {
           <Paper
             sx={{
               background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
-              width: mobile ? "100%" : tablet ? "90%" : "45%",
+              width: mobile ? "100%" : tablet ? "90%" : "50%",
               borderRadius: "10px",
               boxShadow: `5px 5px 15px 3px ${
                 themeMode === THEME_MODE.DARK
@@ -134,7 +192,14 @@ export default function Identity() {
             {identity === undefined && <ImportIdentityButton />}
           </Box>
           {identity !== undefined && (
-            <CustomButton minHeight="50px" minWidth="150px" mr={3}>
+            <CustomButton
+              minHeight="50px"
+              minWidth="150px"
+              mr={3}
+              onClick={async () => {
+                claimIdentity();
+              }}
+            >
               <CustomTypography buttonText>Claim Identity</CustomTypography>
             </CustomButton>
           )}

@@ -36,10 +36,19 @@ export default function StatusTable({
         </Box>
         {!mobile && (
           <Box width="50%" display="flex" justifyContent="flex-end" mb={2}>
-            <CustomButton minHeight="50px" minWidth="150px" mr={2}>
+            <CustomButton
+              minHeight="50px"
+              minWidth="150px"
+              mr={2}
+              onClick={btn1Handler}
+            >
               <CustomTypography buttonText={true}>{btn1}</CustomTypography>
             </CustomButton>
-            <CustomButton minHeight="50px" minWidth="150px">
+            <CustomButton
+              minHeight="50px"
+              minWidth="150px"
+              onClick={btn2Handler}
+            >
               <CustomTypography buttonText={true}>{btn2}</CustomTypography>
             </CustomButton>
           </Box>
@@ -57,6 +66,7 @@ export default function StatusTable({
           }`,
           paddingY: 3,
           mb: 3,
+          height: "30vh",
         }}
       >
         <Table>
@@ -107,10 +117,10 @@ export default function StatusTable({
           mt={2}
           mb={3}
         >
-          <CustomButton minHeight="50px" width="48%">
+          <CustomButton minHeight="50px" width="48%" onClick={btn1Handler}>
             <CustomTypography buttonText={true}>{btn1}</CustomTypography>
           </CustomButton>
-          <CustomButton minHeight="50px" width="48%">
+          <CustomButton minHeight="50px" width="48%" onClick={btn2Handler}>
             <CustomTypography buttonText={true}>{btn2}</CustomTypography>
           </CustomButton>
         </Box>

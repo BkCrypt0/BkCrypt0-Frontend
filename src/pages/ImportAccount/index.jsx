@@ -37,7 +37,7 @@ export default function ImportAccount() {
 
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center">
-      <CustomTypography variant="h5" mb={5} mt={5}>
+      <CustomTypography variant="h5" mb={5} mt={5} textAlign="center">
         {display === "none"
           ? "Import your mnemonic to restore your password"
           : "Enter your new password"}

@@ -20,7 +20,6 @@ export default function Register() {
     setActiveStep(0);
   };
 
-
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center">
       <CustomSteppers
@@ -29,6 +28,7 @@ export default function Register() {
         handleBack={handleBack}
         handleReset={handleReset}
       />
+      <Box mb={5} />
       <CreatePassword setActiveStep={setActiveStep} activeStep={activeStep} />
       <CreateMnemonic setActiveStep={setActiveStep} activeStep={activeStep} />
       <ConfirmMnemonic setActiveStep={setActiveStep} activeStep={activeStep} />
