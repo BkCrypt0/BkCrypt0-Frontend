@@ -34,6 +34,16 @@ export const BASE_COLOR = {
   CONTRAST_LIGHT: "white",
 };
 
+export const INFO_STATUS = {
+  0: { color: "#21A2FF", text: "This identity is available to claim" },
+  1: {
+    color: "#C89000",
+    text: "This identity is claimed. Please wait until it is active",
+  },
+  2: { color: "#0DC74C", text: "This identity is active" },
+  3: { color: "#FF2E00", text: "This identity is revoked" },
+};
+
 export const BASE_API_URL = "http://127.0.0.1:8000";
 
 export const CONTRACT_ADDRESS = "0x5B2A9c85ed348EfA023964695F6F7B825f14147e";

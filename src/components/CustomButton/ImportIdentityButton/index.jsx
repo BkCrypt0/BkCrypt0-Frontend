@@ -14,7 +14,7 @@ export default function ImportIdentityButton() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
-  
+
   const dp = useDispatch();
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
@@ -52,12 +52,12 @@ export default function ImportIdentityButton() {
       dp(
         createNewIdentity(
           importIdentity.publicKey,
-          importIdentity.id,
+          importIdentity.CCCD,
           importIdentity.firstName,
           importIdentity.lastName,
           importIdentity.sex,
-          importIdentity.doB,
-          importIdentity.poB
+          importIdentity.DoBdate,
+          importIdentity.BirthPlace
         )
       );
       enqueueSnackbar("Import identity successfully", {

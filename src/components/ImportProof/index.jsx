@@ -56,12 +56,12 @@ export default function ImportProof() {
       dp(
         createNewIdentity(
           importIdentity.publicKey,
-          importIdentity.id,
+          importIdentity.CCCD,
           importIdentity.firstName,
           importIdentity.lastName,
           importIdentity.sex,
-          importIdentity.doB,
-          importIdentity.poB
+          importIdentity.DoBdate,
+          importIdentity.BirthPlace
         )
       );
       enqueueSnackbar("Import identity successfully", {

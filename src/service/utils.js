@@ -97,23 +97,20 @@ export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
     privateKeyString: privateKeyString,
   };
 }
-export async function getSignMessage({
-  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000000",
-  expireTime,
-  value,
-}) {
-  const res = await Axios.post(`${BASE_API_URL}/hash`, {
-    array: [value, expireTime],
-  });
-  const mes = res.data.hashValue;
-  // const signature = eddsa.signPoseidon(
-  //   Buffer.from(privateKeyString, "hex"),
-  //   mes
-  // );
+
+export function generatePublicKeyPair(publicKeyString) {
+  const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
+  const publicKeyPair = babyJub
+    .unpackPoint(publicKeyBuffer)
+    .map((e) => e.toString());
+  return publicKeyPair;
+}
+
+export async function getSignMessage({ privateKeyString, expireTime, value }) {
   const mes1 = mimc7.multiHash([BigInt(value).value, BigInt(expireTime).value]);
   const signature = eddsa.signPoseidon(
     Buffer.from(privateKeyString, "hex"),
-    babyJub.F.e(mes.toString())
+    babyJub.F.e(mes1.toString())
   );
 
   const signature1 = eddsa.signMiMC(Buffer.from(privateKeyString, "hex"), mes1);

@@ -1,6 +1,6 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
-import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, BASE_API_URL } from "src/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { THEME_MODE, SCREEN_SIZE, INFO_STATUS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
@@ -8,10 +8,9 @@ import { useState, useEffect } from "react";
 import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
 import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
-import Axios from "axios";
-import { useSnackbar } from "notistack";
-
-const { babyJub } = require("circomlib");
+import { generatePublicKeyPair } from "src/service/utils";
+import { fetchIdentity, claimIdentity } from "src/redux/identitySlice";
+import FiberManualRecordTwoToneIcon from "@mui/icons-material/FiberManualRecordTwoTone";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -20,29 +19,26 @@ export default function Identity() {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [clickCreate, setClickCreate] = useState(false);
   const accounts = useSelector((state) => state.accountSlice.accounts);
+  const identityStatus = useSelector(
+    (state) => state.identitySlice.identityStatus
+  );
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  const dp = useDispatch();
+
   const [body, setBody] = useState({});
   useEffect(() => {
     setBody(generateRequestBody());
+    dp(fetchIdentity(accounts[activeAccount]?.publicKey));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [identity]);
+  }, []);
 
   const role = accounts[activeAccount]?.role;
-  const { enqueueSnackbar } = useSnackbar();
-
-  const generatePublicKeyPair = () => {
-    if (identity === undefined) return undefined;
-    else
-      return babyJub
-        .unpackPoint(Buffer.from(identity?.publicKey, "hex"))
-        .map((e) => e.toString());
-  };
 
   const generateRequestBody = () => {
     return {
-      publicKey: generatePublicKeyPair(),
+      publicKey: generatePublicKeyPair(accounts[activeAccount]?.publicKey),
       CCCD: identity?.id,
       firstName: identity?.firstName,
       lastName: identity?.lastName,
@@ -52,35 +48,6 @@ export default function Identity() {
     };
   };
 
-  const claimIdentity = async () => {
-    try {
-      const res = await Axios.post(`${BASE_API_URL}/claimed`, {
-        publicKey: [
-          "16508917144752610602145963506823743115557101240265470506805505298395529637033",
-          "18631654747796370155722974221085383534170330422926471002342567715267253236113",
-        ],
-        CCCD: "012345678910",
-        firstName: "Nguyen Trung",
-        lastName: "Hieu",
-        sex: 0,
-        DoBdate: 20010102,
-        BirthPlace: 38,
-      });
-      enqueueSnackbar(res.data, {
-        variant: "success",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    } catch (err) {
-      enqueueSnackbar(err.message, {
-        variant: "error",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    }
-  };
   return (
     <>
       {role === "admin" && <Redirect to="/home/claims-monitor" />}
@@ -104,6 +71,9 @@ export default function Identity() {
               }`,
               paddingY: 3,
               mb: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
           >
             {identity === undefined && (
@@ -112,7 +82,7 @@ export default function Identity() {
               </CustomTypography>
             )}
             {identity !== undefined && (
-              <Box width="100%" ml={2}>
+              <Box width="93%">
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
                     Public Key:{" "}
@@ -143,7 +113,7 @@ export default function Identity() {
                     Identity number:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
-                    {identity?.id}
+                    {identity?.CCCD}
                   </CustomTypography>
                 </Box>
                 <Box display="flex" alignItems="baseline">
@@ -159,7 +129,7 @@ export default function Identity() {
                     Date Of Birth:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
-                    {identity?.doB}
+                    {identity?.DoBdate}
                   </CustomTypography>
                 </Box>
                 <Box display="flex" alignItems="baseline">
@@ -167,9 +137,38 @@ export default function Identity() {
                     Birth Place:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
-                    {identity?.poB}
+                    {identity?.BirthPlace}
                   </CustomTypography>
                 </Box>
+              </Box>
+            )}
+            <Box
+              sx={{
+                mt: 2,
+                mb: 2,
+                background:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 0.3)"
+                    : "rgba(53, 53, 53, 0.3)",
+                borderRadius: "20px",
+              }}
+              width="93%"
+              height="2px"
+            />
+            {identity !== undefined && (
+              <Box width="93%" display="flex" alignItems="center">
+                <FiberManualRecordTwoToneIcon
+                  sx={{ mr: 1, color: INFO_STATUS[identityStatus]?.color }}
+                  fontSize="small"
+                />
+                <CustomTypography
+                  color={INFO_STATUS[identityStatus]?.color}
+                  // fontStyle="italic"
+                  fontWeight="semi-bold"
+                  letterSpacing="1px"
+                >
+                  {INFO_STATUS[identityStatus]?.text}
+                </CustomTypography>
               </Box>
             )}
           </Paper>
@@ -191,13 +190,24 @@ export default function Identity() {
             )}
             {identity === undefined && <ImportIdentityButton />}
           </Box>
-          {identity !== undefined && (
+          {identity !== undefined && identityStatus < 1 && (
             <CustomButton
               minHeight="50px"
               minWidth="150px"
               mr={3}
               onClick={async () => {
-                claimIdentity();
+                dp(
+                  claimIdentity({
+                    publicKey: accounts[activeAccount].publicKey,
+                    privateKey: accounts[activeAccount].privateKey,
+                    CCCD: identity.CCCD,
+                    sex: identity.sex,
+                    firstName: identity.firstName,
+                    lastName: identity.lastName,
+                    DoBdate: identity.DoBdate,
+                    BirthPlace: identity.BirthPlace,
+                  })
+                );
               }}
             >
               <CustomTypography buttonText>Claim Identity</CustomTypography>
