@@ -121,7 +121,7 @@ export default function Identity() {
                     Gender:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
-                    {identity?.sex}
+                    {identity?.sex === 1 ? "Male" : "Female"}
                   </CustomTypography>
                 </Box>
                 <Box display="flex" alignItems="baseline">
@@ -129,7 +129,11 @@ export default function Identity() {
                     Date Of Birth:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
-                    {identity?.DoBdate}
+                    {identity?.DoBdate?.toString().slice(0, 4) +
+                      "/" +
+                      identity?.DoBdate?.toString().slice(4, 6) +
+                      "/" +
+                      identity?.DoBdate?.toString().slice(6)}
                   </CustomTypography>
                 </Box>
                 <Box display="flex" alignItems="baseline">

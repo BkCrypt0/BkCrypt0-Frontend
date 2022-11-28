@@ -1,7 +1,5 @@
-import inputJSON from "./input_2.json";
-import Axios from "axios";
-import { BASE_API_URL } from "src/constants";
-const { eddsa, babyJub, poseidon, mimc7 } = require("circomlib");
+import inputJSON from "./input.json";
+const { eddsa, babyJub, mimc7 } = require("circomlib");
 const HDKey = require("hdkey");
 const BigInt = require("big-integer");
 
@@ -45,10 +43,10 @@ export const testServerObj = {
   oldValueRevoke: "0",
   isOld0Revoke: 1,
   rootClaims:
-    "19569806975095406378064835597291763354914308113190092659833750474633745606260",
+    "19477650834228502084062910240127676187751121802086814520468284441810407241074",
   siblingsClaims: [
-    "4010404085188256929231243812687980377907030773685080299761664899933251209493",
-    "16316732353140153004307099785377783892883687359882246771173250575442522096359",
+    "16880036025328482448729993393635925468022424126345315386790776487928721131293",
+    "15458831330048781380560947386595302052803335403718243905464910047849030663586",
     "0",
     "0",
     "0",
@@ -106,128 +104,51 @@ export function generatePublicKeyPair(publicKeyString) {
   return publicKeyPair;
 }
 
-export async function getSignMessage({ privateKeyString, expireTime, value }) {
-  const mes1 = mimc7.multiHash([BigInt(value).value, BigInt(expireTime).value]);
-  const signature = eddsa.signPoseidon(
-    Buffer.from(privateKeyString, "hex"),
-    babyJub.F.e(mes1.toString())
+export function getSignMessage({ privateKey, expireTime, value }) {
+  const mes = mimc7.multiHash([BigInt(value).value, BigInt(expireTime).value]);
+  const signature = eddsa.signMiMC(
+    Buffer.from(privateKey, "hex"),
+    // babyJub.F.e(mes.toString())
+    mes
   );
 
-  const signature1 = eddsa.signMiMC(Buffer.from(privateKeyString, "hex"), mes1);
   const R8x = signature.R8[0].toString();
   const R8y = signature.R8[1].toString();
-  const S =
-    "1993989570879113330198288594592725679226385552958820883358803090716752598825";
-
-  const R8x1 = signature1.R8[0].toString();
-  const R8y1 = signature1.R8[1].toString();
-  const S1 = signature1.S.toString();
+  const S = signature.S.toString();
 
   return {
     value: value,
-    R8x: R8x1,
-    R8y: R8y1,
-    S: S1,
-    // expireTime: expireTime,
-    expireTime: 1668852906,
-    message: mes1.toString(),
+    R8x: R8x,
+    R8y: R8y,
+    S: S,
+    expireTime: expireTime,
+    // expireTime: 1668852906,
+    message: mes.toString(),
   };
 }
 
-export async function getAgeInput({
-  serverInfo,
-  currentYear,
-  currentMonth,
-  currentDay,
-  minAge,
-  maxAge,
-  privateKeyString = "0000000000000000000000000000000000000000000000000000000000000000",
-  expireTime = 1668852906,
-  infoObject = {
-    CCCD: 0,
-    sex: 0,
-    DoBdate: 20010201,
-    BirthPlace: 0,
-  },
-  publicKey = eddsa.prv2pub(
-    Buffer.from(
-      "0000000000000000000000000000000000000000000000000000000000000000",
-      "hex"
-    )
-  ),
-}) {
-  const info = {
-    // CCCD: Number(infoObject.id),
-    // sex: infoObject.sex,
-    // DoBdate: Number(infoObject.doB),
-    // BirthPlace: Number(infoObject.poB),
-    CCCD: 0,
-    sex: 0,
-    DoBdate: 20010201,
-    BirthPlace: 0,
-    publicKey: publicKey.map((e) => e.toString()),
-  };
-  const ageInput = {
-    // minAge: minAge,
-    // maxAge: maxAge,
-    // currentYear: currentYear,
-    // currentMonth: currentMonth,
-    // currentDay: currentDay,
-    minAge: 18,
-    maxAge: 100,
-    currentYear: 2022,
-    currentMonth: 11,
-    currentDay: 22,
-  };
+// export function verifyMessage({
+//   message,
+//   signature,
+//   publicKeyString = babyJub
+//     .packPoint(
+//       eddsa.prv2pub(
+//         Buffer.from(
+//           "0000000000000000000000000000000000000000000000000000000000000000",
+//           "hex"
+//         )
+//       )
+//     )
+//     .toString(),
+// }) {
+//   const mes = babyJub.F.e(message);
+//   const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
+//   const publicKeyDecompress = babyJub.unpackPoint(publicKeyBuffer);
+//   return eddsa.verifyPoseidon(mes, signature, publicKeyDecompress);
+// }
 
-  const value = await hashValue(infoObject);
-  const signMes = await getSignMessage({
-    expireTime: 1668852906,
-    value: value,
-  });
-  const merge = { ...serverInfo, ...info, ...ageInput, ...signMes };
-  console.log(JSON.stringify(merge));
-  return merge;
-}
-
-export function verifyMessage({
-  message,
-  signature,
-  publicKeyString = babyJub
-    .packPoint(
-      eddsa.prv2pub(
-        Buffer.from(
-          "0000000000000000000000000000000000000000000000000000000000000000",
-          "hex"
-        )
-      )
-    )
-    .toString(),
-}) {
-  const mes = babyJub.F.e(message);
-  const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
-  const publicKeyDecompress = babyJub.unpackPoint(publicKeyBuffer);
-  return eddsa.verifyPoseidon(mes, signature, publicKeyDecompress);
-}
-
-export async function hashValue(infoObject) {
-  // const publicKey = babyJub.unpackPoint(
-  //   Buffer.from(infoObject.publicKey, "hex")
-  // );
-  const publicKey = eddsa
-    .prv2pub(
-      Buffer.from(
-        "0000000000000000000000000000000000000000000000000000000000000000",
-        "hex"
-      )
-    )
-    .map((e) => e.toString());
-  const publicKey1 = eddsa.prv2pub(
-    Buffer.from(
-      "0000000000000000000000000000000000000000000000000000000000000000",
-      "hex"
-    )
-  );
+export function hashValue(infoObject, privateKey) {
+  const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
   // const CCCD = infoObject.CCCD;
   // const sex = infoObject.sex;
   // const DoBdate = infoObject.DoBdate;
@@ -237,30 +158,70 @@ export async function hashValue(infoObject) {
   const DoBdate = 20010201;
   const BirthPlace = 0;
 
-  const res = await Axios.post(`${BASE_API_URL}/hash`, {
-    array: [...publicKey, CCCD, sex, DoBdate, BirthPlace],
-  });
-
-  const res1 = mimc7.multiHash([
-    ...publicKey1,
+  const hashValue = mimc7.multiHash([
+    ...publicKey,
     BigInt(CCCD).value,
     BigInt(sex).value,
     BigInt(DoBdate).value,
+    BigInt(BirthPlace).value,
   ]);
-  console.log(res1);
-  console.log(res.data.hashValue);
-  // return res.data.hashValue;
-  return res1.toString();
+
+  return hashValue.toString();
 }
 
-export async function hashKey(CCCD) {
-  const res = await Axios.post(`${BASE_API_URL}/hash`, {
-    array: [CCCD],
+export function getAgeInput({
+  serverInfo,
+  currentYear,
+  currentMonth,
+  currentDay,
+  minAge,
+  maxAge,
+  expireTime = 1668852906,
+  privateKey = "0000000000000000000000000000000000000000000000000000000000000000",
+  infoObject = {
+    CCCD: 0,
+    sex: 0,
+    DoBdate: 20010201,
+    BirthPlace: 0,
+  },
+}) {
+  const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
+
+  const info = {
+    // CCCD: Number(infoObject.CCCD),
+    // sex: infoObject.sex,
+    // DoBdate: Number(infoObject.DoBdate),
+    // BirthPlace: Number(infoObject.BirthPlace),
+    CCCD: 0,
+    sex: 0,
+    DoBdate: 20010201,
+    BirthPlace: 0,
+    publicKey: publicKey.map((e) => e.toString()),
+  };
+  const ageInput = {
+    minAge: minAge,
+    maxAge: maxAge,
+    currentYear: currentYear,
+    currentMonth: currentMonth,
+    currentDay: currentDay,
+    // minAge: 18,
+    // maxAge: 100,
+    // currentYear: 2022,
+    // currentMonth: 11,
+    // currentDay: 22,
+  };
+
+  const value = hashValue(infoObject, privateKey);
+  const signMes = getSignMessage({
+    privateKey: privateKey,
+    // expireTime: 1668852906,
+    expireTime: expireTime,
+    value: value,
   });
-
-  return res.data.hashValue;
+  const merge = { ...serverInfo, ...info, ...ageInput, ...signMes };
+  console.log(merge);
+  return merge;
 }
-
 export async function calculateAgeProof(input) {
   const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
     input,

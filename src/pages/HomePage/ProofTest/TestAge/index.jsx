@@ -41,7 +41,7 @@ export default function TestAge() {
         open={openDialog}
         setOpen={setOpenDialog}
         onClose={() => setOpenDialog(false)}
-        handler={async () => {
+        handler={() => {
           if (identity !== undefined) {
             const input = getAgeInput({
               serverInfo: testServerObj,
@@ -53,7 +53,7 @@ export default function TestAge() {
               // expireTime: date().expireTime,
               // infoObject: identity,
             });
-            console.log(await calculateAgeProof(JSON.stringify(input)));
+            console.log(calculateAgeProof(input));
           }
         }}
       />

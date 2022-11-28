@@ -39,9 +39,9 @@ export default function AgeProof() {
         open={openDialog}
         setOpen={setOpenDialog}
         onClose={() => setOpenDialog(false)}
-        handler={async () => {
+        handler={() => {
           if (identity !== undefined) {
-            const input = await getAgeInput({
+            const input = getAgeInput({
               serverInfo: testServerObj,
               currentYear: date().currentYear,
               currentMonth: date().currentMonth,
@@ -49,9 +49,10 @@ export default function AgeProof() {
               minAge: Number(document.getElementById("min-age").value),
               maxAge: Number(document.getElementById("max-age").value),
               // expireTime: date().expireTime,
-              // infoObject: identity,
+              infoObject: identity,
+              // privateKey: accounts[activeAccount]?.privateKey,
             });
-            const res = await calculateAgeProof(input);
+            const res = calculateAgeProof(input);
             console.log(res);
           }
         }}

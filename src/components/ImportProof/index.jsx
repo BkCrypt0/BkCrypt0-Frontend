@@ -2,11 +2,9 @@ import { useRef } from "react";
 import { useSnackbar } from "notistack";
 import { useSelector, useDispatch } from "react-redux";
 import { createNewIdentity } from "src/redux/identitySlice";
-import { useMediaQuery } from "@mui/material";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { THEME_MODE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import { Box } from "@mui/material";
-import UploadIcon from "@mui/icons-material/Upload";
 import { Upload } from "@mui/icons-material";
 
 export default function ImportProof() {
@@ -20,7 +18,6 @@ export default function ImportProof() {
   );
 
   const dp = useDispatch();
-  const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
   const handleClick = () => {
     inputRef.current.click();
