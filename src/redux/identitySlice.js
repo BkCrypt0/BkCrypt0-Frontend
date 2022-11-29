@@ -8,11 +8,10 @@ var FileSaver = require("file-saver");
 const { eddsa, mimc7 } = require("circomlib");
 
 const initialState = {
-  identity: undefined,
   fetchingStatus: FS.IDLE,
   claimingIdentityStatus: FS.IDLE,
   fetchingIdentityStatus: FS.IDLE,
-  identityStatus: undefined,
+  identityStatus: 0,
 };
 
 export const createNewIdentity =
@@ -164,7 +163,7 @@ const identitySlice = createSlice({
       state.fetchingIdentityStatus = FS.FETCHING;
     },
     fetchIdentityFailed: (state) => {
-      state.identityStatus = -1;
+      state.identityStatus = 0;
       state.fetchingIdentityStatus = FS.FAILED;
     },
     fetchIdentitySuccess: (state, action) => {

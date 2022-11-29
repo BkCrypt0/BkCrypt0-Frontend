@@ -40,7 +40,7 @@ export default function ClaimsMonitor() {
           tableName="Pending"
           btn1="Publish"
           btn2="New claim"
-          data={issueList.filter((e) => e.status === 0)}
+          data={issueList.filter((e) => e.status !== 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => signMessage({ message: "hello" })}
         />
@@ -48,7 +48,7 @@ export default function ClaimsMonitor() {
           tableName="Published"
           btn1="UnRevoke"
           btn2="Revoke"
-          data={issueList.filter((e) => e.status === 1)}
+          data={issueList.filter((e) => e.status === 2)}
           fetchingStatus={fetchingStatus}
         />
       </Box>

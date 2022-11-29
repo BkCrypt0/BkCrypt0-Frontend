@@ -35,14 +35,29 @@ export const BASE_COLOR = {
 };
 
 export const INFO_STATUS = {
-  0: { color: "#21A2FF", text: "This identity is available to claim" },
+  0: {
+    color: "rgba(20, 153, 250, 0.5)",
+    stroke: "#006DBC",
+    text: "This identity is available to claim",
+  },
   1: {
-    color: "#C89000",
+    stroke: "#976D00",
+    color: "rgba(238, 171, 0, 0.5)",
     text: "This identity is claimed. Please wait until it is active",
   },
-  2: { color: "#0DC74C", text: "This identity is active" },
-  3: { color: "#FF2E00", text: "This identity is revoked" },
+  2: {
+    stroke: "#008E30",
+    color: "rgba(32, 215, 83, 0.5)",
+    text: "This identity is active",
+  },
+  3: {
+    stroke: "#8C0000",
+    color: "rgba(255, 46, 0, 0.5)",
+    text: "This identity is revoked",
+  },
 };
+
+export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
 export const BASE_API_URL = "http://127.0.0.1:8000";
 

@@ -12,7 +12,11 @@ import {
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, FS } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE, FS, ID_STATUS } from "src/constants";
+import { formatAddress } from "src/utility";
+
+const { babyJub } = require("circomlib");
+const BigInt = require("big-integer");
 
 export default function StatusTable({
   tableName,
@@ -79,9 +83,6 @@ export default function StatusTable({
                 <CustomTypography fontWeight="bold">Issuer</CustomTypography>
               </TableCell>
               <TableCell align="left" sx={{ borderBottom: "none" }}>
-                <CustomTypography fontWeight="bold">Object</CustomTypography>
-              </TableCell>
-              <TableCell align="left" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Issue at</CustomTypography>
               </TableCell>
               <TableCell align="left" sx={{ borderBottom: "none" }}>
@@ -96,10 +97,25 @@ export default function StatusTable({
                   <TableCell sx={{ borderBottom: "none" }}>
                     <CustomTypography>{e.CCCD}</CustomTypography>
                   </TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}></TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}>
+                    <CustomTypography>
+                      {formatAddress(
+                        e.issuer !== undefined &&
+                          babyJub
+                            .packPoint(e.issuer.map((pub) => BigInt(pub).value))
+                            .toString("hex"),
+                        10
+                      )}
+                    </CustomTypography>
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}>
+                    <CustomTypography>
+                      {new Date(e.issueAt).toLocaleDateString()}
+                    </CustomTypography>
+                  </TableCell>
+                  <TableCell sx={{ borderBottom: "none" }}>
+                    <CustomTypography>{ID_STATUS[e.status]}</CustomTypography>
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

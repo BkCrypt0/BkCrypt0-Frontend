@@ -8,9 +8,7 @@ import { useState, useEffect } from "react";
 import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
 import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
-import { generatePublicKeyPair } from "src/service/utils";
 import { fetchIdentity, claimIdentity } from "src/redux/identitySlice";
-import FiberManualRecordTwoToneIcon from "@mui/icons-material/FiberManualRecordTwoTone";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -27,26 +25,12 @@ export default function Identity() {
   );
   const dp = useDispatch();
 
-  const [body, setBody] = useState({});
   useEffect(() => {
-    setBody(generateRequestBody());
     dp(fetchIdentity(accounts[activeAccount]?.publicKey));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const role = accounts[activeAccount]?.role;
-
-  const generateRequestBody = () => {
-    return {
-      publicKey: generatePublicKeyPair(accounts[activeAccount]?.publicKey),
-      CCCD: identity?.id,
-      firstName: identity?.firstName,
-      lastName: identity?.lastName,
-      sex: identity?.sex,
-      DoBdate: identity?.doB,
-      BirthPlace: identity?.poB,
-    };
-  };
 
   return (
     <>
@@ -160,19 +144,31 @@ export default function Identity() {
               height="2px"
             />
             {identity !== undefined && (
-              <Box width="93%" display="flex" alignItems="center">
-                <FiberManualRecordTwoToneIcon
-                  sx={{ mr: 1, color: INFO_STATUS[identityStatus]?.color }}
-                  fontSize="small"
-                />
-                <CustomTypography
-                  color={INFO_STATUS[identityStatus]?.color}
-                  // fontStyle="italic"
-                  fontWeight="semi-bold"
-                  letterSpacing="1px"
+              <Box width="93%">
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  sx={{
+                    background: INFO_STATUS[identityStatus]?.color,
+                    borderRadius: "10px",
+                    textAlign: "center",
+                    border: `2px solid ${INFO_STATUS[identityStatus]?.stroke}`,
+                  }}
+                  paddingY={1}
                 >
-                  {INFO_STATUS[identityStatus]?.text}
-                </CustomTypography>
+                  <CustomTypography
+                    color={
+                      themeMode === THEME_MODE.DARK
+                        ? "white"
+                        : INFO_STATUS[identityStatus]?.stroke
+                    }
+                    fontWeight="semi-bold"
+                    letterSpacing="1px"
+                  >
+                    {INFO_STATUS[identityStatus]?.text}
+                  </CustomTypography>
+                </Box>
               </Box>
             )}
           </Paper>
