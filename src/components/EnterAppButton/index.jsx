@@ -10,7 +10,7 @@ export default function EnterAppButton() {
     ? "/login"
     : role === "user"
     ? "/home/identity"
-    : "/home/claims-monitor";
+    : "/home/identity-manager";
 
   return (
     <NavLink to={targetRoute} style={{ textDecoration: "none" }}>

@@ -29,6 +29,7 @@ export default function StatusTable({
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
+  const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
 
   return (
     <>
@@ -68,24 +69,43 @@ export default function StatusTable({
               ? "rgba(0, 0, 0, 0.7)"
               : "rgba(53, 53, 53, 0.4)"
           }`,
-          paddingY: 3,
+          paddingBottom: 3,
           mb: 3,
-          height: "30vh",
+          height: "300px",
+          overflow: "auto",
         }}
       >
-        <Table>
-          <TableHead>
+        <Table sx={{ tableLayout: !mobile && !tablet && "fixed" }}>
+          <TableHead
+            sx={{
+              position: "sticky",
+              top: 0,
+              background:
+                themeMode === THEME_MODE.LIGHT ? "#edebeb" : "#333333",
+              zIndex: 1000,
+            }}
+          >
             <TableRow>
-              <TableCell align="left" sx={{ borderBottom: "none" }}>
+              <TableCell
+                align="center"
+                sx={{
+                  zIndex: 1000,
+                  position: "sticky",
+                  left: 0,
+                  borderBottom: "none",
+                  background:
+                    themeMode === THEME_MODE.LIGHT ? "#edebeb" : "#333333",
+                }}
+              >
                 <CustomTypography fontWeight="bold">ID Card</CustomTypography>
               </TableCell>
-              <TableCell align="left" sx={{ borderBottom: "none" }}>
+              <TableCell align="center" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Issuer</CustomTypography>
               </TableCell>
-              <TableCell align="left" sx={{ borderBottom: "none" }}>
+              <TableCell align="center" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">Issue at</CustomTypography>
               </TableCell>
-              <TableCell align="left" sx={{ borderBottom: "none" }}>
+              <TableCell align="center" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">State</CustomTypography>
               </TableCell>
             </TableRow>
@@ -94,10 +114,20 @@ export default function StatusTable({
             {fetchingStatus === FS.SUCCESS &&
               data.map((e, index) => (
                 <TableRow key={index}>
-                  <TableCell sx={{ borderBottom: "none" }}>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      zIndex: 500,
+                      position: "sticky",
+                      left: 0,
+                      borderBottom: "none",
+                      background:
+                        themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                    }}
+                  >
                     <CustomTypography>{e.CCCD}</CustomTypography>
                   </TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}>
+                  <TableCell align="center" sx={{ borderBottom: "none" }}>
                     <CustomTypography>
                       {formatAddress(
                         e.issuer !== undefined &&
@@ -108,12 +138,12 @@ export default function StatusTable({
                       )}
                     </CustomTypography>
                   </TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}>
+                  <TableCell align="center" sx={{ borderBottom: "none" }}>
                     <CustomTypography>
                       {new Date(e.issueAt).toLocaleDateString()}
                     </CustomTypography>
                   </TableCell>
-                  <TableCell sx={{ borderBottom: "none" }}>
+                  <TableCell align="center" sx={{ borderBottom: "none" }}>
                     <CustomTypography>{ID_STATUS[e.status]}</CustomTypography>
                   </TableCell>
                 </TableRow>

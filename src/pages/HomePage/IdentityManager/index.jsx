@@ -6,8 +6,9 @@ import StatusTable from "./StatusTable";
 import { fetchData } from "src/redux/adminSlice";
 import { useEffect } from "react";
 import { signMessage } from "src/service/connect-wallet";
+import { useHistory } from "react-router-dom";
 
-export default function ClaimsMonitor() {
+export default function IdentityManager() {
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const login = useSelector((state) => state.accountSlice.isLogin);
   const fetchingStatus = useSelector(
@@ -22,6 +23,8 @@ export default function ClaimsMonitor() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const history = useHistory();
+
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
@@ -34,15 +37,16 @@ export default function ClaimsMonitor() {
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
-          Claims Monitor
+          Identity Manager
         </CustomTypography>
         <StatusTable
           tableName="Pending"
           btn1="Publish"
-          btn2="New claim"
+          btn2="New identity"
           data={issueList.filter((e) => e.status !== 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => signMessage({ message: "hello" })}
+          btn2Handler={() => history.push("/home/issue-identity")}
         />
         <StatusTable
           tableName="Published"

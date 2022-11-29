@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Axios from "axios";
 import { useSnackbar } from "notistack";
+import { useHistory } from "react-router-dom";
 
 const { babyJub } = require("circomlib");
 
@@ -25,6 +26,8 @@ export default function IssueNewIdentity() {
   );
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const { enqueueSnackbar } = useSnackbar();
+
+  const history = useHistory();
 
   const checkValid = (id) =>
     document.getElementById(id) === null
@@ -169,6 +172,7 @@ export default function IssueNewIdentity() {
                     preventDuplicate: true,
                     autoHideDuration: 2000,
                   });
+                  history.push("/home/identity-manager");
                 } catch (err) {
                   enqueueSnackbar(err.message, {
                     variant: "error",

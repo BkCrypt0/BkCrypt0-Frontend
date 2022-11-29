@@ -103,8 +103,8 @@ export default function MobileMenu({ open, setOpen }) {
           )}
           {role === "admin" && (
             <NavigationButton
-              label="CLAIMS MONITOR"
-              link="/home/claims-monitor"
+              label="Identity Manager"
+              link="/home/identity-manager"
             />
           )}
           {role === "user" && (

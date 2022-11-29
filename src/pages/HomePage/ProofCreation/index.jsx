@@ -24,7 +24,7 @@ export default function ProofCreation() {
   return (
     <>
       {role === "admin" && login !== undefined && (
-        <Redirect to="/home/claims-monitor" />
+        <Redirect to="/home/identity-manager" />
       )}
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box>

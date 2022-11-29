@@ -1,6 +1,6 @@
-import { Box, useMediaQuery, Paper } from "@mui/material";
+import { Box, useMediaQuery, Paper, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, INFO_STATUS } from "src/constants";
+import { THEME_MODE, SCREEN_SIZE, INFO_STATUS, FS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
@@ -9,6 +9,7 @@ import { formatAddress } from "src/utility";
 import { Redirect } from "react-router-dom";
 import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
 import { fetchIdentity, claimIdentity } from "src/redux/identitySlice";
+import { useSnackbar } from "notistack";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -23,18 +24,40 @@ export default function Identity() {
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  const claimingIdentityStatus = useSelector(
+    (state) => state.identitySlice.claimingIdentityStatus
+  );
   const dp = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     dp(fetchIdentity(accounts[activeAccount]?.publicKey));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [claimingIdentityStatus]);
 
+  useEffect(() => {
+    if (claimingIdentityStatus === FS.SUCCESS) {
+      enqueueSnackbar("Claim identity successfully!", {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2500,
+      });
+    } else if (claimingIdentityStatus === FS.FAILED) {
+      enqueueSnackbar("Claim identity failed! Please try again!", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2500,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [claimingIdentityStatus]);
   const role = accounts[activeAccount]?.role;
 
   return (
     <>
-      {role === "admin" && <Redirect to="/home/claims-monitor" />}
+      {role === "admin" && <Redirect to="/home/identity-manager" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
           My Identity
@@ -190,29 +213,42 @@ export default function Identity() {
             )}
             {identity === undefined && <ImportIdentityButton />}
           </Box>
-          {identity !== undefined && identityStatus < 1 && (
-            <CustomButton
-              minHeight="50px"
-              minWidth="150px"
-              mr={3}
-              onClick={async () => {
-                dp(
-                  claimIdentity({
-                    publicKey: accounts[activeAccount].publicKey,
-                    privateKey: accounts[activeAccount].privateKey,
-                    CCCD: identity.CCCD,
-                    sex: identity.sex,
-                    firstName: identity.firstName,
-                    lastName: identity.lastName,
-                    DoBdate: identity.DoBdate,
-                    BirthPlace: identity.BirthPlace,
-                  })
-                );
-              }}
-            >
-              <CustomTypography buttonText>Claim Identity</CustomTypography>
-            </CustomButton>
-          )}
+          {identity !== undefined &&
+            identityStatus < 1 &&
+            claimingIdentityStatus !== FS.SUCESS && (
+              <CustomButton
+                minHeight="50px"
+                minWidth="150px"
+                mr={3}
+                onClick={async () => {
+                  dp(
+                    claimIdentity({
+                      publicKey: accounts[activeAccount].publicKey,
+                      privateKey: accounts[activeAccount].privateKey,
+                      CCCD: identity.CCCD,
+                      sex: identity.sex,
+                      firstName: identity.firstName,
+                      lastName: identity.lastName,
+                      DoBdate: identity.DoBdate,
+                      BirthPlace: identity.BirthPlace,
+                    })
+                  );
+                }}
+              >
+                {(claimingIdentityStatus === FS.IDLE ||
+                  claimingIdentityStatus === FS.FAILED) && (
+                  <CustomTypography buttonText>Claim Identity</CustomTypography>
+                )}
+                {claimingIdentityStatus === FS.FETCHING && (
+                  <CircularProgress
+                    sx={{
+                      color:
+                        themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                    }}
+                  />
+                )}
+              </CustomButton>
+            )}
         </Box>
         <CreateIdentity
           clickCreate={clickCreate}

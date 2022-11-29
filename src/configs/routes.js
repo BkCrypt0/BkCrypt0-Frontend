@@ -33,9 +33,9 @@ const routeConfig = [
     layout: LayoutOptions.MAIN,
   },
   {
-    path: "/home/claims-monitor",
+    path: "/home/identity-manager",
     exact: true,
-    component: React.lazy(() => import("../pages/HomePage/ClaimsMonitor")),
+    component: React.lazy(() => import("../pages/HomePage/IdentityManager")),
     layout: LayoutOptions.MAIN,
   },
   {

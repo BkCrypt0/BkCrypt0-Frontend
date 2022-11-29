@@ -50,8 +50,8 @@ export default function Sidebar() {
           )}
           {role === "admin" && (
             <NavigationButton
-              label="CLAIMS MONITOR"
-              link="/home/claims-monitor"
+              label="Identity Manager"
+              link="/home/identity-manager"
             />
           )}
           {role === "admin" && (
