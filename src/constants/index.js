@@ -25,6 +25,10 @@ export const FS = {
   SUCCESS: "success",
   FAILED: "failed",
 };
+export const CONNECTION_STATUS = {
+  DISCONNECTED: "Not connected",
+  CONNECTED: "Connected",
+};
 
 export const BASE_COLOR = {
   PAPER_LIGHT: "#BBBBBB",
@@ -64,3 +68,6 @@ export const BASE_API_URL = "http://127.0.0.1:8000";
 export const CONTRACT_ADDRESS = "0x8CF60fa63B82Ab7f16eb4D79AEeAa1FdB4aa028F";
 
 export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
+
+export const CONTRACT_OWNER_ADDRESS =
+  "0x595622cbd0fc4727df476a1172ada30a9ddf8f43";

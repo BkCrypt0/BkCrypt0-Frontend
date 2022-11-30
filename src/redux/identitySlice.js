@@ -88,8 +88,7 @@ export const claimIdentity =
     };
 
     try {
-      const res = await Axios.post(`${BASE_API_URL}/claimed`, requestBody);
-      console.log(res);
+      await Axios.post(`${BASE_API_URL}/claimed`, requestBody);
       dispatch(fetchIdentity());
       dispatch(claimIdentitySuccess());
     } catch (err) {
