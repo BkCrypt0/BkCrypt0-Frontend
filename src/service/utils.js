@@ -1,4 +1,3 @@
-import inputJSON from "./input.json";
 const { eddsa, babyJub, mimc7 } = require("circomlib");
 const HDKey = require("hdkey");
 const BigInt = require("big-integer");
@@ -183,20 +182,24 @@ export function getAgeInput({
   return merge;
 }
 export async function calculateAgeProof(input) {
-  const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
-    input,
-    "http://localhost:3000/kycAge.wasm",
-    "http://localhost:3000/circuit_final.zkey"
-  );
+  try {
+    const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
+      input,
+      "http://localhost:3000/kycAge.wasm",
+      "http://localhost:3000/circuit_final.zkey"
+    );
 
-  const vkey = await fetch("http://localhost:3000/verification_key.json").then(
-    function (res) {
+    const vkey = await fetch(
+      "http://localhost:3000/verification_key.json"
+    ).then(function (res) {
       return res.json();
-    }
-  );
+    });
 
-  const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
-  const finalRes = { proof: JSON.stringify(proof, null, 1), result: res };
-  console.log(finalRes);
-  return finalRes;
+    const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
+    const finalRes = { proof: JSON.stringify(proof, null, 1), result: res };
+    console.log(finalRes);
+    return finalRes;
+  } catch (err) {
+    return -1;
+  }
 }

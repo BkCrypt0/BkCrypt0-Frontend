@@ -1,4 +1,4 @@
-import { Dialog, Box, useMediaQuery } from "@mui/material";
+import { Dialog, Box, useMediaQuery, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
@@ -6,7 +6,13 @@ import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 import ImportIdentityButton from "../CustomButton/ImportIdentityButton";
 import CustomButton from "../CustomButton";
 
-export default function SignMessageDialog({ open, onClose, handler }) {
+export default function SignMessageDialog({
+  open,
+  onClose,
+  handler,
+  loading,
+  setClick,
+}) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -125,11 +131,21 @@ export default function SignMessageDialog({ open, onClose, handler }) {
           fullWidth={mobile}
           onClick={() => {
             handler();
+            setClick(true);
           }}
         >
-          <CustomTypography buttonText={true}>
-            Sign & Create proof
-          </CustomTypography>
+          {loading === false && (
+            <CustomTypography buttonText={true}>
+              Sign & Create proof
+            </CustomTypography>
+          )}
+          {loading === true && (
+            <CircularProgress
+              sx={{
+                color: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              }}
+            />
+          )}
         </CustomButton>
       </Box>
     </Dialog>

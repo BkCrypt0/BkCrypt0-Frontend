@@ -1,14 +1,16 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import { THEME_MODE } from "src/constants";
-import { SCREEN_SIZE } from "src/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { THEME_MODE, SCREEN_SIZE, FS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SignMessageDialog from "src/components/SignMessageDialog";
-import { getAgeInput, calculateAgeProof } from "src/service/utils";
+import { getAgeInput } from "src/service/utils";
+import { handleCaculateAgeProof } from "src/redux/proofSlice";
+import { useSnackbar } from "notistack";
+import { useHistory } from "react-router-dom";
 
 export default function AgeProof({ proof }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -16,10 +18,38 @@ export default function AgeProof({ proof }) {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
+  const [click, setClick] = useState(false);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
+  const generateAgeProofStatus = useSelector(
+    (state) => state.proofSlice.generateAgeProofStatus
+  );
+  const dp = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (generateAgeProofStatus === FS.SUCCESS && click === true) {
+      enqueueSnackbar("Create proof successfully!", {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2000,
+      });
+      setOpenDialog(false);
+      history.push("/home/proofs");
+    } else if (generateAgeProofStatus === FS.FAILED) {
+      enqueueSnackbar("Create proof failed", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2000,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [generateAgeProofStatus]);
 
   const date = () => {
     var timestamp = Math.floor(Date.now() / 1000);
@@ -38,10 +68,12 @@ export default function AgeProof({ proof }) {
   return (
     <>
       <SignMessageDialog
+        loading={generateAgeProofStatus === FS.FETCHING}
+        setClick={setClick}
         open={openDialog}
         setOpen={setOpenDialog}
         onClose={() => setOpenDialog(false)}
-        handler={() => {
+        handler={async () => {
           if (identity !== undefined) {
             const input = getAgeInput({
               serverInfo: serverInfo,
@@ -54,8 +86,7 @@ export default function AgeProof({ proof }) {
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
-            const res = calculateAgeProof(input);
-            console.log(res);
+            dp(handleCaculateAgeProof(input));
           }
         }}
       />
