@@ -11,9 +11,25 @@ const initialState = {
   fetchingStatus: FS.IDLE,
   claimingIdentityStatus: FS.IDLE,
   fetchingIdentityStatus: FS.IDLE,
+  fetchingUserProofStatus: FS.IDLE,
   identityStatus: 0,
+  proof: undefined,
 };
 
+export const fetchUserProof = (publicKey) => async (dispatch) => {
+  dispatch(startFetchUserProof());
+  const publicKeyPair = generatePublicKeyPair(publicKey);
+  try {
+    const res = await Axios.get(
+      `${BASE_API_URL}/users/proof?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
+    );
+    const data = res.data;
+    console.log(data);
+    dispatch(fetchUserProofSuccess(data));
+  } catch (err) {
+    dispatch(fetchUserProofFailed());
+  }
+};
 export const createNewIdentity =
   (
     publicKey,
@@ -172,6 +188,16 @@ const identitySlice = createSlice({
     updateIdentityStatusSuccess: (state, action) => {
       state.identityStatus = action.payload;
     },
+    startFetchUserProof: (state) => {
+      state.fetchingUserProofStatus = FS.FETCHING;
+    },
+    fetchUserProofSuccess: (state, action) => {
+      state.proof = action.payload;
+      state.fetchingUserProofStatus = FS.SUCCESS;
+    },
+    fetchUserProofFailed: (state) => {
+      state.fetchingUserProofStatus = FS.FAILED;
+    },
   },
 });
 
@@ -186,4 +212,7 @@ export const {
   fetchIdentityFailed,
   fetchIdentitySuccess,
   updateIdentityStatusSuccess,
+  startFetchUserProof,
+  fetchUserProofSuccess,
+  fetchUserProofFailed,
 } = identitySlice.actions;

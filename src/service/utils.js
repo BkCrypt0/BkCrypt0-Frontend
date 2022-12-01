@@ -106,11 +106,7 @@ export function generatePublicKeyPair(publicKeyString) {
 
 export function getSignMessage({ privateKey, expireTime, value }) {
   const mes = mimc7.multiHash([BigInt(value).value, BigInt(expireTime).value]);
-  const signature = eddsa.signMiMC(
-    Buffer.from(privateKey, "hex"),
-    // babyJub.F.e(mes.toString())
-    mes
-  );
+  const signature = eddsa.signMiMC(Buffer.from(privateKey, "hex"), mes);
 
   const R8x = signature.R8[0].toString();
   const R8y = signature.R8[1].toString();
@@ -122,42 +118,16 @@ export function getSignMessage({ privateKey, expireTime, value }) {
     R8y: R8y,
     S: S,
     expireTime: expireTime,
-    // expireTime: 1668852906,
     message: mes.toString(),
   };
 }
 
-// export function verifyMessage({
-//   message,
-//   signature,
-//   publicKeyString = babyJub
-//     .packPoint(
-//       eddsa.prv2pub(
-//         Buffer.from(
-//           "0000000000000000000000000000000000000000000000000000000000000000",
-//           "hex"
-//         )
-//       )
-//     )
-//     .toString(),
-// }) {
-//   const mes = babyJub.F.e(message);
-//   const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
-//   const publicKeyDecompress = babyJub.unpackPoint(publicKeyBuffer);
-//   return eddsa.verifyPoseidon(mes, signature, publicKeyDecompress);
-// }
-
 export function hashValue(infoObject, privateKey) {
   const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
-  // const CCCD = infoObject.CCCD;
-  // const sex = infoObject.sex;
-  // const DoBdate = infoObject.DoBdate;
-  // const BirthPlace = infoObject.BirthPlace;
-  const CCCD = 0;
-  const sex = 0;
-  const DoBdate = 20010201;
-  const BirthPlace = 0;
-
+  const CCCD = infoObject.CCCD;
+  const sex = infoObject.sex;
+  const DoBdate = infoObject.DoBdate;
+  const BirthPlace = infoObject.BirthPlace;
   const hashValue = mimc7.multiHash([
     ...publicKey,
     BigInt(CCCD).value,
@@ -188,14 +158,10 @@ export function getAgeInput({
   const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
 
   const info = {
-    // CCCD: Number(infoObject.CCCD),
-    // sex: infoObject.sex,
-    // DoBdate: Number(infoObject.DoBdate),
-    // BirthPlace: Number(infoObject.BirthPlace),
-    CCCD: 0,
-    sex: 0,
-    DoBdate: 20010201,
-    BirthPlace: 0,
+    CCCD: Number(infoObject.CCCD),
+    sex: infoObject.sex,
+    DoBdate: Number(infoObject.DoBdate),
+    BirthPlace: Number(infoObject.BirthPlace),
     publicKey: publicKey.map((e) => e.toString()),
   };
   const ageInput = {
@@ -204,17 +170,11 @@ export function getAgeInput({
     currentYear: currentYear,
     currentMonth: currentMonth,
     currentDay: currentDay,
-    // minAge: 18,
-    // maxAge: 100,
-    // currentYear: 2022,
-    // currentMonth: 11,
-    // currentDay: 22,
   };
 
   const value = hashValue(infoObject, privateKey);
   const signMes = getSignMessage({
     privateKey: privateKey,
-    // expireTime: 1668852906,
     expireTime: expireTime,
     value: value,
   });

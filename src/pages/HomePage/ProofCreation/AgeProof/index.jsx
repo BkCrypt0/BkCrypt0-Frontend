@@ -8,18 +8,18 @@ import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SignMessageDialog from "src/components/SignMessageDialog";
-import {
-  getAgeInput,
-  testServerObj,
-  calculateAgeProof,
-} from "src/service/utils";
+import { getAgeInput, calculateAgeProof } from "src/service/utils";
 
-export default function AgeProof() {
+export default function AgeProof({ proof }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
 
   const date = () => {
     var timestamp = Math.floor(Date.now() / 1000);
@@ -33,6 +33,8 @@ export default function AgeProof() {
     return date;
   };
 
+  const serverInfo = { ...proof, ...{ challenge: 100 } };
+
   return (
     <>
       <SignMessageDialog
@@ -42,15 +44,15 @@ export default function AgeProof() {
         handler={() => {
           if (identity !== undefined) {
             const input = getAgeInput({
-              serverInfo: testServerObj,
+              serverInfo: serverInfo,
               currentYear: date().currentYear,
               currentMonth: date().currentMonth,
               currentDay: date().currentDay,
               minAge: Number(document.getElementById("min-age").value),
               maxAge: Number(document.getElementById("max-age").value),
-              // expireTime: date().expireTime,
+              expireTime: date().expireTime,
               infoObject: identity,
-              // privateKey: accounts[activeAccount]?.privateKey,
+              privateKey: accounts[activeAccount]?.privateKey,
             });
             const res = calculateAgeProof(input);
             console.log(res);

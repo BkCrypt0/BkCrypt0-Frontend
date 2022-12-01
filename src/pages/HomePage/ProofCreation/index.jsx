@@ -4,7 +4,7 @@ import CustomTypography from "src/components/CustomTypography";
 import { Redirect } from "react-router-dom";
 import AgeProof from "./AgeProof";
 import ProvinceProof from "./ProvinceProof";
-import { fetchIdentity } from "src/redux/identitySlice";
+import { fetchIdentity, fetchUserProof } from "src/redux/identitySlice";
 import { useEffect } from "react";
 
 export default function ProofCreation() {
@@ -14,10 +14,15 @@ export default function ProofCreation() {
     (state) => state.accountSlice.activeAccount
   );
   const role = accounts[activeAccount]?.role;
+  const identityStatus = useSelector(
+    (state) => state.identitySlice.identityStatus
+  );
+  const proof = useSelector((state) => state.identitySlice.proof);
 
   const dp = useDispatch();
   useEffect(() => {
     dp(fetchIdentity(accounts[activeAccount]?.publicKey));
+    dp(fetchUserProof(accounts[activeAccount]?.publicKey));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -31,8 +36,17 @@ export default function ProofCreation() {
         <CustomTypography variant="h4" mb={3}>
           Create a proof
         </CustomTypography>
-        <AgeProof />
-        <ProvinceProof />
+        {identityStatus === 2 && (
+          <>
+            <AgeProof proof={proof} />
+            <ProvinceProof />
+          </>
+        )}
+        {identityStatus !== 2 && (
+          <CustomTypography variant="h5" mb={3}>
+            Cannot create proof because your identity is not active
+          </CustomTypography>
+        )}
       </Box>
     </>
   );

@@ -65,7 +65,7 @@ export default function SignMessageDialog({ open, onClose, handler }) {
               Identity number:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
-              {identity?.id}
+              {identity?.CCCD}
             </CustomTypography>
           </Box>
           <Box display="flex" alignItems="baseline">
