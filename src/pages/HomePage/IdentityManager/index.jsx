@@ -3,10 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import CustomTypography from "src/components/CustomTypography";
 import StatusTable from "./StatusTable";
-import { fetchData, fetchPublishedData } from "src/redux/adminSlice";
+import { fetchData, handlePublishData } from "src/redux/adminSlice";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { handleUpdateRootClaim } from "src/redux/adminSlice";
 import { handleConnectWallet, handleSwitchChain } from "src/redux/walletSlice";
 import { CONTRACT_OWNER_ADDRESS, FS } from "src/constants";
 import { useSnackbar } from "notistack";
@@ -18,44 +17,46 @@ export default function IdentityManager() {
   const fetchingStatus = useSelector(
     (state) => state.adminSlice.fetchingStatus
   );
-  const fetchingPublishedDataStatus = useSelector(
-    (state) => state.adminSlice.fetchingPublishedDataStatus
-  );
+
   const issueList = useSelector((state) => state.adminSlice.issueList);
-  const publishedData = useSelector((state) => state.adminSlice.publishedData);
   const metamaskAccount = useSelector((state) => state.walletSlice.address);
-  const updatingRootClaimStatus = useSelector(
-    (state) => state.adminSlice.updatingRootClaimStatus
+  const publishingDataStatus = useSelector(
+    (state) => state.adminSlice.publishingDataStatus
   );
 
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    dp(fetchData());
     handleSwitchChain();
-    if (publishedData === undefined) dp(fetchPublishedData());
     if (metamaskAccount === undefined) dp(handleConnectWallet());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (updatingRootClaimStatus === FS.SUCCESS) {
-      enqueueSnackbar("Update root claim successfully", {
+    if (publishingDataStatus === FS.IDLE || publishingDataStatus === FS.SUCCESS)
+      dp(fetchData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishingDataStatus]);
+
+  useEffect(() => {
+    if (publishingDataStatus === FS.SUCCESS) {
+      enqueueSnackbar("Publish data successfully", {
         variant: "success",
         dense: "true",
         preventDuplicate: true,
         autoHideDuration: 2000,
       });
-    } else if (updatingRootClaimStatus === FS.FAILED) {
-      enqueueSnackbar("Update root claim failed", {
+    } else if (publishingDataStatus === FS.FAILED) {
+      enqueueSnackbar("Publish data failed", {
         variant: "error",
         dense: "true",
         preventDuplicate: true,
         autoHideDuration: 2000,
       });
     }
-  }, [updatingRootClaimStatus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishingDataStatus]);
 
   const history = useHistory();
 
@@ -67,12 +68,8 @@ export default function IdentityManager() {
   return (
     <>
       <CustomBackdrop
-        open={updatingRootClaimStatus === FS.FETCHING}
-        label="Updating root claim..."
-      />
-      <CustomBackdrop
-        open={fetchingPublishedDataStatus === FS.FETCHING}
-        label="Fetching latest data..."
+        open={publishingDataStatus === FS.FETCHING}
+        label="Publishing data..."
       />
       {role === "user" && login !== undefined && (
         <Redirect to="/home/identity" />
@@ -99,16 +96,7 @@ export default function IdentityManager() {
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
-            } else
-              dp(
-                handleUpdateRootClaim(
-                  metamaskAccount,
-                  publishedData.proof.pi_a,
-                  publishedData.proof.pi_b,
-                  publishedData.proof.pi_c,
-                  publishedData.publicSignals
-                )
-              );
+            } else dp(handlePublishData(metamaskAccount));
           }}
           btn2Handler={() => history.push("/home/issue-identity")}
         />

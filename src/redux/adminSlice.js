@@ -6,9 +6,7 @@ import { updateRootClaim } from "src/contract";
 const initialState = {
   issueList: [],
   fetchingStatus: FS.IDLE,
-  fetchingPublishedDataStatus: FS.IDLE,
-  publishedData: undefined,
-  updatingRootClaimStatus: FS.IDLE,
+  publishingDataStatus: FS.IDLE,
 };
 
 export const fetchData = () => async (dispatch) => {
@@ -22,31 +20,39 @@ export const fetchData = () => async (dispatch) => {
   }
 };
 
-export const fetchPublishedData = () => async (dispatch) => {
-  dispatch(startFetchPublishedData());
+export const handlePublishData = (account) => async (dispatch) => {
+  dispatch(startPublishData());
   try {
     const res = await Axios.get(`${BASE_API_URL}/published/data`);
     const data = res.data;
-    dispatch(fetchPublishedDataSuccess(data));
+    console.log(data);
+    await updateRootClaim(
+      account,
+      data.optionName,
+      data.proof.pi_a,
+      data.proof.pi_b,
+      data.proof.pi_c,
+      data.publicSignals,
+      data.currentRoot
+    ).then(async (res) => {
+      if (res === 1) {
+        try {
+          await Axios.post(`${BASE_API_URL}/published`, {
+            root: data.publicSignals[0],
+          });
+          dispatch(publishDataSucess());
+        } catch (err) {
+          dispatch(publishDataFailed());
+        }
+      } else if (res === -1) {
+        dispatch(publishDataFailed());
+        return;
+      }
+    });
   } catch (err) {
-    dispatch(fetchPublishedDataFailed());
+    dispatch(publishDataFailed());
   }
 };
-
-export const handleUpdateRootClaim =
-  (account, pi_a, pi_b, pi_c, input) => async (dispatch) => {
-    dispatch(startUpdateRootClaim());
-    try {
-      updateRootClaim(account, pi_a, pi_b, pi_c, input)
-        .then((res) => {
-          if (res === 1) dispatch(updateRootClaimSuccess());
-          else if (res === -1) dispatch(updateRootClaimFailed());
-        })
-        .catch(() => updateRootClaimFailed());
-    } catch (err) {
-      dispatch(updateRootClaimFailed());
-    }
-  };
 
 const adminSlice = createSlice({
   name: "adminSlice",
@@ -62,24 +68,14 @@ const adminSlice = createSlice({
     getIssueListFail: (state) => {
       state.fetchingStatus = FS.FAILED;
     },
-    startFetchPublishedData: (state) => {
-      state.fetchingPublishedDataStatus = FS.FETCHING;
+    startPublishData: (state) => {
+      state.publishingDataStatus = FS.FETCHING;
     },
-    fetchPublishedDataSuccess: (state, action) => {
-      state.publishedData = action.payload;
-      state.fetchingPublishedDataStatus = FS.SUCCESS;
+    publishDataSucess: (state) => {
+      state.publishingDataStatus = FS.SUCCESS;
     },
-    fetchPublishedDataFailed: (state) => {
-      state.fetchingPublishedDataStatus = FS.FAILED;
-    },
-    startUpdateRootClaim: (state) => {
-      state.updatingRootClaimStatus = FS.FETCHING;
-    },
-    updateRootClaimSuccess: (state) => {
-      state.updatingRootClaimStatus = FS.SUCCESS;
-    },
-    updateRootClaimFailed: (state) => {
-      state.updatingRootClaimStatus = FS.FAILED;
+    publishDataFailed: (state) => {
+      state.publishingDataStatus = FS.FAILED;
     },
   },
 });
@@ -89,10 +85,7 @@ export const {
   startGetIssueList,
   getIssueListSuccess,
   getIssueListFail,
-  startFetchPublishedData,
-  fetchPublishedDataSuccess,
-  fetchPublishedDataFailed,
-  startUpdateRootClaim,
-  updateRootClaimSuccess,
-  updateRootClaimFailed,
+  startPublishData,
+  publishDataSucess,
+  publishDataFailed,
 } = adminSlice.actions;

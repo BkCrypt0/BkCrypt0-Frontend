@@ -1,5 +1,5 @@
 import abi from "../abi/KYC.json";
-import { CONTRACT_ADDRESS, } from "src/constants";
+import { CONTRACT_ADDRESS } from "src/constants";
 
 const Web3 = require("web3");
 const web3 = new Web3(window.ethereum);
@@ -12,7 +12,8 @@ export const verifyProof = (object) => {
       object.pi_a,
       object.pi_b,
       object.pi_c,
-      object.input
+      object.input,
+      object.currentRoot
     )
     .call((err, result) => {
       console.log(err);
@@ -20,13 +21,22 @@ export const verifyProof = (object) => {
     });
 };
 
-export const updateRootClaim = async (account, pi_a, pi_b, pi_c, input) => {
+export const updateRootClaim = async (
+  account,
+  optionName,
+  pi_a,
+  pi_b,
+  pi_c,
+  input,
+  currentRoot
+) => {
   try {
     await contract.methods
-      .updateRootClaim(pi_a, pi_b, pi_c, input)
+      .updateRootClaim(optionName, pi_a, pi_b, pi_c, input, currentRoot)
       .send({ from: account });
     return 1;
   } catch (err) {
+    console.log(err);
     return -1;
   }
 };

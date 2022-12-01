@@ -380,6 +380,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_rootHistorySize",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRootHistorySize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
@@ -400,24 +413,34 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_optionName",
+        "type": "string"
+      },
+      {
         "internalType": "uint256[2]",
-        "name": "a",
+        "name": "pi_a",
         "type": "uint256[2]"
       },
       {
         "internalType": "uint256[2][2]",
-        "name": "b",
+        "name": "pi_b",
         "type": "uint256[2][2]"
       },
       {
         "internalType": "uint256[2]",
-        "name": "c",
+        "name": "pi_c",
         "type": "uint256[2]"
       },
       {
         "internalType": "uint256[]",
-        "name": "inputs",
+        "name": "input",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentRoot",
+        "type": "uint256"
       }
     ],
     "name": "updateRootClaim",
@@ -434,24 +457,34 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_optionName",
+        "type": "string"
+      },
+      {
         "internalType": "uint256[2]",
-        "name": "a",
+        "name": "pi_a",
         "type": "uint256[2]"
       },
       {
         "internalType": "uint256[2][2]",
-        "name": "b",
+        "name": "pi_b",
         "type": "uint256[2][2]"
       },
       {
         "internalType": "uint256[2]",
-        "name": "c",
+        "name": "pi_c",
         "type": "uint256[2]"
       },
       {
         "internalType": "uint256[]",
-        "name": "inputs",
+        "name": "input",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentRoot",
+        "type": "uint256"
       }
     ],
     "name": "updateRootRevoke",
@@ -474,17 +507,17 @@
       },
       {
         "internalType": "uint256[2]",
-        "name": "a",
+        "name": "pi_a",
         "type": "uint256[2]"
       },
       {
         "internalType": "uint256[2][2]",
-        "name": "b",
+        "name": "pi_b",
         "type": "uint256[2][2]"
       },
       {
         "internalType": "uint256[2]",
-        "name": "c",
+        "name": "pi_c",
         "type": "uint256[2]"
       },
       {
