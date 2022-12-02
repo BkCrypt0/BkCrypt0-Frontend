@@ -17,6 +17,10 @@ export default function IdentityManager() {
   const fetchingStatus = useSelector(
     (state) => state.adminSlice.fetchingStatus
   );
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
+  const role = accounts[activeAccount]?.role;
 
   const issueList = useSelector((state) => state.adminSlice.issueList);
   const metamaskAccount = useSelector((state) => state.walletSlice.address);
@@ -29,9 +33,10 @@ export default function IdentityManager() {
 
   useEffect(() => {
     handleSwitchChain();
-    if (metamaskAccount === undefined) dp(handleConnectWallet());
+    if (metamaskAccount === undefined && role === "admin")
+      dp(handleConnectWallet());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [role, metamaskAccount]);
 
   useEffect(() => {
     if (publishingDataStatus === FS.IDLE || publishingDataStatus === FS.SUCCESS)
@@ -59,11 +64,6 @@ export default function IdentityManager() {
   }, [publishingDataStatus]);
 
   const history = useHistory();
-
-  const activeAccount = useSelector(
-    (state) => state.accountSlice.activeAccount
-  );
-  const role = accounts[activeAccount]?.role;
 
   return (
     <>

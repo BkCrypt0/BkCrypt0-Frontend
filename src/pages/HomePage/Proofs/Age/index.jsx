@@ -12,6 +12,11 @@ export default function Age() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const ageProof = useSelector((state) => state.proofSlice.ageProof);
+  const saveAgeProof = {
+    proof: JSON.parse(ageProof?.proof),
+    input: JSON.parse(ageProof?.input),
+  };
+
   return (
     <>
       <Box
@@ -31,7 +36,8 @@ export default function Age() {
               color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
             }}
           >
-            {ageProof?.proof}
+            {'{\n "proof": ' + ageProof?.proof + ",\n\n "}
+            {'"input": ' + ageProof?.input + "\n}"}
           </code>
         </pre>
         <Box
@@ -61,8 +67,8 @@ export default function Age() {
           minHeight="50px"
           minWidth="150px"
           onClick={() => {
-            var blob = new Blob([ageProof?.proof], {
-              type: "text/plain;charset=utf-8",
+            var blob = new Blob([JSON.stringify(saveAgeProof)], {
+              type: "application/json",
             });
             FileSaver.saveAs(blob, "ageProof.json");
           }}

@@ -141,6 +141,7 @@ export default function SignMessageDialog({
           )}
           {loading === true && (
             <CircularProgress
+              disableShrink
               sx={{
                 color: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
               }}

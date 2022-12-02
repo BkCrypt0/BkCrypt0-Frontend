@@ -240,7 +240,7 @@ export default function Identity() {
                   <CustomTypography buttonText>Claim Identity</CustomTypography>
                 )}
                 {claimingIdentityStatus === FS.FETCHING && (
-                  <CircularProgress
+                  <CircularProgress disableShrink
                     sx={{
                       color:
                         themeMode === THEME_MODE.LIGHT ? "white" : "#434343",

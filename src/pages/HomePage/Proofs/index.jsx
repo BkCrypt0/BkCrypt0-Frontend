@@ -1,4 +1,5 @@
 import Age from "./Age";
+import Province from "./Province";
 import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import { useSelector } from "react-redux";
@@ -17,6 +18,8 @@ export default function Proofs() {
   );
   const role = accounts[activeAccount]?.role;
   const ageProof = useSelector((state) => state.proofSlice.ageProof);
+  const provinceProof = useSelector((state) => state.proofSlice.provinceProof);
+
   return (
     <>
       {role === "admin" && login !== undefined && (
@@ -39,7 +42,6 @@ export default function Proofs() {
                   : "rgba(53, 53, 53, 0.4)"
               }`,
               paddingY: 3,
-              mb: 3,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -49,6 +51,44 @@ export default function Proofs() {
           </Box>
         )}
         {ageProof !== undefined && <Age />}
+
+        <Box
+          sx={{
+            mt: 4,
+            background:
+              themeMode === THEME_MODE.DARK
+                ? "rgba(216, 216, 216, 0.3)"
+                : "rgba(53, 53, 53, 0.3)",
+            borderRadius: "20px",
+            width: mobile ? "100%" : tablet ? "90%" : "50%",
+            mb: 4,
+          }}
+          height="2px"
+        />
+        {provinceProof === undefined && (
+          <Box
+            sx={{
+              background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              width: mobile ? "100%" : tablet ? "90%" : "50%",
+              borderRadius: "10px",
+              boxShadow: `5px 5px 15px 3px ${
+                themeMode === THEME_MODE.DARK
+                  ? "rgba(0, 0, 0, 0.7)"
+                  : "rgba(53, 53, 53, 0.4)"
+              }`,
+              paddingY: 3,
+              mb: 3,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <CustomTypography variant="h5">
+              Province proof empty
+            </CustomTypography>
+          </Box>
+        )}
+        {provinceProof !== undefined && <Province />}
       </Box>
     </>
   );

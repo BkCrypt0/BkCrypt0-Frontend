@@ -186,7 +186,11 @@ export default function IssueNewIdentity() {
           >
             <CustomTypography buttonText={true}>Submit</CustomTypography>
           </CustomButton>
-          <CustomButton minHeight="50px" minWidth="150px">
+          <CustomButton
+            minHeight="50px"
+            minWidth="150px"
+            onClick={() => history.push("/home/identity-manager")}
+          >
             <CustomTypography buttonText={true}>Discard</CustomTypography>
           </CustomButton>
         </Box>

@@ -151,7 +151,7 @@ export default function StatusTable({
           </TableBody>
         </Table>
         {(fetchingStatus === FS.IDLE || fetchingStatus === FS.FETCHING) && (
-          <CircularProgress />
+          <CircularProgress disableShrink />
         )}
         {fetchingStatus === FS.FAILED && "FAILED"}
       </Paper>

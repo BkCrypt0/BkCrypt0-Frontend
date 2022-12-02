@@ -5,6 +5,8 @@ import { calculateAgeProof } from "src/service/utils";
 const initialState = {
   generateAgeProofStatus: FS.IDLE,
   ageProof: undefined,
+  provinceProof: undefined,
+  generateProvinceProofStatus: FS.IDLE,
 };
 
 export const handleCaculateAgeProof = (input) => async (dispatch) => {
@@ -19,7 +21,7 @@ export const handleCaculateAgeProof = (input) => async (dispatch) => {
             maxAge: input.maxAge,
             minAge: input.minAge,
             proof: res.proof,
-            result: res.result,
+            input: res.input,
           })
         );
     });
@@ -42,6 +44,16 @@ const proofSlice = createSlice({
     generateAgeProofFailed: (state) => {
       state.generateAgeProofStatus = FS.FAILED;
     },
+    startGenerateProvinceProof: (state) => {
+      state.generateProvinceProofStatus = FS.FETCHING;
+    },
+    generateProvinceProofSuccess: (state, action) => {
+      state.provinceProof = action.payload;
+      state.generateProvinceProofStatus = FS.SUCCESS;
+    },
+    generateProvinceProofFailed: (state) => {
+      state.generateProvinceProofStatus = FS.FAILED;
+    },
   },
 });
 
@@ -50,4 +62,7 @@ export const {
   startGenerateAgeProof,
   generateAgeProofSuccess,
   generateAgeProofFailed,
+  startGenerateProvinceProof,
+  generateProvinceProofSuccess,
+  generateProvinceProofFailed,
 } = proofSlice.actions;

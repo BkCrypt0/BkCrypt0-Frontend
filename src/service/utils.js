@@ -186,20 +186,24 @@ export async function calculateAgeProof(input) {
     const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
       input,
       "http://localhost:3000/kycAge.wasm",
-      "http://localhost:3000/circuit_final.zkey"
+      "http://localhost:3000/circuit_age.zkey"
     );
 
-    const vkey = await fetch(
-      "http://localhost:3000/verification_key.json"
-    ).then(function (res) {
-      return res.json();
-    });
+    // const vkey = await fetch(
+    //   "http://localhost:3000/verification_age_key.json"
+    // ).then(function (res) {
+    //   return res.json();
+    // });
 
-    const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
-    const finalRes = { proof: JSON.stringify(proof, null, 1), result: res };
+    // const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
+    const finalRes = {
+      proof: JSON.stringify(proof, null, 1),
+      input: JSON.stringify(publicSignals, null, 1),
+    };
     console.log(finalRes);
     return finalRes;
   } catch (err) {
+    console.log(err);
     return -1;
   }
 }

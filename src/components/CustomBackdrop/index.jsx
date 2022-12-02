@@ -1,5 +1,6 @@
 import { Backdrop, Box } from "@mui/material";
 import CustomTypography from "../CustomTypography";
+import "./index.css";
 
 export default function CustomBackdrop({ open, label }) {
   return (
@@ -15,13 +16,14 @@ export default function CustomBackdrop({ open, label }) {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           alignItems: "center",
+          justifyContent: "center",
           width: "100%",
         }}
       >
-        <CustomTypography variant="h3" color="white">
-          {label}
+        <CustomTypography variant="h3" color="white" display="flex">
+          {label} <div className="loading">.</div>
         </CustomTypography>
       </Box>
     </Backdrop>
