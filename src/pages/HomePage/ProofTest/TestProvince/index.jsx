@@ -6,7 +6,7 @@ import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { verifyProof } from "src/contract";
-import ImportAgeProof from "src/components/ImportAgeProof";
+import ImportProvinceProof from "src/components/ImportProvinceProof";
 import { useSnackbar } from "notistack";
 import TestResultDialog from "../TestResultDialog";
 
@@ -16,7 +16,7 @@ export default function TestProvince() {
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
   const [res, setRes] = useState(false);
-  const provinceProof = useSelector((state) => state.proofSlice.ageProof);
+  const provinceProof = useSelector((state) => state.proofSlice.provinceProof);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
 
@@ -54,7 +54,7 @@ export default function TestProvince() {
             </CustomTypography>
           </Box>
           <Box width="100%">
-            {provinceProof === undefined && <ImportAgeProof />}
+            {provinceProof === undefined && <ImportProvinceProof />}
             {provinceProof !== undefined && (
               <CustomTypography variant="h6">
                 Your proof is ready to test

@@ -60,6 +60,15 @@ export const handleImportAgeProof = (input) => async (dispatch) => {
   );
 };
 
+export const handleImportProvinceProof = (input) => async (dispatch) => {
+  dispatch(
+    generateProvinceProofSuccess({
+      proof: input.proof,
+      input: input.input,
+    })
+  );
+};
+
 const proofSlice = createSlice({
   name: "proofSlice",
   initialState: initialState,
