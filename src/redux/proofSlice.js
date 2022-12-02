@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FS } from "../constants";
-import { calculateAgeProof } from "src/service/utils";
+import { calculateAgeProof, calculateProvinceProof } from "src/service/utils";
 
 const initialState = {
   generateAgeProofStatus: FS.IDLE,
@@ -28,6 +28,36 @@ export const handleCaculateAgeProof = (input) => async (dispatch) => {
   } catch (err) {
     dispatch(generateAgeProofFailed());
   }
+};
+
+export const handleCaculateProvinceProof = (input) => async (dispatch) => {
+  dispatch(startGenerateProvinceProof());
+  try {
+    calculateProvinceProof(input).then((res) => {
+      if (res === -1) {
+        dispatch(generateProvinceProofFailed());
+      } else
+        dispatch(
+          generateProvinceProofSuccess({
+            proof: res.proof,
+            input: res.input,
+          })
+        );
+    });
+  } catch (err) {
+    dispatch(generateProvinceProofFailed());
+  }
+};
+
+export const handleImportAgeProof = (input) => async (dispatch) => {
+  dispatch(
+    generateAgeProofSuccess({
+      maxAge: input.maxAge,
+      minAge: input.minAge,
+      proof: input.proof,
+      input: input.input,
+    })
+  );
 };
 
 const proofSlice = createSlice({

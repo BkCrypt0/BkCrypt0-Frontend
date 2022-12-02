@@ -82,10 +82,12 @@ export default function AgeProof({ proof }) {
               currentDay: date().currentDay,
               minAge: Number(document.getElementById("min-age").value),
               maxAge: Number(document.getElementById("max-age").value),
+              // thay place thi tu currentYear -> maxAge thanh placesExpecting => gan so tu calcPlace
               expireTime: date().expireTime,
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
+            console.log(input);
             dp(handleCaculateAgeProof(input));
           }
         }}

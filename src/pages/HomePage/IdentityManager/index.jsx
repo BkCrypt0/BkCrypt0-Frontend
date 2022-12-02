@@ -69,7 +69,7 @@ export default function IdentityManager() {
     <>
       <CustomBackdrop
         open={publishingDataStatus === FS.FETCHING}
-        label="Publishing data..."
+        label="Publishing data"
       />
       {role === "user" && login !== undefined && (
         <Redirect to="/home/identity" />

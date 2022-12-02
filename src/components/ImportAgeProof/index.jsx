@@ -1,21 +1,17 @@
 import { useRef } from "react";
 import { useSnackbar } from "notistack";
 import { useSelector, useDispatch } from "react-redux";
-import { createNewIdentity } from "src/redux/identitySlice";
 import { THEME_MODE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import { Box } from "@mui/material";
 import { Upload } from "@mui/icons-material";
+import { handleImportAgeProof } from "src/redux/proofSlice";
 
-export default function ImportProof() {
+export default function ImportAgeProof() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
   const inputRef = useRef(null);
   const { enqueueSnackbar } = useSnackbar();
-  const accounts = useSelector((state) => state.accountSlice.accounts);
-  const activeAccount = useSelector(
-    (state) => state.accountSlice.activeAccount
-  );
 
   const dp = useDispatch();
 
@@ -37,37 +33,9 @@ export default function ImportProof() {
       });
       return;
     }
-    const identityJSON = await fileObj.text();
-    const importIdentity = JSON.parse(identityJSON);
-
-    if (importIdentity.publicKey !== accounts[activeAccount]?.publicKey) {
-      enqueueSnackbar("Unmatched publicKey! Please import your own identity", {
-        variant: "error",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    } else if (
-      importIdentity.publicKey === accounts[activeAccount]?.publicKey
-    ) {
-      dp(
-        createNewIdentity(
-          importIdentity.publicKey,
-          importIdentity.CCCD,
-          importIdentity.firstName,
-          importIdentity.lastName,
-          importIdentity.sex,
-          importIdentity.DoBdate,
-          importIdentity.BirthPlace
-        )
-      );
-      enqueueSnackbar("Import identity successfully", {
-        variant: "success",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
-    }
+    const proofJSON = await fileObj.text();
+    const importProof = JSON.parse(proofJSON);
+    dp(handleImportAgeProof(importProof));
   };
   return (
     <>
@@ -77,17 +45,6 @@ export default function ImportProof() {
         type="file"
         onChange={handleFileChange}
       />
-      {/* <CustomButton
-        minHeight="50px"
-        minWidth={mobile ? undefined : "150px"}
-        width={mobile ? "47%" : undefined}
-        mr={mobile ? 0 : 3}
-        onClick={async () => {
-          handleClick();
-        }}
-      >
-        <CustomTypography buttonText={true}>IMPORT IDENTITY</CustomTypography>
-      </CustomButton> */}
       <Box
         width="100%"
         display="flex"

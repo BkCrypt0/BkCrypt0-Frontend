@@ -1,6 +1,8 @@
+import data from "src/documents/provinces_code.json";
 const { eddsa, babyJub, mimc7 } = require("circomlib");
 const HDKey = require("hdkey");
 const BigInt = require("big-integer");
+const BigNumber = require("bignumber.js");
 
 export const testServerObj = {
   rootRevoke: "0",
@@ -145,14 +147,9 @@ export function getAgeInput({
   currentDay,
   minAge,
   maxAge,
-  expireTime = 1668852906,
-  privateKey = "0000000000000000000000000000000000000000000000000000000000000000",
-  infoObject = {
-    CCCD: 0,
-    sex: 0,
-    DoBdate: 20010201,
-    BirthPlace: 0,
-  },
+  expireTime,
+  privateKey,
+  infoObject,
 }) {
   const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
 
@@ -178,9 +175,9 @@ export function getAgeInput({
     value: value,
   });
   const merge = { ...serverInfo, ...info, ...ageInput, ...signMes };
-  console.log(merge);
   return merge;
 }
+
 export async function calculateAgeProof(input) {
   try {
     const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
@@ -200,7 +197,79 @@ export async function calculateAgeProof(input) {
       proof: JSON.stringify(proof, null, 1),
       input: JSON.stringify(publicSignals, null, 1),
     };
-    console.log(finalRes);
+    return finalRes;
+  } catch (err) {
+    return -1;
+  }
+}
+
+export function calculatePlace(places) {
+  var indexs = [];
+  for (let i = 0; i < places.length; i++) {
+    var index = data[places[i]].index;
+    console.log(index);
+    indexs.push(index);
+  }
+  var defaultPlace = new Array(63).fill("0");
+  var output = "";
+  for (let i = 0; i < indexs.length; i++) {
+    defaultPlace[indexs[i]] = "1";
+  }
+  for (let i = 0; i < defaultPlace.length; ++i) {
+    output += defaultPlace[i];
+  }
+  return new BigNumber("0b" + output).toString();
+}
+
+export function getProvinceInput({
+  serverInfo,
+  placesExpecting,
+  expireTime,
+  privateKey,
+  infoObject,
+}) {
+  const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
+
+  const info = {
+    CCCD: Number(infoObject.CCCD),
+    sex: infoObject.sex,
+    DoBdate: Number(infoObject.DoBdate),
+    BirthPlace: Number(infoObject.BirthPlace),
+    publicKey: publicKey.map((e) => e.toString()),
+  };
+  const provinceInput = {
+    placesExpecting: placesExpecting,
+  };
+
+  const value = hashValue(infoObject, privateKey);
+  const signMes = getSignMessage({
+    privateKey: privateKey,
+    expireTime: expireTime,
+    value: value,
+  });
+  const merge = { ...serverInfo, ...info, ...provinceInput, ...signMes };
+  return merge;
+}
+
+export async function calculateProvinceProof(input) {
+  try {
+    const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
+      input,
+      "http://localhost:3000/kycPlaces.wasm",
+      "http://localhost:3000/circuit_province.zkey"
+    );
+
+    // const vkey = await fetch(
+    //   "http://localhost:3000/verification_age_key.json"
+    // ).then(function (res) {
+    //   return res.json();
+    // });
+
+    // const res = await window.snarkjs.groth16.verify(vkey, publicSignals, proof);
+    const finalRes = {
+      proof: JSON.stringify(proof, null, 1),
+      input: JSON.stringify(publicSignals, null, 1),
+    };
     return finalRes;
   } catch (err) {
     console.log(err);

@@ -145,9 +145,8 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
                       .getElementById("dob")
                       .value.toString()
                       .replaceAll("/", ""),
-                    ProvinceCode[
-                      document.getElementById("bp").value.toString()
-                    ],
+                    ProvinceCode[document.getElementById("bp").value.toString()]
+                      .code,
                     true
                   )
                 );

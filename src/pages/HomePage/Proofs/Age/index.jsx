@@ -12,10 +12,6 @@ export default function Age() {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const ageProof = useSelector((state) => state.proofSlice.ageProof);
-  const saveAgeProof = {
-    proof: JSON.parse(ageProof?.proof),
-    input: JSON.parse(ageProof?.input),
-  };
 
   return (
     <>
@@ -67,7 +63,7 @@ export default function Age() {
           minHeight="50px"
           minWidth="150px"
           onClick={() => {
-            var blob = new Blob([JSON.stringify(saveAgeProof)], {
+            var blob = new Blob([JSON.stringify(ageProof)], {
               type: "application/json",
             });
             FileSaver.saveAs(blob, "ageProof.json");

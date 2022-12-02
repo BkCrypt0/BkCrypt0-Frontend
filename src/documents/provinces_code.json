@@ -1,65 +1,127 @@
 {
-  "An Giang": 67,
-  "Ba Ria - Vung Tau": 72,
-  "Bac Lieu": 94,
-  "Bac Kan": 97,
-  "Bac Giang": 98,
-  "Bac Ninh": 99,
-  "Ben Tre": 71,
-  "Binh Duong": 61,
-  "Binh Dinh": 77,
-  "Binh Phuoc": 93,
-  "Binh Thuan": 86,
-  "Ca Mau": 69,
-  "Cao Bang": 11,
-  "Can Tho": 65,
-  "Da Nang": 43,
-  "Dak Lak": 47,
-  "Dak Nong": 48,
-  "Dien Bien": 27,
-  "Dong Nai": 60,
-  "Dong Thap": 66,
-  "Gia Lai": 81,
-  "Ha Giang": 23,
-  "Ha Nam": 90,
-  "Ha Noi": 29,
-  "Ha Tinh": 38,
-  "Hai Duong": 34,
-  "Hai Phong": 15,
-  "Hau Giang": 95,
-  "Hoa Binh": 28,
-  "TP. HCM": 50,
-  "Hung Yen": 89,
-  "Khanh Hoa": 79,
-  "Kien Giang": 68,
-  "Kon Tum": 82,
-  "Lai Chau": 25,
-  "Lang Son": 12,
-  "Lao Cai": 24,
-  "Lam Dong": 49,
-  "Long An": 62,
-  "Nam Dinh": 18,
-  "Nghe An": 37,
-  "Ninh Binh": 35,
-  "Ninh Thuan": 85,
-  "Phu Tho": 19,
-  "Phu Yen": 78,
-  "Quang Binh": 73,
-  "Quang Nam": 92,
-  "Quang Ngai": 76,
-  "Quang Ninh": 14,
-  "Quang Tri": 74,
-  "Soc Trang": 83,
-  "Son La": 26,
-  "Tay Ninh": 70,
-  "Thai Binh": 17,
-  "Thai Nguyen": 20,
-  "Thanh Hoa": 36,
-  "Thua Thien Hue": 75,
-  "Tien Giang": 63,
-  "Tra Vinh": 84,
-  "Tuyen Quang": 22,
-  "Vinh Long": 64,
-  "Vinh Phuc": 88,
-  "Yen Bai": 21
+  "An Giang": { "name": "An Giang", "code": 67, "index": 0 },
+
+  "Ba Ria - Vung Tau": { "name": "Ba Ria - Vung Tau", "code": 72, "index": 1 },
+
+  "Bac Lieu": { "name": "Bac Lieu", "code": 94, "index": 2 },
+
+  "Bac Kan": { "name": "Bac Kan", "code": 97, "index": 3 },
+
+  "Bac Giang": { "name": "Bac Giang", "code": 98, "index": 4 },
+
+  "Bac Ninh": { "name": "Bac Ninh", "code": 99, "index": 5 },
+
+  "Ben Tre": { "name": "Ben Tre", "code": 71, "index": 6 },
+
+  "Binh Duong": { "name": "Binh Duong", "code": 61, "index": 7 },
+
+  "Binh Dinh": { "name": "Binh Dinh", "code": 77, "index": 8 },
+
+  "Binh Phuoc": { "name": "Binh Phuoc", "code": 93, "index": 9 },
+
+  "Binh Thuan": { "name": "Binh Thuan", "code": 86, "index": 10 },
+
+  "Ca Mau": { "name": "Ca Mau", "code": 69, "index": 11 },
+
+  "Cao Bang": { "name": "Cao Bang", "code": 11, "index": 12 },
+
+  "Can Tho": { "name": "Can Tho", "code": 65, "index": 13 },
+
+  "Da Nang": { "name": "Da Nang", "code": 43, "index": 14 },
+
+  "Dak Lak": { "name": "Dak Lak", "code": 47, "index": 15 },
+
+  "Dak Nong": { "name": "Dak Nong", "code": 48, "index": 16 },
+
+  "Dien Bien": { "name": "Dien Bien", "code": 27, "index": 17 },
+
+  "Dong Nai": { "name": "Dong Nai", "code": 60, "index": 18 },
+
+  "Dong Thap": { "name": "Dong Thap", "code": 66, "index": 19 },
+
+  "Gia Lai": { "name": "Gia Lai", "code": 81, "index": 20 },
+
+  "Ha Giang": { "name": "Ha Giang", "code": 23, "index": 21 },
+
+  "Ha Nam": { "name": "Ha Nam", "code": 90, "index": 22 },
+
+  "Ha Noi": { "name": "Ha Noi", "code": 29, "index": 23 },
+
+  "Ha Tinh": { "name": "Ha Tinh", "code": 38, "index": 24 },
+
+  "Hai Duong": { "name": "Hai Duong", "code": 34, "index": 25 },
+
+  "Hai Phong": { "name": "Hai Phong", "code": 15, "index": 26 },
+
+  "Hau Giang": { "name": "Hau Giang", "code": 95, "index": 27 },
+
+  "Hoa Binh": { "name": "Hoa Binh", "code": 28, "index": 28 },
+
+  "TP. HCM": { "name": "TP. HCM", "code": 50, "index": 29 },
+
+  "Hung Yen": { "name": "Hung Yen", "code": 89, "index": 30 },
+
+  "Khanh Hoa": { "name": "Khanh Hoa", "code": 79, "index": 31 },
+
+  "Kien Giang": { "name": "Kien Giang", "code": 68, "index": 32 },
+
+  "Kon Tum": { "name": "Kon Tum", "code": 82, "index": 33 },
+
+  "Lai Chau": { "name": "Lai Chau", "code": 25, "index": 34 },
+
+  "Lang Son": { "name": "Lang Son", "code": 12, "index": 35 },
+
+  "Lao Cai": { "name": "Lao Cai", "code": 24, "index": 36 },
+
+  "Lam Dong": { "name": "Lam Dong", "code": 49, "index": 37 },
+
+  "Long An": { "name": "Long An", "code": 62, "index": 38 },
+
+  "Nam Dinh": { "name": "Nam Dinh", "code": 18, "index": 39 },
+
+  "Nghe An": { "name": "Nghe An", "code": 37, "index": 40 },
+
+  "Ninh Binh": { "name": "Ninh Binh", "code": 35, "index": 41 },
+
+  "Ninh Thuan": { "name": "Ninh Thuan", "code": 85, "index": 42 },
+
+  "Phu Tho": { "name": "Phu Tho", "code": 19, "index": 43 },
+
+  "Phu Yen": { "name": "Phu Yen", "code": 78, "index": 44 },
+
+  "Quang Binh": { "name": "Quang Binh", "code": 73, "index": 45 },
+
+  "Quang Nam": { "name": "Quang Nam", "code": 92, "index": 46 },
+
+  "Quang Ngai": { "name": "Quang Ngai", "code": 76, "index": 47 },
+
+  "Quang Ninh": { "name": "Quang Ninh", "code": 14, "index": 48 },
+
+  "Quang Tri": { "name": "Quang Tri", "code": 74, "index": 49 },
+
+  "Soc Trang": { "name": "Soc Trang", "code": 83, "index": 50 },
+
+  "Son La": { "name": "Son La", "code": 26, "index": 51 },
+
+  "Tay Ninh": { "name": "Tay Ninh", "code": 70, "index": 52 },
+
+  "Thai Binh": { "name": "Thai Binh", "code": 17, "index": 53 },
+
+  "Thai Nguyen": { "name": "Thai Nguyen", "code": 20, "index": 54 },
+
+  "Thanh Hoa": { "name": "Thanh Hoa", "code": 36, "index": 55 },
+
+  "Thua Thien Hue": { "name": "Thua Thien Hue", "code": 75, "index": 56 },
+
+  "Tien Giang": { "name": "Tien Giang", "code": 63, "index": 57 },
+
+  "Tra Vinh": { "name": "Tra Vinh", "code": 84, "index": 58 },
+
+  "Tuyen Quang": { "name": "Tuyen Quang", "code": 22, "index": 59 },
+
+  "Vinh Long": { "name": "Vinh Long", "code": 64, "index": 60 },
+
+  "Vinh Phuc": { "name": "Vinh Phuc", "code": 88, "index": 61 },
+
+  "Yen Bai": { "name": "Yen Bai", "code": 21, "index": 62 }
 }

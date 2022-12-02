@@ -39,7 +39,7 @@ export default function ProofCreation() {
         {identityStatus === 2 && (
           <>
             <AgeProof proof={proof} />
-            <ProvinceProof />
+            <ProvinceProof proof={proof} />
           </>
         )}
         {identityStatus !== 2 && (

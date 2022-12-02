@@ -24,7 +24,6 @@ export const fetchUserProof = (publicKey) => async (dispatch) => {
       `${BASE_API_URL}/users/proof?publicKeyX=${publicKeyPair[0]}&publicKeyY=${publicKeyPair[1]}`
     );
     const data = res.data;
-    console.log(data);
     dispatch(fetchUserProofSuccess(data));
   } catch (err) {
     dispatch(fetchUserProofFailed());

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import CustomTypography from "src/components/CustomTypography";
 import TestAge from "./TestAge";
+import TestProvince from "./TestProvince";
 
 export default function ProofTest() {
   const accounts = useSelector((state) => state.accountSlice.accounts);
@@ -22,6 +23,7 @@ export default function ProofTest() {
           Test your proofs
         </CustomTypography>
         <TestAge />
+        <TestProvince />
       </Box>
     </>
   );

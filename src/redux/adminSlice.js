@@ -25,7 +25,6 @@ export const handlePublishData = (account) => async (dispatch) => {
   try {
     const res = await Axios.get(`${BASE_API_URL}/published/data`);
     const data = res.data;
-    console.log(data);
     await updateRootClaim(
       account,
       data.optionName,
