@@ -69,6 +69,10 @@ export const handleImportProvinceProof = (input) => async (dispatch) => {
   );
 };
 
+export const handleClearProof = () => (dispatch) => {
+  dispatch(clearProofSuccess());
+};
+
 const proofSlice = createSlice({
   name: "proofSlice",
   initialState: initialState,
@@ -93,6 +97,12 @@ const proofSlice = createSlice({
     generateProvinceProofFailed: (state) => {
       state.generateProvinceProofStatus = FS.FAILED;
     },
+    clearProofSuccess: (state) => {
+      state.ageProof = undefined;
+      state.provinceProof = undefined;
+      state.generateAgeProofStatus = FS.IDLE;
+      state.generateProvinceProofStatus = FS.IDLE;
+    },
   },
 });
 
@@ -104,4 +114,5 @@ export const {
   startGenerateProvinceProof,
   generateProvinceProofSuccess,
   generateProvinceProofFailed,
+  clearProofSuccess,
 } = proofSlice.actions;

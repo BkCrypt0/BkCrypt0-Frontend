@@ -23,7 +23,7 @@ export default function Province() {
           mb: 3,
         }}
       >
-        <pre style={{ marginBottom: "30px" }}>
+        <pre style={{ marginBottom: "30px", overflow: mobile && "auto" }}>
           <code
             style={{
               color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",

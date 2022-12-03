@@ -213,12 +213,12 @@ export function calculatePlace(places) {
   var defaultPlace = new Array(63).fill("0");
   var output = "";
   for (let i = 0; i < indexs.length; i++) {
-    defaultPlace[indexs[i]] = "1";
+    defaultPlace[63 - indexs[i]] = "1";
   }
   for (let i = 0; i < defaultPlace.length; ++i) {
     output += defaultPlace[i];
   }
-  return new BigNumber("0b" + output).toString();
+  return new BigNumber("0b" + output + "0").toString();
 }
 
 export function getProvinceInput({

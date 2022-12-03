@@ -20,6 +20,10 @@ export const fetchData = () => async (dispatch) => {
   }
 };
 
+export const handleResetPublishDataStatus = () => (dispatch) => {
+  dispatch(resetPublishDataStatus());
+};
+
 export const handlePublishData = (account) => async (dispatch) => {
   dispatch(startPublishData());
   try {
@@ -76,6 +80,9 @@ const adminSlice = createSlice({
     publishDataFailed: (state) => {
       state.publishingDataStatus = FS.FAILED;
     },
+    resetPublishDataStatus: (state) => {
+      state.publishingDataStatus = FS.IDLE;
+    },
   },
 });
 
@@ -87,4 +94,5 @@ export const {
   startPublishData,
   publishDataSucess,
   publishDataFailed,
+  resetPublishDataStatus,
 } = adminSlice.actions;

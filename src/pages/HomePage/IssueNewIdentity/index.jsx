@@ -164,7 +164,7 @@ export default function IssueNewIdentity() {
                     BirthPlace:
                       ProvinceCode[
                         document.getElementById("bp").value.toString()
-                      ],
+                      ].index,
                   });
                   enqueueSnackbar("Issue a new identity successfully!", {
                     variant: "success",

@@ -7,6 +7,7 @@ import { changeActiveAccount, logout } from "src/redux/accountSlice";
 import { clearIdentity } from "src/redux/identitySlice";
 import AddIcon from "@mui/icons-material/Add";
 import { NavLink } from "react-router-dom";
+import { handleClearProof } from "src/redux/proofSlice";
 
 export default function ChangeAccountDialog({ open, onClose, setOpen }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -44,6 +45,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
             if (activeAccount !== index) {
               dp(logout());
               dp(clearIdentity());
+              dp(handleClearProof());
             }
             setOpen(false);
           }}

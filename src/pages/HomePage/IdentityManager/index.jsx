@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import CustomTypography from "src/components/CustomTypography";
 import StatusTable from "./StatusTable";
-import { fetchData, handlePublishData } from "src/redux/adminSlice";
+import {
+  fetchData,
+  handlePublishData,
+  handleResetPublishDataStatus,
+} from "src/redux/adminSlice";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { handleConnectWallet, handleSwitchChain } from "src/redux/walletSlice";
@@ -62,6 +66,11 @@ export default function IdentityManager() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publishingDataStatus]);
+
+  useEffect(() => {
+    if (publishingDataStatus === FS.SUCCESS) dp(handleResetPublishDataStatus());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const history = useHistory();
 
