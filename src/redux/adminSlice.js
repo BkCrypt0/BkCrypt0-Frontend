@@ -8,6 +8,7 @@ const initialState = {
   fetchingStatus: FS.IDLE,
   publishingDataStatus: FS.IDLE,
   revokingDataStatus: FS.IDLE,
+  unRevokingDataStatus: FS.IDLE,
   revokeLimit: 3,
   selectedList: [],
   checkedList: [],
@@ -84,21 +85,70 @@ export const handleRevokeData = (account, identityList) => async (dispatch) => {
             CCCDs: identityList,
           });
           dispatch(revokeDataSuccess());
+          dispatch(clearSelectedListAndCheckedListSuccess());
         } catch (err) {
           dispatch(revokeDataFailed());
+          dispatch(clearSelectedListAndCheckedListSuccess());
         }
       } else if (res === -1) {
         dispatch(revokeDataFailed());
+        dispatch(clearSelectedListAndCheckedListSuccess());
+
         return;
       }
     });
   } catch (err) {
     dispatch(revokeDataFailed());
+    dispatch(clearSelectedListAndCheckedListSuccess());
+  }
+};
+
+export const handleUnRevokeData = (account, identity) => async (dispatch) => {
+  dispatch(startUnRevokeData());
+  try {
+    const res = await Axios.post(`${BASE_API_URL}/unrevoke/data`, {
+      CCCDs: identity,
+    });
+    const data = res.data;
+    await updateRootRevoke(
+      account,
+      data.optionName,
+      data.proof.pi_a,
+      data.proof.pi_b,
+      data.proof.pi_c,
+      data.publicSignals,
+      data.currentRoot
+    ).then(async (res) => {
+      if (res === 1) {
+        try {
+          await Axios.post(`${BASE_API_URL}/unrevoke`, {
+            root: data.publicSignals[0],
+            CCCDs: identity,
+          });
+          dispatch(unRevokeDataSuccess());
+          dispatch(clearSelectedListAndCheckedListSuccess());
+        } catch (err) {
+          dispatch(unRevokeDataFailed());
+          dispatch(clearSelectedListAndCheckedListSuccess());
+        }
+      } else if (res === -1) {
+        dispatch(unRevokeDataFailed());
+        dispatch(clearSelectedListAndCheckedListSuccess());
+        return;
+      }
+    });
+  } catch (err) {
+    dispatch(unRevokeDataFailed());
+    dispatch(clearSelectedListAndCheckedListSuccess());
   }
 };
 
 export const handleResetRevokeDataStatus = () => (dispatch) => {
   dispatch(resetRevokeDataStatus());
+};
+
+export const handleResetUnRevokeDataStatus = () => (dispatch) => {
+  dispatch(resetUnRevokeDataStatus());
 };
 
 export const addToSelectedList = (id) => (dispatch) => {
@@ -115,6 +165,10 @@ export const removeFromSelectedList = (id) => (dispatch) => {
 
 export const removeFromCheckedList = (id) => (dispatch) => {
   dispatch(removeFromCheckedListSuccess(id));
+};
+
+export const clearSelectedListAndCheckedList = () => (dispatch) => {
+  dispatch(clearSelectedListAndCheckedListSuccess());
 };
 
 const adminSlice = createSlice({
@@ -152,8 +206,20 @@ const adminSlice = createSlice({
     revokeDataFailed: (state) => {
       state.revokingDataStatus = FS.FAILED;
     },
+    startUnRevokeData: (state) => {
+      state.unRevokingDataStatus = FS.FETCHING;
+    },
+    unRevokeDataSuccess: (state) => {
+      state.unRevokingDataStatus = FS.SUCCESS;
+    },
+    unRevokeDataFailed: (state) => {
+      state.unRevokingDataStatus = FS.FAILED;
+    },
     resetRevokeDataStatus: (state) => {
       state.revokingDataStatus = FS.IDLE;
+    },
+    resetUnRevokeDataStatus: (state) => {
+      state.unRevokingDataStatus = FS.IDLE;
     },
     addToSelectedListSuccess: (state, action) => {
       state.selectedList = [action.payload, ...state.selectedList];
@@ -177,6 +243,10 @@ const adminSlice = createSlice({
       }
       state.checkedList = temp;
     },
+    clearSelectedListAndCheckedListSuccess: (state) => {
+      state.selectedList = [];
+      state.checkedList = [];
+    },
   },
 });
 
@@ -192,9 +262,14 @@ export const {
   startRevokeData,
   revokeDataSuccess,
   revokeDataFailed,
+  startUnRevokeData,
+  unRevokeDataSuccess,
+  unRevokeDataFailed,
   resetRevokeDataStatus,
+  resetUnRevokeDataStatus,
   addToCheckedListSuccess,
   addToSelectedListSuccess,
   removeFromCheckedListSuccess,
   removeFromSelectedListSuccess,
+  clearSelectedListAndCheckedListSuccess,
 } = adminSlice.actions;

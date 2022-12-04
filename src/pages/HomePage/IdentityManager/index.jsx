@@ -7,8 +7,11 @@ import {
   fetchData,
   handlePublishData,
   handleRevokeData,
+  handleUnRevokeData,
   handleResetPublishDataStatus,
   handleResetRevokeDataStatus,
+  handleResetUnRevokeDataStatus,
+  clearSelectedListAndCheckedList,
 } from "src/redux/adminSlice";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
@@ -36,6 +39,10 @@ export default function IdentityManager() {
   const revokingDataStatus = useSelector(
     (state) => state.adminSlice.revokingDataStatus
   );
+  const unRevokingDataStatus = useSelector(
+    (state) => state.adminSlice.unRevokingDataStatus
+  );
+
   const selectedList = useSelector((state) => state.adminSlice.selectedList);
   console.log(selectedList);
 
@@ -54,11 +61,13 @@ export default function IdentityManager() {
       publishingDataStatus === FS.IDLE ||
       publishingDataStatus === FS.SUCCESS ||
       revokingDataStatus === FS.IDLE ||
-      revokingDataStatus === FS.SUCCESS
+      revokingDataStatus === FS.SUCCESS ||
+      unRevokingDataStatus === FS.IDLE ||
+      unRevokingDataStatus === FS.SUCCESS
     )
       dp(fetchData());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publishingDataStatus, revokingDataStatus]);
+  }, [publishingDataStatus, revokingDataStatus, unRevokingDataStatus]);
 
   useEffect(() => {
     if (publishingDataStatus === FS.SUCCESS) {
@@ -75,6 +84,7 @@ export default function IdentityManager() {
         preventDuplicate: true,
         autoHideDuration: 2000,
       });
+      dp(handleResetPublishDataStatus());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publishingDataStatus]);
@@ -94,9 +104,30 @@ export default function IdentityManager() {
         preventDuplicate: true,
         autoHideDuration: 2000,
       });
+      dp(handleResetRevokeDataStatus());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revokingDataStatus]);
+
+  useEffect(() => {
+    if (unRevokingDataStatus === FS.SUCCESS) {
+      enqueueSnackbar("Unrevoke data successfully", {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2000,
+      });
+    } else if (unRevokingDataStatus === FS.FAILED) {
+      enqueueSnackbar("Unrevoke data failed", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2000,
+      });
+      dp(handleResetUnRevokeDataStatus());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unRevokingDataStatus]);
 
   useEffect(() => {
     if (publishingDataStatus === FS.SUCCESS) dp(handleResetPublishDataStatus());
@@ -105,6 +136,12 @@ export default function IdentityManager() {
 
   useEffect(() => {
     if (revokingDataStatus === FS.SUCCESS) dp(handleResetRevokeDataStatus());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (unRevokingDataStatus === FS.SUCCESS)
+      dp(handleResetUnRevokeDataStatus());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -119,6 +156,10 @@ export default function IdentityManager() {
       <CustomBackdrop
         open={revokingDataStatus === FS.FETCHING}
         label="Revoking data"
+      />
+      <CustomBackdrop
+        open={unRevokingDataStatus === FS.FETCHING}
+        label="Unrevoking data"
       />
       {role === "user" && login !== undefined && (
         <Redirect to="/home/identity" />
@@ -157,18 +198,58 @@ export default function IdentityManager() {
           btn2="Revoke"
           data={issueList.filter((e) => e.status >= 2)}
           fetchingStatus={fetchingStatus}
-          btn2Handler={async () => {
-            if (
-              metamaskAccount?.toString().toLowerCase() !==
-              CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
-            ) {
-              enqueueSnackbar("You are not the owner of the contract!", {
+          btn1Handler={async () => {
+            if (selectedList.length === 0) {
+              enqueueSnackbar("You must select 1 identity before unrevoke it", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
-            } else dp(handleRevokeData(metamaskAccount, selectedList));
+            } else if (selectedList.length > 1) {
+              enqueueSnackbar("Can only unrevoke 1 identity at a time", {
+                variant: "error",
+                dense: "true",
+                preventDuplicate: true,
+                autoHideDuration: 2000,
+              });
+              dp(clearSelectedListAndCheckedList());
+            } else {
+              if (
+                metamaskAccount?.toString().toLowerCase() !==
+                CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
+              ) {
+                enqueueSnackbar("You are not the owner of the contract!", {
+                  variant: "error",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                });
+              } else dp(handleUnRevokeData(metamaskAccount, selectedList));
+
+            }
+          }}
+          btn2Handler={async () => {
+            if (selectedList.length === 0) {
+              enqueueSnackbar("You must select identities before revoke them", {
+                variant: "error",
+                dense: "true",
+                preventDuplicate: true,
+                autoHideDuration: 2000,
+              });
+            } else {
+              if (
+                metamaskAccount?.toString().toLowerCase() !==
+                CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
+              ) {
+                enqueueSnackbar("You are not the owner of the contract!", {
+                  variant: "error",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                });
+              } else dp(handleRevokeData(metamaskAccount, selectedList));
+            }
           }}
         />
       </Box>
