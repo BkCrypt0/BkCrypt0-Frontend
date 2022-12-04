@@ -5,10 +5,12 @@ import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
+import CustomForm from "src/components/CustomForm";
 import { verifyProof } from "src/contract";
 import ImportAgeProof from "src/components/ImportAgeProof";
 import { useSnackbar } from "notistack";
 import TestResultDialog from "../TestResultDialog";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function TestAge() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -53,6 +55,45 @@ export default function TestAge() {
               Age Verifier
             </CustomTypography>
           </Box>
+          <Box
+            my={2}
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            <CustomForm
+              placeHolder="Min"
+              type="number"
+              defaultValue={1}
+              id="min-age"
+            />
+            <Box
+              display="flex"
+              minWidth="50%"
+              alignItems="center"
+              justifyContent="space-evenly"
+            >
+              <ArrowBackIosIcon
+                sx={{
+                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                }}
+              />
+              <CustomTypography textAlign="center">Your age</CustomTypography>
+              <ArrowBackIosIcon
+                sx={{
+                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                }}
+              />
+            </Box>
+            <CustomForm
+              placeHolder="Max"
+              type="number"
+              defaultValue={100}
+              id="max-age"
+            />
+          </Box>
           <Box width="100%">
             {ageProof === undefined && <ImportAgeProof />}
             {ageProof !== undefined && (
@@ -74,6 +115,11 @@ export default function TestAge() {
               disabled={ageProof === undefined}
               onClick={async () => {
                 setLoading(true);
+                var temp = JSON.parse(ageProof?.input);
+                temp[4] = document.getElementById("min-age").value;
+                temp[5] = document.getElementById("max-age").value;
+                console.log(temp);
+
                 const res = await verifyProof({
                   optionName: "VERIFIER_AGE",
                   pi_a: [
@@ -94,7 +140,7 @@ export default function TestAge() {
                     JSON.parse(ageProof?.proof).pi_c[0],
                     JSON.parse(ageProof?.proof).pi_c[1],
                   ],
-                  input: JSON.parse(ageProof?.input),
+                  input: temp,
                 });
                 if (res === -1) {
                   enqueueSnackbar("Verification failed due to some errors", {

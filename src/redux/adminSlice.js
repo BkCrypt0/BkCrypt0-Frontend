@@ -81,6 +81,7 @@ export const handleRevokeData = (account, identityList) => async (dispatch) => {
         try {
           await Axios.post(`${BASE_API_URL}/revoke`, {
             root: data.publicSignals[0],
+            CCCDs: identityList,
           });
           dispatch(revokeDataSuccess());
         } catch (err) {

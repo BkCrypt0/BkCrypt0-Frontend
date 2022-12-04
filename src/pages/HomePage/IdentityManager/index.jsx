@@ -133,7 +133,7 @@ export default function IdentityManager() {
           tableName="Pending"
           btn1="Publish"
           btn2="New identity"
-          data={issueList.filter((e) => e.status !== 2)}
+          data={issueList.filter((e) => e.status < 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => {
             if (
@@ -155,7 +155,7 @@ export default function IdentityManager() {
           tableName="Published"
           btn1="UnRevoke"
           btn2="Revoke"
-          data={issueList.filter((e) => e.status === 2)}
+          data={issueList.filter((e) => e.status >= 2)}
           fetchingStatus={fetchingStatus}
           btn2Handler={async () => {
             if (
