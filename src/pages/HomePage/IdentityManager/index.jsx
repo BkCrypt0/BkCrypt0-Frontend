@@ -16,7 +16,7 @@ import {
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { handleConnectWallet, handleSwitchChain } from "src/redux/walletSlice";
-import { CONTRACT_OWNER_ADDRESS, FS } from "src/constants";
+import { CONTRACT_OWNER_ADDRESS, FS, ID_STATUS } from "src/constants";
 import { useSnackbar } from "notistack";
 import CustomBackdrop from "src/components/CustomBackdrop";
 
@@ -131,6 +131,26 @@ export default function IdentityManager() {
 
   const history = useHistory();
 
+  const getIdentityListAndStatusList = () => {
+    var temp_1 = [];
+    for (let i = 0; i < selectedList.length; i++) {
+      var arr_1 = selectedList[i].split("_");
+      temp_1.push(arr_1[0]);
+    }
+
+    var temp_2 = [];
+    for (let i = 0; i < selectedList.length; i++) {
+      var arr_2 = selectedList[i].split("_");
+      temp_2.push(ID_STATUS[Number(arr_2[1])]);
+    }
+    return {
+      identityList: temp_1,
+      statusList: temp_2,
+    };
+  };
+
+  const { identityList, statusList } = getIdentityListAndStatusList();
+
   return (
     <>
       <CustomBackdrop
@@ -183,20 +203,31 @@ export default function IdentityManager() {
           data={issueList.filter((e) => e.status >= 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => {
-            if (selectedList.length === 0) {
+            if (identityList.length === 0) {
               enqueueSnackbar("You must select 1 identity before unrevoke it", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
-            } else if (selectedList.length > 1) {
-              enqueueSnackbar("Can only unrevoke 1 identity at a time", {
+            } else if (identityList.length > 1) {
+              enqueueSnackbar("You can only unrevoke 1 identity at a time", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
+              dp(clearSelectedListAndCheckedList());
+            } else if (statusList.includes("PUBLISHED")) {
+              enqueueSnackbar(
+                "You cannot revoke identity with status PUBLISHED",
+                {
+                  variant: "error",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                }
+              );
               dp(clearSelectedListAndCheckedList());
             } else {
               if (
@@ -209,17 +240,32 @@ export default function IdentityManager() {
                   preventDuplicate: true,
                   autoHideDuration: 2000,
                 });
-              } else dp(handleUnRevokeData(metamaskAccount, selectedList));
+              } else {
+                dp(handleUnRevokeData(metamaskAccount, identityList));
+                dp(clearSelectedListAndCheckedList());
+              }
             }
           }}
           btn2Handler={async () => {
-            if (selectedList.length === 0) {
+            if (identityList.length === 0) {
               enqueueSnackbar("You must select identities before revoke them", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
+              dp(clearSelectedListAndCheckedList());
+            } else if (statusList.includes("REVOKED")) {
+              enqueueSnackbar(
+                "You cannot revoke identities with status REVOKED",
+                {
+                  variant: "error",
+                  dense: "true",
+                  preventDuplicate: true,
+                  autoHideDuration: 2000,
+                }
+              );
+              dp(clearSelectedListAndCheckedList());
             } else {
               if (
                 metamaskAccount?.toString().toLowerCase() !==
@@ -231,7 +277,10 @@ export default function IdentityManager() {
                   preventDuplicate: true,
                   autoHideDuration: 2000,
                 });
-              } else dp(handleRevokeData(metamaskAccount, selectedList));
+              } else {
+                dp(handleRevokeData(metamaskAccount, identityList));
+                dp(clearSelectedListAndCheckedList());
+              }
             }
           }}
         />

@@ -29,6 +29,7 @@ export const fetchUserProof = (publicKey) => async (dispatch) => {
     dispatch(fetchUserProofFailed());
   }
 };
+
 export const createNewIdentity =
   (
     publicKey,
@@ -106,8 +107,14 @@ export const claimIdentity =
       await Axios.post(`${BASE_API_URL}/claimed`, requestBody);
       dispatch(fetchIdentity());
       dispatch(claimIdentitySuccess());
+      setTimeout(() => {
+        dispatch(resetClaimingIdentityStatus());
+      }, 1000);
     } catch (err) {
       dispatch(claimIdentityFailed());
+      setTimeout(() => {
+        dispatch(resetClaimingIdentityStatus());
+      }, 1000);
     }
   };
 
@@ -197,6 +204,9 @@ const identitySlice = createSlice({
     fetchUserProofFailed: (state) => {
       state.fetchingUserProofStatus = FS.FAILED;
     },
+    resetClaimingIdentityStatus: (state) => {
+      state.claimingIdentityStatus = FS.IDLE;
+    },
   },
 });
 
@@ -214,4 +224,5 @@ export const {
   startFetchUserProof,
   fetchUserProofSuccess,
   fetchUserProofFailed,
+  resetClaimingIdentityStatus,
 } = identitySlice.actions;

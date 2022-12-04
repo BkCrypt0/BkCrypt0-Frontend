@@ -1,4 +1,9 @@
-import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  useMediaQuery,
+  IconButton,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { THEME_MODE } from "src/constants";
@@ -9,6 +14,10 @@ import { verifyProof } from "src/contract";
 import ImportProvinceProof from "src/components/ImportProvinceProof";
 import { useSnackbar } from "notistack";
 import TestResultDialog from "../TestResultDialog";
+import CustomCollapse from "src/components/CustomCollapse";
+import AddIcon from "@mui/icons-material/Add";
+import provinceCode from "src/documents/provinces_code.json";
+import { calculatePlace } from "src/service/utils";
 
 export default function TestProvince() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -19,6 +28,9 @@ export default function TestProvince() {
   const provinceProof = useSelector((state) => state.proofSlice.provinceProof);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
+  const [provinceList, setProvinceList] = useState([]);
+  const [open, setOpen] = useState(false);
+  const provinceNames = Object.keys(provinceCode);
 
   return (
     <>
@@ -44,14 +56,58 @@ export default function TestProvince() {
         }}
       >
         <Box width="90%">
-          <Box
-            width="100%"
-            display="flex"
-            flexDirection={mobile ? "column" : "row"}
-          >
+          <Box width="100%" display="flex" flexDirection="column">
             <CustomTypography fontWeight="bold" mr={1} variant="h5" mb={3}>
               Place Verifier
             </CustomTypography>
+            <Box
+              width="100%"
+              display="flex"
+              flexWrap="wrap"
+              mt={2}
+              mb={2}
+              alignItems="center"
+            >
+              {provinceList.length > 0 &&
+                provinceList.map((e, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    flexWrap="wrap"
+                    px={2}
+                    mr={1}
+                    mb={1}
+                    sx={{
+                      minWidth: "50px",
+                      minHeight: "30px",
+                      maxHeight: "35px",
+                      borderRadius: "10px",
+                      background:
+                        themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                    }}
+                  >
+                    <CustomTypography buttonText={true}>{e}</CustomTypography>
+                  </Box>
+                ))}
+              <IconButton onClick={() => setOpen(true)}>
+                <AddIcon
+                  sx={{
+                    color:
+                      themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                  }}
+                />
+              </IconButton>
+              <CustomCollapse
+                open={open}
+                data={provinceNames}
+                targetFormId="bp"
+                setOpen={setOpen}
+                select={true}
+                setProvinceList={setProvinceList}
+                provinceList={provinceList}
+              />
+            </Box>
           </Box>
           <Box width="100%">
             {provinceProof === undefined && <ImportProvinceProof />}
@@ -73,6 +129,9 @@ export default function TestProvince() {
               minHeight="50px"
               disabled={provinceProof === undefined}
               onClick={async () => {
+                const placesExpecting = Number(calculatePlace(provinceList));
+                var temp = JSON.parse(provinceProof?.input);
+                temp[4] = placesExpecting;
                 setLoading(true);
                 const res = await verifyProof({
                   optionName: "VERIFIER_PLACE",
@@ -94,7 +153,7 @@ export default function TestProvince() {
                     JSON.parse(provinceProof?.proof).pi_c[0],
                     JSON.parse(provinceProof?.proof).pi_c[1],
                   ],
-                  input: JSON.parse(provinceProof?.input),
+                  input: temp,
                 });
                 if (res === -1) {
                   enqueueSnackbar("Verification failed due to some errors", {

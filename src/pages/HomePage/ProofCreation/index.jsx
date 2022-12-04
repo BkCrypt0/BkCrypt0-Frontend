@@ -44,7 +44,7 @@ export default function ProofCreation() {
         )}
         {identityStatus !== 2 && (
           <CustomTypography variant="h5" mb={3}>
-            Cannot create proof because your identity is not active
+            Cannot create proof because your identity is not active or revoked
           </CustomTypography>
         )}
       </Box>

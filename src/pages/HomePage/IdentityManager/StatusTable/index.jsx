@@ -144,19 +144,38 @@ export default function StatusTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {fetchingStatus === FS.SUCCESS &&
+            {(data === undefined || data?.length === 0) && (
+              <TableRow>
+                <TableCell sx={{ borderBottom: "none" }} />
+                <TableCell sx={{ borderBottom: "none" }} />
+                <TableCell align="center" sx={{ borderBottom: "none" }}>
+                  <CustomTypography
+                    variant="h5"
+                    fontStyle="italic"
+                    opacity={0.5}
+                    mt={5}
+                  >
+                    Nothing to display
+                  </CustomTypography>
+                </TableCell>
+                <TableCell sx={{ borderBottom: "none" }} />
+                <TableCell sx={{ borderBottom: "none" }} />
+              </TableRow>
+            )}
+            {data !== undefined &&
+              data?.length > 0 &&
               data.map((e, index) => (
                 <TableRow
                   onClick={() => {
-                    if (selectedList.includes(e.CCCD)) {
-                      dp(removeFromSelectedList(e.CCCD));
+                    if (selectedList.includes(e.CCCD + "_" + e.status)) {
+                      dp(removeFromSelectedList(e.CCCD + "_" + e.status));
                       dp(removeFromCheckedList(index));
                     } else if (
-                      !selectedList.includes(e.CCCD) &&
+                      !selectedList.includes(e.CCCD + "_" + e.status) &&
                       selectedList.length < revokeLimit
                     ) {
                       dp(addToCheckedList(index));
-                      dp(addToSelectedList(e.CCCD));
+                      dp(addToSelectedList(e.CCCD + "_" + e.status));
                     }
                   }}
                   key={index}
