@@ -49,16 +49,28 @@ export const handlePublishData = (account) => async (dispatch) => {
             root: data.publicSignals[0],
           });
           dispatch(publishDataSuccess());
+          setTimeout(() => {
+            dispatch(resetPublishDataStatus());
+          }, 1000);
         } catch (err) {
           dispatch(publishDataFailed());
+          setTimeout(() => {
+            dispatch(resetPublishDataStatus());
+          }, 1000);
         }
       } else if (res === -1) {
         dispatch(publishDataFailed());
+        setTimeout(() => {
+          dispatch(resetPublishDataStatus());
+        }, 1000);
         return;
       }
     });
   } catch (err) {
     dispatch(publishDataFailed());
+    setTimeout(() => {
+      dispatch(resetPublishDataStatus());
+    }, 1000);
   }
 };
 
@@ -86,13 +98,22 @@ export const handleRevokeData = (account, identityList) => async (dispatch) => {
           });
           dispatch(revokeDataSuccess());
           dispatch(clearSelectedListAndCheckedListSuccess());
+          setTimeout(() => {
+            dispatch(resetRevokeDataStatus());
+          }, 1000);
         } catch (err) {
           dispatch(revokeDataFailed());
           dispatch(clearSelectedListAndCheckedListSuccess());
+          setTimeout(() => {
+            dispatch(resetRevokeDataStatus());
+          }, 1000);
         }
       } else if (res === -1) {
         dispatch(revokeDataFailed());
         dispatch(clearSelectedListAndCheckedListSuccess());
+        setTimeout(() => {
+          dispatch(resetRevokeDataStatus());
+        }, 1000);
 
         return;
       }
@@ -100,6 +121,9 @@ export const handleRevokeData = (account, identityList) => async (dispatch) => {
   } catch (err) {
     dispatch(revokeDataFailed());
     dispatch(clearSelectedListAndCheckedListSuccess());
+    setTimeout(() => {
+      dispatch(resetRevokeDataStatus());
+    }, 1000);
   }
 };
 
@@ -127,19 +151,31 @@ export const handleUnRevokeData = (account, identity) => async (dispatch) => {
           });
           dispatch(unRevokeDataSuccess());
           dispatch(clearSelectedListAndCheckedListSuccess());
+          setTimeout(() => {
+            dispatch(resetUnRevokeDataStatus());
+          }, 1000);
         } catch (err) {
           dispatch(unRevokeDataFailed());
           dispatch(clearSelectedListAndCheckedListSuccess());
+          setTimeout(() => {
+            dispatch(resetUnRevokeDataStatus());
+          }, 1000);
         }
       } else if (res === -1) {
         dispatch(unRevokeDataFailed());
         dispatch(clearSelectedListAndCheckedListSuccess());
+        setTimeout(() => {
+          dispatch(resetUnRevokeDataStatus());
+        }, 1000);
         return;
       }
     });
   } catch (err) {
     dispatch(unRevokeDataFailed());
     dispatch(clearSelectedListAndCheckedListSuccess());
+    setTimeout(() => {
+      dispatch(resetUnRevokeDataStatus());
+    }, 1000);
   }
 };
 
@@ -221,6 +257,9 @@ const adminSlice = createSlice({
     resetUnRevokeDataStatus: (state) => {
       state.unRevokingDataStatus = FS.IDLE;
     },
+    resetFetchingStatus: (state) => {
+      state.fetchingStatus = FS.IDLE;
+    },
     addToSelectedListSuccess: (state, action) => {
       state.selectedList = [action.payload, ...state.selectedList];
     },
@@ -267,6 +306,7 @@ export const {
   unRevokeDataFailed,
   resetRevokeDataStatus,
   resetUnRevokeDataStatus,
+  resetFetchingStatus,
   addToCheckedListSuccess,
   addToSelectedListSuccess,
   removeFromCheckedListSuccess,

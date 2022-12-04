@@ -129,22 +129,6 @@ export default function IdentityManager() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unRevokingDataStatus]);
 
-  useEffect(() => {
-    if (publishingDataStatus === FS.SUCCESS) dp(handleResetPublishDataStatus());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (revokingDataStatus === FS.SUCCESS) dp(handleResetRevokeDataStatus());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (unRevokingDataStatus === FS.SUCCESS)
-      dp(handleResetUnRevokeDataStatus());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const history = useHistory();
 
   return (
@@ -226,7 +210,6 @@ export default function IdentityManager() {
                   autoHideDuration: 2000,
                 });
               } else dp(handleUnRevokeData(metamaskAccount, selectedList));
-
             }
           }}
           btn2Handler={async () => {
