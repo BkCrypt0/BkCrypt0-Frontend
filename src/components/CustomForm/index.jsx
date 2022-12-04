@@ -51,7 +51,7 @@ export default function CustomForm({
           onChange={onChange}
           autoComplete={autoComplete}
           min={0}
-          style={{
+          style={{  
             fontSize: "17px",
             MozAppearance: "textfield",
             WebkitAppearance: "textfield",

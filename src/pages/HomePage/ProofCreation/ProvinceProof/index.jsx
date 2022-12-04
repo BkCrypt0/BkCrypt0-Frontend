@@ -149,6 +149,16 @@ export default function ProvinceProof({ proof }) {
                       borderRadius: "10px",
                       background:
                         themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      var temp = [];
+                      for (let i = 0; i < provinceList.length; i++) {
+                        if (provinceList[i] !== e) {
+                          temp = [provinceList[i], ...temp];
+                        }
+                      }
+                      setProvinceList(temp);
                     }}
                   >
                     <CustomTypography buttonText={true}>{e}</CustomTypography>

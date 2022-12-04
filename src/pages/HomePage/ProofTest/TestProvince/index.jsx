@@ -79,12 +79,22 @@ export default function TestProvince() {
                     mr={1}
                     mb={1}
                     sx={{
+                      cursor: "pointer",
                       minWidth: "50px",
                       minHeight: "30px",
                       maxHeight: "35px",
                       borderRadius: "10px",
                       background:
                         themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                    }}
+                    onClick={() => {
+                      var temp = [];
+                      for (let i = 0; i < provinceList.length; i++) {
+                        if (provinceList[i] !== e) {
+                          temp = [provinceList[i], ...temp];
+                        }
+                      }
+                      setProvinceList(temp);
                     }}
                   >
                     <CustomTypography buttonText={true}>{e}</CustomTypography>
