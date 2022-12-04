@@ -12,10 +12,15 @@ import {
 } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { THEME_MODE, SCREEN_SIZE, FS, ID_STATUS } from "src/constants";
 import { formatAddress } from "src/utility";
-import { useState } from "react";
+import {
+  addToCheckedList,
+  addToSelectedList,
+  removeFromCheckedList,
+  removeFromSelectedList,
+} from "src/redux/adminSlice";
 
 const { babyJub } = require("circomlib");
 const BigInt = require("big-integer");
@@ -28,12 +33,14 @@ export default function StatusTable({
   btn2Handler,
   data,
   fetchingStatus,
+  tableId,
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
-  const [selectedList, setSelectedList] = useState([]);
-  const [checkedList, setCheckedList] = useState([]);
-  console.log(selectedList);
+  const selectedList = useSelector((state) => state.adminSlice.selectedList);
+  const checkedList = useSelector((state) => state.adminSlice.checkedList);
+  const revokeLimit = useSelector((state) => state.adminSlice.revokeLimit);
+  const dp = useDispatch();
 
   return (
     <>
@@ -42,14 +49,14 @@ export default function StatusTable({
           <CustomTypography variant="h5" textAlign="left" mb={mobile && 2}>
             {tableName}
           </CustomTypography>
-          {selectedList.length !== 0 && (
+          {selectedList.length !== 0 && tableId === "no2" && (
             <CustomTypography
               variant="h6"
               textAlign="left"
               mb={mobile && 2}
               ml={1}
             >
-              {`(${selectedList.length} selected)`}
+              {`(${selectedList.length}/${revokeLimit} selected)`}
             </CustomTypography>
           )}
         </Box>
@@ -141,32 +148,15 @@ export default function StatusTable({
               data.map((e, index) => (
                 <TableRow
                   onClick={() => {
-                    if (selectedList.includes(e)) {
-                      setSelectedList(() => {
-                        var temp = [];
-                        for (let i = 0; i < selectedList.length; i++) {
-                          if (selectedList[i] !== e)
-                            temp = [selectedList[i], ...temp];
-                        }
-                        return temp;
-                      });
-                      setCheckedList(() => {
-                        var temp = [];
-                        for (let i = 0; i < checkedList.length; i++) {
-                          if (checkedList[i] !== index)
-                            temp = [checkedList[i], ...temp];
-                        }
-                        return temp;
-                      });
-                    } else if (!selectedList.includes(e)) {
-                      setSelectedList(() => {
-                        const temp = [e, ...selectedList];
-                        return temp;
-                      });
-                      setCheckedList(() => {
-                        const temp = [index, ...checkedList];
-                        return temp;
-                      });
+                    if (selectedList.includes(e.CCCD)) {
+                      dp(removeFromSelectedList(e.CCCD));
+                      dp(removeFromCheckedList(index));
+                    } else if (
+                      !selectedList.includes(e.CCCD) &&
+                      selectedList.length < revokeLimit
+                    ) {
+                      dp(addToCheckedList(index));
+                      dp(addToSelectedList(e.CCCD));
                     }
                   }}
                   key={index}
@@ -187,7 +177,9 @@ export default function StatusTable({
                         themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
                     }}
                   >
-                    <Checkbox checked={checkedList.includes(index)} />
+                    {tableId === "no2" && (
+                      <Checkbox checked={checkedList.includes(index)} />
+                    )}
                   </TableCell>
                   <TableCell
                     align="center"
@@ -246,7 +238,12 @@ export default function StatusTable({
           <CustomButton minHeight="50px" width="48%" onClick={btn1Handler}>
             <CustomTypography buttonText={true}>{btn1}</CustomTypography>
           </CustomButton>
-          <CustomButton minHeight="50px" width="48%" onClick={btn2Handler}>
+          <CustomButton
+            minHeight="50px"
+            width="48%"
+            onClick={btn2Handler}
+            disabled={tableId === "no2" && selectedList.length === 0}
+          >
             <CustomTypography buttonText={true}>{btn2}</CustomTypography>
           </CustomButton>
         </Box>
