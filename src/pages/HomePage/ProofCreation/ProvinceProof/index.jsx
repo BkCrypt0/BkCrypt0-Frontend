@@ -79,7 +79,7 @@ export default function ProvinceProof({ proof }) {
         setOpen={setOpenDialog}
         onClose={() => setOpenDialog(false)}
         handler={async () => {
-          const placesExpecting = Number(calculatePlace(provinceList));
+          const placesExpecting = calculatePlace(provinceList);
           if (identity !== undefined) {
             const input = getProvinceInput({
               serverInfo: serverInfo,

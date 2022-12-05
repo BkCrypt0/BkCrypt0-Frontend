@@ -20,6 +20,7 @@ export const verifyProof = async (object) => {
       .call();
     return res;
   } catch (err) {
+    console.log(err);
     return -1;
   }
 };

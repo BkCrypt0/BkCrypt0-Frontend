@@ -139,7 +139,7 @@ export default function TestProvince() {
               minHeight="50px"
               disabled={provinceProof === undefined}
               onClick={async () => {
-                const placesExpecting = Number(calculatePlace(provinceList));
+                const placesExpecting = calculatePlace(provinceList);
                 var temp = JSON.parse(provinceProof?.input);
                 temp[4] = placesExpecting;
                 setLoading(true);

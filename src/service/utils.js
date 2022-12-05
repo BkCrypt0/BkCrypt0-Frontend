@@ -4,85 +4,6 @@ const HDKey = require("hdkey");
 const BigInt = require("big-integer");
 const BigNumber = require("bignumber.js");
 
-export const testServerObj = {
-  rootRevoke: "0",
-  siblingsRevoke: [
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-  ],
-  oldKeyRevoke: "0",
-  oldValueRevoke: "0",
-  isOld0Revoke: 1,
-  rootClaims:
-    "19477650834228502084062910240127676187751121802086814520468284441810407241074",
-  siblingsClaims: [
-    "16880036025328482448729993393635925468022424126345315386790776487928721131293",
-    "15458831330048781380560947386595302052803335403718243905464910047849030663586",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-  ],
-  key: 0,
-  challenge: 100,
-};
-
 export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
   const hdkey = HDKey.fromMasterSeed(mnemonic);
   const privateKey = hdkey.privateKey;
@@ -207,18 +128,20 @@ export function calculatePlace(places) {
   var indexs = [];
   for (let i = 0; i < places.length; i++) {
     var index = data[places[i]].index;
-    console.log(index);
     indexs.push(index);
   }
-  var defaultPlace = new Array(63).fill("0");
+  console.log(indexs);
+  var defaultPlace = new Array(64).fill("0");
   var output = "";
   for (let i = 0; i < indexs.length; i++) {
-    defaultPlace[63 - indexs[i]] = "1";
+    defaultPlace[indexs[i]] = "1";
   }
   for (let i = 0; i < defaultPlace.length; ++i) {
-    output += defaultPlace[i];
+    output = defaultPlace[i] + output;
+    console.log(output);
   }
-  return new BigNumber("0b" + output + "0").toString();
+  console.log(output);
+  return new BigNumber("0b" + output).toString();
 }
 
 export function getProvinceInput({
