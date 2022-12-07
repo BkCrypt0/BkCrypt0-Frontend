@@ -103,8 +103,8 @@ export async function calculateAgeProof(input) {
   try {
     const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
       input,
-      "http://localhost:3000/kycAge.wasm",
-      "http://localhost:3000/circuit_age.zkey"
+      "https://github.com/BkCrypt0/BkCrypt0-Resources/blob/main/KYC_circuit/age/kycAge.wasm",
+      "https://github.com/BkCrypt0/BkCrypt0-Resources/blob/main/KYC_circuit/age/circuit_final.zkey"
     );
 
     // const vkey = await fetch(
@@ -176,8 +176,8 @@ export async function calculateProvinceProof(input) {
   try {
     const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
       input,
-      "http://localhost:3000/kycPlaces.wasm",
-      "http://localhost:3000/circuit_province.zkey"
+      "https://github.com/BkCrypt0/BkCrypt0-Resources/blob/main/KYC_circuit/place/kycPlaces.wasm",
+      "https://github.com/BkCrypt0/BkCrypt0-Resources/blob/main/KYC_circuit/place/circuit_final.zkey"
     );
 
     // const vkey = await fetch(
