@@ -26,6 +26,7 @@ export const handleCaculateAgeProof = (input) => async (dispatch) => {
         );
     });
   } catch (err) {
+    console.log(err);
     dispatch(generateAgeProofFailed());
   }
 };

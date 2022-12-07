@@ -118,7 +118,6 @@ export default function TestAge() {
                 var temp = JSON.parse(ageProof?.input);
                 temp[4] = document.getElementById("min-age").value;
                 temp[5] = document.getElementById("max-age").value;
-                console.log(temp);
 
                 const res = await verifyProof({
                   optionName: "VERIFIER_AGE",

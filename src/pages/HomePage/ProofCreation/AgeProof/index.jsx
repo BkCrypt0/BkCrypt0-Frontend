@@ -87,7 +87,6 @@ export default function AgeProof({ proof }) {
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
-            console.log(input);
             dp(handleCaculateAgeProof(input));
           }
         }}

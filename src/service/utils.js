@@ -120,6 +120,7 @@ export async function calculateAgeProof(input) {
     };
     return finalRes;
   } catch (err) {
+    console.log(err);
     return -1;
   }
 }
@@ -130,7 +131,6 @@ export function calculatePlace(places) {
     var index = data[places[i]].index;
     indexs.push(index);
   }
-  console.log(indexs);
   var defaultPlace = new Array(64).fill("0");
   var output = "";
   for (let i = 0; i < indexs.length; i++) {
@@ -138,9 +138,7 @@ export function calculatePlace(places) {
   }
   for (let i = 0; i < defaultPlace.length; ++i) {
     output = defaultPlace[i] + output;
-    console.log(output);
   }
-  console.log(output);
   return new BigNumber("0b" + output).toString();
 }
 

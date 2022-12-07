@@ -88,7 +88,6 @@ export default function ProvinceProof({ proof }) {
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
-            console.log(input);
             dp(handleCaculateProvinceProof(input));
           }
         }}
