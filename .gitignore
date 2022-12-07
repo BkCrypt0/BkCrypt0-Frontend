@@ -10,6 +10,10 @@
 
 # production
 /build
+/public/*.zkey
+/public/*.wasm 
+/public/verification_age_key.json 
+/public/verification_province_key.json
 
 # misc
 .DS_Store
