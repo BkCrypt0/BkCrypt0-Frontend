@@ -1,6 +1,6 @@
 import { Backdrop, Box } from "@mui/material";
 import CustomTypography from "../CustomTypography";
-import "./index.css";
+
 
 export default function CustomBackdrop({ open, label }) {
   return (
@@ -23,7 +23,7 @@ export default function CustomBackdrop({ open, label }) {
         }}
       >
         <CustomTypography variant="h3" color="white" display="flex">
-          {label} <div className="loading">.</div>
+          {label}
         </CustomTypography>
       </Box>
     </Backdrop>

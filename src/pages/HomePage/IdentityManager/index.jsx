@@ -155,15 +155,15 @@ export default function IdentityManager() {
     <>
       <CustomBackdrop
         open={publishingDataStatus === FS.FETCHING}
-        label="Publishing data"
+        label="Publishing data..."
       />
       <CustomBackdrop
         open={revokingDataStatus === FS.FETCHING}
-        label="Revoking data"
+        label="Revoking data..."
       />
       <CustomBackdrop
         open={unRevokingDataStatus === FS.FETCHING}
-        label="Unrevoking data"
+        label="Unrevoking data..."
       />
       {role === "user" && login !== undefined && (
         <Redirect to="/home/identity" />
