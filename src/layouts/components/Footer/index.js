@@ -1,7 +1,7 @@
 import { Box, Link, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import { useSelector } from "react-redux";
+
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
 
 export default function Footer() {
@@ -25,15 +25,51 @@ export default function Footer() {
         sx={{
           background: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
           borderRadius: "10px",
-          mx: 1,
+          mx: 1.5,
         }}
         width={2}
         height={33}
       />
       <Link href="https://github.com/BkCrypt0" target="_blank">
-        <GitHubIcon
-          fontSize="large"
-          sx={{ color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8" }}
+        <i
+          style={{
+            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            fontSize: "33px",
+            marginRight: "10px",
+          }}
+          className="fa fa-github"
+        />
+      </Link>
+      <Link href="https://www.facebook.com/BKCrypt0" target="_blank">
+        <i
+          className="fab fa-facebook-f"
+          style={{
+            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            fontSize: "30px",
+            marginRight: "10px",
+          }}
+        />
+      </Link>
+      <Link href="https://discord.gg/rVY4Yj6M" target="_blank">
+        <i
+          style={{
+            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            fontSize: "30px",
+            marginRight: "10px",
+          }}
+          className="fab fa-discord"
+        />
+      </Link>
+      <Link
+        href="https://bkcrypt0s-organization.gitbook.io/self-sovereign-identity/?fbclid=IwAR0WWRz6hD6oa830X7bb0VnLEc6mEW82bxuXJGa88A7mw1hVXsv59W-oP0A"
+        target="_blank"
+      >
+        <i
+          style={{
+            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            fontSize: "30px",
+          }}
+          className="fa fa-book"
         />
       </Link>
     </Box>

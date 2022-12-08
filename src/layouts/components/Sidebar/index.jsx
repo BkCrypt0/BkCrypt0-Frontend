@@ -45,6 +45,7 @@ export default function Sidebar() {
           width="100%"
           mt={2}
         >
+          <NavigationButton label="MY ACCOUNT" link="/home/my-account" />
           {role === "user" && (
             <NavigationButton label="MY IDENTITY" link="/home/identity" />
           )}

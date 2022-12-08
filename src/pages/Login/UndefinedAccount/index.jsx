@@ -21,9 +21,20 @@ export default function UndefinedAccount() {
       <CustomTypography variant={mobile ? "h5" : "h4"} mb={5}>
         Login to BKCrypt0 Platform
       </CustomTypography>
-      <NavLink to="/import" style={{ textDecoration: "none", width: "100%" }}>
+      <NavLink
+        to="/import-mnemonic"
+        style={{ textDecoration: "none", width: "100%" }}
+      >
         <CustomButton fullWidth={true} minHeight="50px" mb={2}>
-          <CustomTypography buttonText>Import Account</CustomTypography>
+          <CustomTypography buttonText>Import Mnemonic</CustomTypography>
+        </CustomButton>
+      </NavLink>
+      <NavLink
+        to="/import-private-key"
+        style={{ textDecoration: "none", width: "100%" }}
+      >
+        <CustomButton fullWidth={true} minHeight="50px" mb={2}>
+          <CustomTypography buttonText>Import Private Key</CustomTypography>
         </CustomButton>
       </NavLink>
       <Box

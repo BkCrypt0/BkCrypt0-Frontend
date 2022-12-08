@@ -55,9 +55,10 @@ export default function CustomCollapse({
         >
           <CustomForm
             type="text"
+            id="find-province"
             placeHolder="Search province..."
             onChange={() =>
-              setProvinceInput(document.getElementById("bp").value)
+              setProvinceInput(document.getElementById("find-province").value)
             }
           />
         </Box>

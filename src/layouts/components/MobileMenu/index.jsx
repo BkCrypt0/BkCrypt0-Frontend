@@ -98,6 +98,7 @@ export default function MobileMenu({ open, setOpen }) {
           alignItems="center"
           width="90%"
         >
+          <NavigationButton label="MY ACCOUNT" link="/home/my-account" />
           {role === "user" && (
             <NavigationButton label="MY IDENTITY" link="/home/identity" />
           )}

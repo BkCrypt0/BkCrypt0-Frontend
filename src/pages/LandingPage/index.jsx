@@ -5,7 +5,6 @@ import TeamLogo from "../../components/TeamLogo";
 import { SCREEN_SIZE } from "../../constants";
 import EnterAppButton from "src/components/EnterAppButton";
 
-
 export default function LandingPage() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
@@ -38,7 +37,7 @@ export default function LandingPage() {
             marginBottom: 5,
           }}
         >
-          The decentralized platform providing Zero-Knowledge Proof Verification
+          The digital platform providing Zero-Knowledge Proof Verification
         </Typography>
 
         {mobile && <EnterAppButton />}

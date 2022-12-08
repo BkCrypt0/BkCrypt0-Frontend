@@ -30,14 +30,6 @@ export const CONNECTION_STATUS = {
   CONNECTED: "Connected",
 };
 
-export const BASE_COLOR = {
-  PAPER_LIGHT: "#BBBBBB",
-  PAPER_DARK: "#232323",
-  PRIMARY_LIGHT: "#D8D8D8",
-  PRIMARY_DARK: "#353535",
-  CONTRAST_LIGHT: "white",
-};
-
 export const INFO_STATUS = {
   0: {
     color: "rgba(20, 153, 250, 0.5)",
@@ -63,9 +55,9 @@ export const INFO_STATUS = {
 
 export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
-export const BASE_API_URL = "http://194.146.12.190:3002";
+export const BASE_API_URL = "http://194.146.12.190:8000";
 
-export const CONTRACT_ADDRESS = "0x96c0ec44edc746989012ed51a820d6c989d5c176";
+export const CONTRACT_ADDRESS = "0xcf6028cc5f4441ef209b5942f460905fbcf2946e";
 
 export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 

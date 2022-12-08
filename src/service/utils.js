@@ -18,6 +18,14 @@ export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
   };
 }
 
+export function generatePublicKeyStringFromPrivateKeyString(privateKeyString) {
+  const privateKeyBuffer = Buffer.from(privateKeyString, "hex");
+  const publicKey = eddsa.prv2pub(privateKeyBuffer);
+  const publicKeyCompress = babyJub.packPoint(publicKey);
+  const publicKeyString = publicKeyCompress.toString("hex");
+  return publicKeyString;
+}
+
 export function generatePublicKeyPair(publicKeyString) {
   const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
   const publicKeyPair = babyJub

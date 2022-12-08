@@ -122,6 +122,7 @@ export default function IssueNewIdentity() {
                   data={provinceNames.filter(provincesFilter)}
                   targetFormId="bp"
                   setOpen={setOpen}
+                  displaySearch={false}
                 />
               )}
             </Box>

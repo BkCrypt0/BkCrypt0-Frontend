@@ -9,9 +9,15 @@ const routeConfig = [
     layout: LayoutOptions.BLANK,
   },
   {
-    path: "/import",
+    path: "/import-mnemonic",
     exact: true,
     component: React.lazy(() => import("../pages/ImportAccount")),
+    layout: LayoutOptions.BLANK,
+  },
+  {
+    path: "/import-private-key",
+    exact: true,
+    component: React.lazy(() => import("../pages/ImportPrivateKey")),
     layout: LayoutOptions.BLANK,
   },
   {
@@ -61,6 +67,12 @@ const routeConfig = [
     path: "/home/proof-test",
     exact: true,
     component: React.lazy(() => import("../pages/HomePage/ProofTest")),
+    layout: LayoutOptions.MAIN,
+  },
+  {
+    path: "/home/my-account",
+    exact: true,
+    component: React.lazy(() => import("../pages/HomePage/MyAccount")),
     layout: LayoutOptions.MAIN,
   },
 ];

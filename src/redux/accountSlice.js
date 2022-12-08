@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LS } from "src/constants";
 import store from "./store";
-import { generatePublicAndPrivateKeyStringFromMnemonic } from "src/service/utils";
+import {
+  generatePublicAndPrivateKeyStringFromMnemonic,
+  generatePublicKeyStringFromPrivateKeyString,
+} from "src/service/utils";
 import { BASE_API_URL } from "src/constants";
 import Axios from "axios";
 
@@ -188,6 +191,12 @@ export const generatePairKeys =
       generatePrivateKeySuccess({ cachedPrivateKeyBuffer: privateKeyString })
     );
   };
+
+export const generatePublicKeyFromPrivateKey = (privateKey) => (dispatch) => {
+  const publicKey = generatePublicKeyStringFromPrivateKeyString(privateKey);
+  dispatch(generatePublicKeySuccess({ cachedPublicKeyBuffer: publicKey }));
+  dispatch(generatePrivateKeySuccess({ cachedPrivateKeyBuffer: privateKey }));
+};
 
 export const createNewPassword = (password) => (dispatch) => {
   dispatch(

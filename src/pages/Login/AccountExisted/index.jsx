@@ -186,9 +186,20 @@ export default function AccountExisted() {
           />
         </Box>
         <Box mb={2} />
-        <NavLink to="/import" style={{ width: "100%", textDecoration: "none" }}>
-          <CustomButton fullWidth={true} minHeight="50px" mb={3}>
-            <CustomTypography buttonText>Import account</CustomTypography>
+        <NavLink
+          to="/import-mnemonic"
+          style={{ width: "100%", textDecoration: "none" }}
+        >
+          <CustomButton fullWidth={true} minHeight="50px" mb={2}>
+            <CustomTypography buttonText>Import mnemonic</CustomTypography>
+          </CustomButton>
+        </NavLink>
+        <NavLink
+          to="/import-private-key"
+          style={{ textDecoration: "none", width: "100%" }}
+        >
+          <CustomButton fullWidth={true} minHeight="50px" mb={2}>
+            <CustomTypography buttonText>Import Private Key</CustomTypography>
           </CustomButton>
         </NavLink>
         <NavLink

@@ -69,7 +69,7 @@ export default function Header() {
             {accounts[activeAccount]?.role === "admin" &&
               path !== "/login" &&
               path !== "/register" &&
-              path !== "/import" && (
+              !path.includes("/import") && (
                 <CustomTypography
                   variant="subtitle"
                   fontWeight="bold"
@@ -84,7 +84,7 @@ export default function Header() {
           <Box display="flex" alignItems="center">
             {path !== "/welcome" &&
               path !== "/login" &&
-              path !== "/import" &&
+              !path.includes("/import") &&
               path !== "/register" &&
               !mobile && (
                 <Box
@@ -115,7 +115,7 @@ export default function Header() {
               mobile &&
               path !== "/welcome" &&
               path !== "/login" &&
-              path !== "/import" &&
+              !path.includes("/import") &&
               path !== "/register"
             ) && <SwitchThemeButton style={{ marginRight: 3 }} />}
 
@@ -123,7 +123,7 @@ export default function Header() {
             {mobile &&
               path !== "/welcome" &&
               path !== "/login" &&
-              path !== "/import" &&
+              !path.includes("/import") &&
               path !== "/register" && (
                 <IconButton
                   sx={{ mr: 1 }}

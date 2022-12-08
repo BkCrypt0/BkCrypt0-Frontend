@@ -171,6 +171,35 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
         />
         <CustomTypography>Back to login page</CustomTypography>
       </NavLink>
+      <CustomButton
+        mt={3}
+        width="100%"
+        minHeight="50px"
+        onClick={async () => {
+          const res = await validateMnemonic12Phrases(mnemonic, mnemonic, 1);
+          if (res === true) {
+            setErr(false);
+            setActiveStep(3);
+            dp(generateAccount());
+            if (localStorage.getItem(LS.ACTIVE_ACCOUNT) === null)
+              dp(changeActiveAccount(0));
+            else
+              dp(
+                changeActiveAccount(
+                  Number(localStorage.getItem(LS.ACTIVE_ACCOUNT)) + 1
+                )
+              );
+            sessionStorage.clear();
+          } else {
+            setErr(true);
+            sessionStorage.clear();
+          }
+        }}
+      >
+        <CustomTypography buttonText>
+          Skip this step (For testing)
+        </CustomTypography>
+      </CustomButton>
     </Box>
   );
 }
