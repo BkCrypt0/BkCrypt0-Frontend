@@ -1,0 +1,70 @@
+# Release-final
+- update: README
+- update: README
+- fix: search logic
+- chore: css
+- chore: icon
+- release -candidate
+
+# Release-candidate
+- feat: add search bar to places and identity
+- change: api
+
+# Version 1
+- update resoure file
+- create LISENCE
+- create LISENCE
+- Create LICENSE
+- Merge pull request #1 from BkCrypt0/ignoreZkey
+- Delete file zkey
+- release: beta 1.1
+- chore: UI
+- final beta
+- release: beta 1.0
+- UI : unrevoke
+- feat: revoke
+- UI: revoke
+- feat: Proof creation and testing
+- tweaks
+- place proof (not completed)
+- chore: UI
+- feat: create proof
+- feat: gen age proof
+- feat: Publish identity[C
+- feat: publish data
+- feat: UI
+- feat: UI tweaks
+- feat: proof
+- feat: claim API
+- feat: UI
+- try mimc
+- feat: api
+- err: POST
+- feat: test proof UI
+- feat: snarkjs
+- feat: gen age input
+- feat: add sign dialog
+- chore: clean up code
+- chore: change form text size
+- chore: role flow
+- feat: create and import identity
+- fix: Bugs
+- feat: simple admin user role flow
+- fix: multiple logins flow
+- fix: login
+- fix: login
+- feat: input identiy form
+- fix: lock file
+- Update README.md
+- chore: UI
+- feat: change accounts
+- unstable: test
+- chore: UI
+- fix: minor bug
+- chore: Register UI
+- chore: update README
+- feat: UI
+- feat: mobile drawer
+- feat: login and register UI
+- first commit
+- Initial commit

@@ -57,7 +57,7 @@ export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
 export const BASE_API_URL = "http://194.146.12.190:8000";
 
-export const CONTRACT_ADDRESS = "0xcf6028cc5f4441ef209b5942f460905fbcf2946e";
+export const CONTRACT_ADDRESS = "0xeB2649274522C98a5Ded4efE0B8ADd768e0A8B60";
 
 export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 
