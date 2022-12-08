@@ -21,6 +21,9 @@ import {
   removeFromCheckedList,
   removeFromSelectedList,
 } from "src/redux/adminSlice";
+import CustomForm from "src/components/CustomForm";
+import { useState } from "react";
+import DetailInformationDialog from "src/components/DetailInformationDialog";
 
 const { babyJub } = require("circomlib");
 const BigInt = require("big-integer");
@@ -41,12 +44,26 @@ export default function StatusTable({
   const checkedList = useSelector((state) => state.adminSlice.checkedList);
   const revokeLimit = useSelector((state) => state.adminSlice.revokeLimit);
   const dp = useDispatch();
-
+  const [inputIdentity, setInputIdentity] = useState("");
+  const [open, setOpen] = useState(false);
+  const [info, setInfo] = useState(undefined);
+  
   return (
     <>
-      <Box display="flex" justitycontent="space-between" alignItems="center">
+      <DetailInformationDialog
+        open={open}
+        information={info}
+        onClose={() => setOpen(false)}
+        setOpen={setOpen}
+      />
+      <Box
+        display="flex"
+        flexDirection={mobile ? "column" : "row"}
+        justitycontent="space-between"
+        alignItems="center"
+      >
         <Box width={mobile ? "100%" : "50%"} display="flex">
-          <CustomTypography variant="h5" textAlign="left" mb={mobile && 2}>
+          <CustomTypography variant="h5" textAlign="left">
             {tableName}
           </CustomTypography>
           {selectedList.length !== 0 && tableId === "no2" && (
@@ -60,12 +77,36 @@ export default function StatusTable({
             </CustomTypography>
           )}
         </Box>
+        {mobile && (
+          <CustomForm
+            type="text"
+            id={`identity${tableId}`}
+            placeHolder="Search identity..."
+            onChange={() => {
+              setInputIdentity(
+                document.getElementById(`identity${tableId}`).value
+              );
+            }}
+          />
+        )}
         {!mobile && (
           <Box width="50%" display="flex" justifyContent="flex-end" mb={2}>
+            <CustomForm
+              type="text"
+              id={`identity${tableId}`}
+              placeHolder="Search identity..."
+              onChange={() => {
+                setInputIdentity(
+                  document.getElementById(`identity${tableId}`).value
+                );
+              }}
+              margin="0px 0px"
+            />
             <CustomButton
               minHeight="50px"
               minWidth="150px"
               mr={2}
+              ml={!mobile && 2}
               onClick={btn1Handler}
             >
               <CustomTypography buttonText={true}>{btn1}</CustomTypography>
@@ -92,6 +133,7 @@ export default function StatusTable({
           }`,
           paddingBottom: 3,
           mb: 3,
+          mt: mobile && 2,
           height: "300px",
           overflow: "auto",
         }}
@@ -163,77 +205,98 @@ export default function StatusTable({
               </TableRow>
             )}
             {data !== undefined &&
-              data?.length > 0 &&
-              data.map((e, index) => (
-                <TableRow
-                  onClick={() => {
-                    if (selectedList.includes(e.CCCD + "_" + e.status)) {
-                      dp(removeFromSelectedList(e.CCCD + "_" + e.status));
-                      dp(removeFromCheckedList(index));
-                    } else if (
-                      !selectedList.includes(e.CCCD + "_" + e.status) &&
-                      selectedList.length < revokeLimit
-                    ) {
-                      dp(addToCheckedList(index));
-                      dp(addToSelectedList(e.CCCD + "_" + e.status));
-                    }
-                  }}
-                  key={index}
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  }}
-                >
-                  <TableCell
-                    align="center"
+              data?.filter((e) =>
+                e.CCCD.toString().includes(inputIdentity.toString())
+              ).length > 0 &&
+              data
+                ?.filter((e) =>
+                  e.CCCD.toString().includes(inputIdentity.toString())
+                )
+                .map((e, index) => (
+                  <TableRow
+                    onClick={() => {
+                      setInfo(e);
+                      setOpen(true);
+                    }}
+                    key={index}
                     sx={{
-                      zIndex: 500,
-                      position: "sticky",
-                      left: 0,
-                      borderBottom: "none",
-                      background:
-                        themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
+                      zIndex: 900,
                     }}
                   >
-                    {tableId === "no2" && (
-                      <Checkbox checked={checkedList.includes(index)} />
-                    )}
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      zIndex: 500,
-                      position: "sticky",
-                      left: 0,
-                      borderBottom: "none",
-                      background:
-                        themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
-                    }}
-                  >
-                    <CustomTypography>{e.CCCD}</CustomTypography>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <CustomTypography>
-                      {formatAddress(
-                        e.issuer !== undefined &&
-                          babyJub
-                            .packPoint(e.issuer.map((pub) => BigInt(pub).value))
-                            .toString("hex"),
-                        10
+                    <TableCell
+                      align="center"
+                      sx={{
+                        zIndex: 500,
+                        position: "sticky",
+                        left: 0,
+                        borderBottom: "none",
+                        background:
+                          themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                      }}
+                    >
+                      {tableId === "no2" && (
+                        <Checkbox
+                          sx={{ zIndex: 1000 }}
+                          checked={checkedList.includes(index)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            if (
+                              selectedList.includes(e.CCCD + "_" + e.status)
+                            ) {
+                              dp(
+                                removeFromSelectedList(e.CCCD + "_" + e.status)
+                              );
+                              dp(removeFromCheckedList(index));
+                            } else if (
+                              !selectedList.includes(e.CCCD + "_" + e.status) &&
+                              selectedList.length < revokeLimit
+                            ) {
+                              dp(addToCheckedList(index));
+                              dp(addToSelectedList(e.CCCD + "_" + e.status));
+                            }
+                          }}
+                        />
                       )}
-                    </CustomTypography>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <CustomTypography>
-                      {new Date(e.issueAt).toLocaleDateString()}
-                    </CustomTypography>
-                  </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: "none" }}>
-                    <CustomTypography>{ID_STATUS[e.status]}</CustomTypography>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        zIndex: 500,
+                        position: "sticky",
+                        left: 0,
+                        borderBottom: "none",
+                        background:
+                          themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                      }}
+                    >
+                      <CustomTypography>{e.CCCD}</CustomTypography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <CustomTypography>
+                        {formatAddress(
+                          e.issuer !== undefined &&
+                            babyJub
+                              .packPoint(
+                                e.issuer.map((pub) => BigInt(pub).value)
+                              )
+                              .toString("hex"),
+                          10
+                        )}
+                      </CustomTypography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <CustomTypography>
+                        {new Date(e.issueAt).toLocaleDateString()}
+                      </CustomTypography>
+                    </TableCell>
+                    <TableCell align="center" sx={{ borderBottom: "none" }}>
+                      <CustomTypography>{ID_STATUS[e.status]}</CustomTypography>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
         {(fetchingStatus === FS.IDLE || fetchingStatus === FS.FETCHING) && (

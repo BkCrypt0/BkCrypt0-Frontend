@@ -111,6 +111,7 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
                   data={provinceNames.filter(provincesFilter)}
                   targetFormId="bp"
                   setOpen={setOpen}
+                  displaySearch={false}
                 />
               )}
             </Box>

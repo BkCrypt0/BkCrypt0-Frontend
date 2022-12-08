@@ -2,6 +2,8 @@ import { Box, Collapse } from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import { useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
+import { useState } from "react";
+import CustomForm from "../CustomForm";
 
 export default function CustomCollapse({
   open,
@@ -12,9 +14,11 @@ export default function CustomCollapse({
   select = false,
   setProvinceList = undefined,
   provinceList = undefined,
+  displaySearch = true,
   ...props
 }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const [provinceInput, setProvinceInput] = useState("");
 
   return (
     <Collapse
@@ -22,7 +26,6 @@ export default function CustomCollapse({
       sx={{
         zIndex: 100,
         position: "fixed",
-        paddingY: 1,
         paddingX: 1,
         display: "flex",
         flexDirection: "column",
@@ -40,41 +43,62 @@ export default function CustomCollapse({
         ...props,
       }}
     >
-      {data.map((e, index) => (
+      {displaySearch === true && (
         <Box
-          width="80%"
-          px={2}
-          py={1}
-          key={index}
           sx={{
-            borderRadius: "10px",
-            cursor: "pointer",
-            "&:hover": {
-              background:
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(216, 216, 216, 0.1)"
-                  : "rgba(53, 53, 53, 0.1)",
-              cursor: "pointer",
-            },
+            position: "sticky",
+            top: 0,
+            background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+            zIndex: 1000,
+            paddingTop: 1,
           }}
-          onClick={
-            select === false
-              ? () => {
-                  document.getElementById(targetFormId).value = e.toString();
-                  setOpen(false);
-                }
-              : () => {
-                  if (!provinceList.includes(e.toString())) {
-                    const newList = [e, ...provinceList];
-                    setProvinceList(newList);
-                  }
-                  setOpen(false);
-                }
-          }
         >
-          <CustomTypography>{e}</CustomTypography>
+          <CustomForm
+            type="text"
+            placeHolder="Search province..."
+            onChange={() =>
+              setProvinceInput(document.getElementById("bp").value)
+            }
+          />
         </Box>
-      ))}
+      )}
+      {data
+        .filter((e) => e.includes(provinceInput))
+        .map((e, index) => (
+          <Box
+            width="80%"
+            px={2}
+            py={1}
+            key={index}
+            sx={{
+              borderRadius: "10px",
+              cursor: "pointer",
+              "&:hover": {
+                background:
+                  themeMode === THEME_MODE.DARK
+                    ? "rgba(216, 216, 216, 0.1)"
+                    : "rgba(53, 53, 53, 0.1)",
+                cursor: "pointer",
+              },
+            }}
+            onClick={
+              select === false
+                ? () => {
+                    document.getElementById(targetFormId).value = e.toString();
+                    setOpen(false);
+                  }
+                : () => {
+                    if (!provinceList.includes(e.toString())) {
+                      const newList = [e, ...provinceList];
+                      setProvinceList(newList);
+                    }
+                    setOpen(false);
+                  }
+            }
+          >
+            <CustomTypography>{e}</CustomTypography>
+          </Box>
+        ))}
     </Collapse>
   );
 }
