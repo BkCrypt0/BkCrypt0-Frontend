@@ -34,15 +34,15 @@ export default function Footer() {
         <i
           style={{
             color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
-            fontSize: "33px",
+            fontSize: "30px",
             marginRight: "10px",
           }}
-          className="fa fa-github"
+          className="fa-brands fa-github"
         />
       </Link>
       <Link href="https://www.facebook.com/BKCrypt0" target="_blank">
         <i
-          className="fab fa-facebook-f"
+          className="fa-brands fa-facebook"
           style={{
             color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
             fontSize: "30px",
@@ -57,7 +57,7 @@ export default function Footer() {
             fontSize: "30px",
             marginRight: "10px",
           }}
-          className="fab fa-discord"
+          className="fa-brands fa-discord"
         />
       </Link>
       <Link
@@ -69,7 +69,7 @@ export default function Footer() {
             color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
             fontSize: "30px",
           }}
-          className="fa fa-book"
+          className="fa-solid fa-book"
         />
       </Link>
     </Box>
