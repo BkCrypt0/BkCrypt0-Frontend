@@ -25,7 +25,6 @@ export default function CustomCollapse({
       in={open}
       sx={{
         zIndex: 100,
-        position: "fixed",
         paddingX: 1,
         display: "flex",
         flexDirection: "column",
@@ -64,7 +63,7 @@ export default function CustomCollapse({
         </Box>
       )}
       {data
-        .filter((e) => e.includes(provinceInput))
+        .filter((e) => e.toLowerCase().includes(provinceInput.toLowerCase()))
         .map((e, index) => (
           <Box
             width="80%"
