@@ -63,7 +63,7 @@ export const INFO_STATUS = {
 
 export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
-export const BASE_API_URL = "http://127.0.0.1:8000";
+export const BASE_API_URL = "http://194.146.12.190:3002";
 
 export const CONTRACT_ADDRESS = "0xF7b84973A41c21De6aD9F214024376C3884c033c";
 

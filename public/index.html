@@ -22,7 +22,13 @@
       href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
       rel="stylesheet"
     />
-    <script src="snarkjs.min.js"></script>
+    <link rel="preload" href="kycAge.wasm" as="fetch" crossorigin />
+    <link rel="preload" href="kycPlaces.wasm" as="fetch" crossorigin />
+    <link rel="preload" href="circuit_age.zkey" as="fetch" crossorigin />
+    <link rel="preload" href="circuit_place.zkey" as="fetch" crossorigin />
+
+    <!-- <script src="snarkjs.min.js"></script> -->
+    <link rel="preload" href="snarkjs.min.js" as="script" />
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
