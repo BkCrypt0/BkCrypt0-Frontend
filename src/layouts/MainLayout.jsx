@@ -4,9 +4,7 @@ import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
 import Footer from "./components/Footer";
 import { useSelector, useDispatch } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, LS } from "src/constants";
-import BackgroundDesktopDark from "src/assets/bg_desktop_dark.png";
-import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
+import { SCREEN_SIZE, LS } from "src/constants";
 import { Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import { changeActiveAccount } from "src/redux/accountSlice";
@@ -24,7 +22,7 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(4, 2, 0, 2),
   },
   [theme.breakpoints.up("sm")]: {
-    marginLeft: 220,
+    marginLeft: 240,
   },
   [theme.breakpoints.up("lg")]: {
     padding: theme.spacing(4, 4, 0, 4),
@@ -33,7 +31,6 @@ const MainContentWrapper = styled("div")(({ theme }) => ({
 
 export default function MainLayout(props) {
   const { children } = props;
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const login = useSelector((state) => state.accountSlice.isLogin);
   const isLogin = login === undefined ? localStorage.getItem(LS.LOGIN) : login;

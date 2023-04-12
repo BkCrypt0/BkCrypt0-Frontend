@@ -11,9 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-@font-face {
-  font-family: "Product Sans"; /*Can be any text*/
-  src: local("Product Sans Regular"),
-    url("./fonts/Product Sans Regular.ttf") format("truetype");
-}

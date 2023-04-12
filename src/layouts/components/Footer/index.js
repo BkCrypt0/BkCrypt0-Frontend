@@ -1,12 +1,12 @@
 import { Box, Link, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
-import { useSelector } from "react-redux";
+import { useTheme } from "@mui/material";
 
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 
 export default function Footer() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
+  const theme = useTheme();
   return (
     <Box
       width="100%"
@@ -16,14 +16,14 @@ export default function Footer() {
       minHeight="63px"
     >
       <CustomTypography variant={mobile ? undefined : "h6"} mr={1}>
-        2022
+        2023
       </CustomTypography>
       <CustomTypography variant={mobile ? undefined : "h6"} fontWeight="bold">
-        BKCrypt0
+        Zk:Elite
       </CustomTypography>
       <Box
         sx={{
-          background: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+          background: theme.colors.dark_3,
           borderRadius: "10px",
           mx: 1.5,
         }}
@@ -33,43 +33,11 @@ export default function Footer() {
       <Link href="https://github.com/BkCrypt0" target="_blank">
         <i
           style={{
-            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            color: theme.colors.dark_2,
             fontSize: "30px",
             marginRight: "10px",
           }}
           className="fa-brands fa-github"
-        />
-      </Link>
-      <Link href="https://www.facebook.com/BKCrypt0" target="_blank">
-        <i
-          className="fa-brands fa-facebook"
-          style={{
-            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
-            fontSize: "30px",
-            marginRight: "10px",
-          }}
-        />
-      </Link>
-      <Link href="https://discord.gg/rVY4Yj6M" target="_blank">
-        <i
-          style={{
-            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
-            fontSize: "30px",
-            marginRight: "10px",
-          }}
-          className="fa-brands fa-discord"
-        />
-      </Link>
-      <Link
-        href="https://bkcrypt0s-organization.gitbook.io/self-sovereign-identity/?fbclid=IwAR0WWRz6hD6oa830X7bb0VnLEc6mEW82bxuXJGa88A7mw1hVXsv59W-oP0A"
-        target="_blank"
-      >
-        <i
-          style={{
-            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
-            fontSize: "30px",
-          }}
-          className="fa-solid fa-book"
         />
       </Link>
     </Box>

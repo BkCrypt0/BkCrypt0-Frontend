@@ -1,18 +1,15 @@
 import { Button } from "@mui/material";
-import { THEME_MODE } from "src/constants";
-import { useSelector } from "react-redux";
 
 export default function CustomButton({
   children,
   onClick,
   disabled,
-  borderRadius,
+  borderRadius = "5px",
   fullWidth,
   id = undefined,
+  background,
   ...props
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
-
   return (
     <Button
       id={id}
@@ -21,10 +18,10 @@ export default function CustomButton({
       variant="contained"
       fullWidth={fullWidth}
       sx={{
-        borderRadius: !borderRadius ? "5px" : borderRadius,
-        background: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
+        borderRadius: borderRadius,
+        background: background,
         "&:hover": {
-          background: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
+          background: background,
         },
         ...props,
       }}

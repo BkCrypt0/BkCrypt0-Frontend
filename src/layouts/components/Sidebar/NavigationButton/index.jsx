@@ -1,29 +1,24 @@
 import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
 import CustomTypography from "src/components/CustomTypography";
-import { THEME_MODE } from "src/constants";
+import { useTheme } from "@mui/material";
 
 export default function NavigationButton({ label, link, id }) {
   const path = useLocation().pathname;
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const active = link === path;
+  const theme = useTheme();
 
   const buttonColor = () => {
-    if (active && themeMode === THEME_MODE.DARK) {
-      return "#ffffff";
-    } else if (active && themeMode === THEME_MODE.LIGHT) {
-      return "#353535";
+    if (active) {
+      return theme.colors.dark_1;
     } else if (!active) {
       return "transparent";
     }
   };
 
   const buttonHoverColor = () => {
-    if (!active && themeMode === THEME_MODE.LIGHT) {
-      return "#D8D8D8";
-    } else if (!active && themeMode === THEME_MODE.DARK) {
-      return "#5B5B5B";
+    if (!active) {
+      return theme.colors.light_1;
     } else return "undefined";
   };
 
@@ -31,9 +26,10 @@ export default function NavigationButton({ label, link, id }) {
     <NavLink to={link} style={{ textDecoration: "none" }}>
       <Button
         sx={{
+          textTransform: "none",
           borderRadius: "4px",
-          minHeight: "45px",
-          minWidth: "190px",
+          minHeight: "50px",
+          minWidth: "200px",
           mb: 2,
           background: buttonColor(),
           "&:hover": {
@@ -41,9 +37,7 @@ export default function NavigationButton({ label, link, id }) {
           },
         }}
       >
-        <CustomTypography
-          buttonText={active ? "true" : undefined}
-        >
+        <CustomTypography buttonText={active ? "true" : undefined}>
           {label}
         </CustomTypography>
       </Button>

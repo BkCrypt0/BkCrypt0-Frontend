@@ -1,15 +1,11 @@
 import { Drawer, Box } from "@mui/material";
 import { Fragment } from "react";
 import NavigationButton from "./NavigationButton";
-import { THEME_MODE } from "src/constants";
 import { useSelector } from "react-redux";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 import { useEffect } from "react";
-import { useTheme } from "@mui/material";
 
 export default function Sidebar() {
-  const theme = useTheme();
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
@@ -25,13 +21,9 @@ export default function Sidebar() {
         variant="permanent"
         PaperProps={{
           sx: {
-            boxShadow: `0px 0px 6px 1.5px ${
-              themeMode === THEME_MODE.DARK
-                ? "rgba(0, 0, 0, 0.5)"
-                : "rgba(53, 53, 53, 0.2)"
-            }`,
-            background: theme.colors.dark_2,
-            width: 220,
+            boxShadow: "0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)",
+            background: "white",
+            width: 240,
             transition: "width 300ms ease",
             pt: 10,
             height: "calc(100% - 55px)",
@@ -47,33 +39,36 @@ export default function Sidebar() {
           width="100%"
           mt={2}
         >
-          <NavigationButton label="MY ACCOUNT" link="/home/my-account" />
+          <NavigationButton label="Tài khoản của tôi" link="/home/my-account" />
           {role === "user" && (
-            <NavigationButton label="MY IDENTITY" link="/home/identity" />
+            <NavigationButton label="Định danh của tôi" link="/home/identity" />
           )}
           {role === "admin" && (
             <NavigationButton
-              label="Identity Manager"
+              label="Quản lý CCCD"
               link="/home/identity-manager"
             />
           )}
           {role === "admin" && (
             <NavigationButton
-              label="ISSUE IDENTITY"
+              label="Phát hành CCCD"
               link="/home/issue-identity"
             />
           )}
           {role === "user" && (
-            <NavigationButton label="MY PROOFS" link="/home/proofs" />
+            <NavigationButton label="Bằng chứng của tôi" link="/home/proofs" />
           )}
           {role === "user" && (
             <NavigationButton
-              label="CREATE PROOFS"
+              label="Tạo bằng chứng mới"
               link="/home/proof-creation"
             />
           )}
           {role === "user" && (
-            <NavigationButton label="TEST PROOFS" link="/home/proof-test" />
+            <NavigationButton
+              label="Kiểm tra bằng chứng"
+              link="/home/proof-test"
+            />
           )}
         </Box>
       </Drawer>

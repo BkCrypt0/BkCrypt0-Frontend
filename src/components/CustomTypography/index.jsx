@@ -1,6 +1,5 @@
-import { THEME_MODE } from "src/constants";
-import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import { useTheme } from "@mui/material";
 
 export default function CustomTypography({
   variant,
@@ -9,10 +8,9 @@ export default function CustomTypography({
   buttonText,
   ...props
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
-  const primaryTextColor =
-    themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8";
-  const buttonTextColor = themeMode === THEME_MODE.DARK ? "#353535" : "#D8D8D8";
+  const theme = useTheme();
+  const primaryTextColor = theme.colors.dark_3;
+  const buttonTextColor = "white";
   return (
     <Typography
       variant={variant}

@@ -12,7 +12,6 @@ import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
-import { useTheme } from "@emotion/react";
 
 export default function Header() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -30,7 +29,6 @@ export default function Header() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const theme = useTheme();
   return (
     <>
       <ChangeAccountDialog
@@ -45,7 +43,7 @@ export default function Header() {
         PaperProps={{
           sx: {
             boxShadow: `0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)`,
-            background: theme.colors.dark_2,
+            background: "white",
             zIndex: 1205,
             overflow: "hidden",
             paddingX: 2.5,
@@ -58,10 +56,7 @@ export default function Header() {
         <Box width="100%" display="flex" justifyContent="space-between">
           <Box width="100%" display="flex" alignItems="center">
             <NavLink to="/welcome">
-              <TeamLogo
-                type="light"
-                style={{ width: "130px", height: "auto" }}
-              />
+              <TeamLogo style={{ width: "130px", height: "auto" }} />
             </NavLink>
             {accounts[activeAccount]?.role === "admin" &&
               path !== "/login" &&
