@@ -3,8 +3,7 @@ import Header from "./components/Header/index";
 import Footer from "./components/Footer";
 import { useSelector } from "react-redux";
 import { THEME_MODE, SCREEN_SIZE } from "src/constants";
-import BackgroundDesktopDark from "src/assets/bg_desktop_dark_v2.png";
-import BackgroundDesktopLight from "src/assets/bg_desktop_light_v2.png";
+import BackgroundDesktop from "src/assets/bg_desktop.png";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 0, 0, 0),
@@ -30,11 +29,7 @@ export default function MainLayout(props) {
         component="main"
         sx={{
           pt: { xsm: 7 },
-          // background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
-          backgroundImage:
-            themeMode === THEME_MODE.DARK
-              ? `url(${BackgroundDesktopDark})`
-              : `url(${BackgroundDesktopLight})`,
+          backgroundImage: `url(${BackgroundDesktop})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: !mobile ? "120% 100%" : "170% 100%",
           backgroundPosition: "top",

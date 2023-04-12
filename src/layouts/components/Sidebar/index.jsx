@@ -5,8 +5,10 @@ import { THEME_MODE } from "src/constants";
 import { useSelector } from "react-redux";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 import { useEffect } from "react";
+import { useTheme } from "@mui/material";
 
 export default function Sidebar() {
+  const theme = useTheme();
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
@@ -28,7 +30,7 @@ export default function Sidebar() {
                 ? "rgba(0, 0, 0, 0.5)"
                 : "rgba(53, 53, 53, 0.2)"
             }`,
-            background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+            background: theme.colors.dark_2,
             width: 220,
             transition: "width 300ms ease",
             pt: 10,

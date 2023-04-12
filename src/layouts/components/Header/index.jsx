@@ -45,11 +45,11 @@ export default function Header() {
         PaperProps={{
           sx: {
             boxShadow: `0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)`,
-            background: theme.colors.dark_3,
+            background: theme.colors.dark_2,
             zIndex: 1205,
             overflow: "hidden",
-            paddingX: 2,
-            paddingY: 1,
+            paddingX: 2.5,
+            paddingY: 1.5,
             boxSizing: "border-box",
           },
         }}
@@ -60,7 +60,7 @@ export default function Header() {
             <NavLink to="/welcome">
               <TeamLogo
                 type="light"
-                style={{ width: "150px", height: "auto" }}
+                style={{ width: "130px", height: "auto" }}
               />
             </NavLink>
             {accounts[activeAccount]?.role === "admin" &&

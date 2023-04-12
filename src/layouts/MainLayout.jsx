@@ -10,6 +10,7 @@ import BackgroundDesktopLight from "src/assets/bg_desktop_light.png";
 import { Redirect } from "react-router-dom";
 import { useEffect } from "react";
 import { changeActiveAccount } from "src/redux/accountSlice";
+import BackgroundDesktop from "src/assets/bg_desktop.png";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(4, 8, 7, 8),
@@ -58,7 +59,7 @@ export default function MainLayout(props) {
   const dp = useDispatch();
   useEffect(() => {
     dp(changeActiveAccount(Number(localStorage.getItem(LS.ACTIVE_ACCOUNT))));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -72,11 +73,7 @@ export default function MainLayout(props) {
         sx={{
           pt: { xsm: 7 },
           minHeight: { xs: "calc(100vh - 55)", xsm: "100vh" },
-          // background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
-          backgroundImage:
-            themeMode === THEME_MODE.DARK
-              ? `url(${BackgroundDesktopDark})`
-              : `url(${BackgroundDesktopLight})`,
+          backgroundImage: `url(${BackgroundDesktop})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: !mobile ? "120% 100%" : "170% 100%",
           backgroundPosition: "top",
