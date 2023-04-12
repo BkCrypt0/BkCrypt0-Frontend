@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
+import { useTheme } from "@emotion/react";
 
 export default function Header() {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
@@ -29,6 +30,7 @@ export default function Header() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const theme = useTheme();
   return (
     <>
       <ChangeAccountDialog
@@ -42,29 +44,24 @@ export default function Header() {
         anchor="top"
         PaperProps={{
           sx: {
-            boxShadow: `0px 0px 6px 1.5px ${
-              themeMode === THEME_MODE.DARK
-                ? "rgba(0, 0, 0, 0.5)"
-                : "rgba(53, 53, 53, 0.2)"
-            }`,
-            background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+            boxShadow: `0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)`,
+            background: theme.colors.dark_3,
             zIndex: 1205,
-            height: "55px",
-            paddingTop: 2,
             overflow: "hidden",
+            paddingX: 2,
+            paddingY: 1,
+            boxSizing: "border-box",
           },
         }}
         sx={{ width: "100%", height: 55, maxHeight: 55 }}
       >
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-          sx={{ marginTop: -5 }}
-        >
+        <Box width="100%" display="flex" justifyContent="space-between">
           <Box width="100%" display="flex" alignItems="center">
             <NavLink to="/welcome">
-              <TeamLogo style={{ width: "222px", height: "auto" }} />
+              <TeamLogo
+                type="light"
+                style={{ width: "150px", height: "auto" }}
+              />
             </NavLink>
             {accounts[activeAccount]?.role === "admin" &&
               path !== "/login" &&

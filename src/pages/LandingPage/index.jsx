@@ -20,7 +20,7 @@ export default function LandingPage() {
       >
         <TeamLogo
           style={{
-            width: mobile ? "100%" : tablet ? "80%" : "50%",
+            width: mobile ? "80%" : tablet ? "80%" : "50%",
             height: "auto",
           }}
         />

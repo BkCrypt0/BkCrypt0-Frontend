@@ -11,6 +11,18 @@ const theme = createTheme({
   typography: {
     fontFamily: "'Lexend Deca', sans-serif",
   },
+
+  colors: {
+    dark_3: "#253f4b",
+    dark_2: "#365563",
+    dark_1: "#446879",
+    medium_3: "#537d90",
+    medium_2: "#608da2",
+    medium_1: "#779eb2",
+    light_3: "#8eb1c2",
+    light_2: "#acc8d7",
+    light_1: "#c8dfea",
+  },
 });
 
 const filterRoutesAndPathsByLayout = (layout) => {
