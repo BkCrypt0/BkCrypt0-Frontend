@@ -31,9 +31,9 @@ export default function NavigationButton({ label, link, id }) {
     <NavLink to={link} style={{ textDecoration: "none" }}>
       <Button
         sx={{
-          borderRadius: "0px 10px 0px 10px",
-          minHeight: "60px",
-          minWidth: "200px",
+          borderRadius: "4px",
+          minHeight: "45px",
+          minWidth: "190px",
           mb: 2,
           background: buttonColor(),
           "&:hover": {
@@ -43,7 +43,6 @@ export default function NavigationButton({ label, link, id }) {
       >
         <CustomTypography
           buttonText={active ? "true" : undefined}
-          fontWeight="bold"
         >
           {label}
         </CustomTypography>

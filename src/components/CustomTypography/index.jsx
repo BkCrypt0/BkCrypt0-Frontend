@@ -15,7 +15,6 @@ export default function CustomTypography({
   const buttonTextColor = themeMode === THEME_MODE.DARK ? "#353535" : "#D8D8D8";
   return (
     <Typography
-      fontFamily="Ubuntu"
       variant={variant}
       sx={{
         color: !color

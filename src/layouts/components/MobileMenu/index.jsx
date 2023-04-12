@@ -98,9 +98,9 @@ export default function MobileMenu({ open, setOpen }) {
           alignItems="center"
           width="90%"
         >
-          <NavigationButton label="MY ACCOUNT" link="/home/my-account" />
+          <NavigationButton label="My Account" link="/home/my-account" />
           {role === "user" && (
-            <NavigationButton label="MY IDENTITY" link="/home/identity" />
+            <NavigationButton label="My Identity" link="/home/identity" />
           )}
           {role === "admin" && (
             <NavigationButton
@@ -109,16 +109,16 @@ export default function MobileMenu({ open, setOpen }) {
             />
           )}
           {role === "user" && (
-            <NavigationButton label="MY PROOFS" link="/home/proofs" />
+            <NavigationButton label="My Proofs" link="/home/proofs" />
           )}
           {role === "user" && (
             <NavigationButton
-              label="CREATE PROOFS"
+              label="Create Proofs"
               link="/home/proof-creation"
             />
           )}
           {role === "user" && (
-            <NavigationButton label="TEST PROOFS" link="/home/proof-test" />
+            <NavigationButton label="Test Proofs" link="/home/proof-test" />
           )}
         </Box>
         <Box

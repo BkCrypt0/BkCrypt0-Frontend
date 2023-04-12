@@ -44,7 +44,6 @@ export default function IdentityManager() {
   );
 
   const selectedList = useSelector((state) => state.adminSlice.selectedList);
-  console.log(selectedList);
 
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();

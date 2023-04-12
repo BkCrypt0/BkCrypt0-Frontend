@@ -26,7 +26,6 @@ export default function LandingPage() {
         />
         <Typography
           variant={mobile ? "h6" : tablet ? "h5" : "h3"}
-          fontFamily="Ubuntu"
           sx={{
             ml: mobile ? 5 : tablet ? 15 : 20,
             mr: mobile ? 5 : tablet ? 15 : 20,
