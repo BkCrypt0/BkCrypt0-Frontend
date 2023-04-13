@@ -12,8 +12,10 @@ import { useState, useEffect } from "react";
 import MobileMenu from "../MobileMenu";
 import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
+import { useTheme } from "@mui/material";
 
 export default function Header() {
+  const theme = useTheme();
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const path = useLocation().pathname;
@@ -62,14 +64,19 @@ export default function Header() {
               path !== "/login" &&
               path !== "/register" &&
               !path.includes("/import") && (
-                <CustomTypography
-                  variant="subtitle"
-                  fontWeight="bold"
-                  ml={-4}
-                  mt={-3}
+                <Box
+                  sx={{
+                    background: theme.colors.dark_1,
+                    padding: 0.5,
+                    borderRadius: "8px 2px 8px 2px",
+                    marginLeft: 1,
+                    marginTop: -1.75,
+                  }}
                 >
-                  ADMIN
-                </CustomTypography>
+                  <CustomTypography variant="subtitle" color="white">
+                    Admin
+                  </CustomTypography>
+                </Box>
               )}
           </Box>
 

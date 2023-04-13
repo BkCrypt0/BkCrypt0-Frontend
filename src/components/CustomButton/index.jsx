@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { useTheme } from "@mui/material";
 
 export default function CustomButton({
   children,
@@ -10,6 +11,8 @@ export default function CustomButton({
   background,
   ...props
 }) {
+  const theme = useTheme();
+
   return (
     <Button
       id={id}
@@ -19,9 +22,9 @@ export default function CustomButton({
       fullWidth={fullWidth}
       sx={{
         borderRadius: borderRadius,
-        background: background,
+        background: !background ? theme.colors.dark_2 : background,
         "&:hover": {
-          background: background,
+          background: !background ? theme.colors.dark_1 : background,
         },
         ...props,
       }}
