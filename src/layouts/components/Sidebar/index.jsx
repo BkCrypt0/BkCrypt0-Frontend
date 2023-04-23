@@ -17,61 +17,51 @@ export default function Sidebar() {
   const role = accounts[activeAccount]?.role;
   return (
     <Fragment>
-      <Drawer
-        variant="permanent"
-        PaperProps={{
-          sx: {
-            boxShadow: "0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)",
-            background: "white",
-            width: 240,
-            transition: "width 300ms ease",
-            pt: 10,
-            height: "calc(100% - 55px)",
-          },
+      <Box
+        sx={{
+          boxShadow: "0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)",
+          background: "white",
+          width: 240,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          pt: 2,
+          position: "fixed",
+          height: "100%",
         }}
       >
-        <Box
-          component="nav"
-          aria-label="sidebar navigation"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          width="100%"
-          mt={2}
-        >
-          <NavigationButton label="Tài khoản của tôi" link="/home/my-account" />
-          {role === "user" && (
-            <NavigationButton label="Định danh của tôi" link="/home/identity" />
-          )}
-          {role === "admin" && (
-            <NavigationButton
-              label="Quản lý CCCD"
-              link="/home/identity-manager"
-            />
-          )}
-          {role === "admin" && (
-            <NavigationButton
-              label="Phát hành CCCD"
-              link="/home/issue-identity"
-            />
-          )}
-          {role === "user" && (
-            <NavigationButton label="Bằng chứng của tôi" link="/home/proofs" />
-          )}
-          {role === "user" && (
-            <NavigationButton
-              label="Tạo bằng chứng mới"
-              link="/home/proof-creation"
-            />
-          )}
-          {role === "user" && (
-            <NavigationButton
-              label="Kiểm tra bằng chứng"
-              link="/home/proof-test"
-            />
-          )}
-        </Box>
-      </Drawer>
+        <NavigationButton label="Tài khoản của tôi" link="/home/my-account" />
+        {role === "user" && (
+          <NavigationButton label="CCCD của tôi" link="/home/identity" />
+        )}
+        {role === "admin" && (
+          <NavigationButton
+            label="Quản lý CCCD"
+            link="/home/identity-manager"
+          />
+        )}
+        {role === "admin" && (
+          <NavigationButton
+            label="Phát hành CCCD"
+            link="/home/issue-identity"
+          />
+        )}
+        {role === "user" && (
+          <NavigationButton label="Bằng chứng của tôi" link="/home/proofs" />
+        )}
+        {role === "user" && (
+          <NavigationButton
+            label="Tạo bằng chứng mới"
+            link="/home/proof-creation"
+          />
+        )}
+        {role === "user" && (
+          <NavigationButton
+            label="Kiểm tra bằng chứng"
+            link="/home/proof-test"
+          />
+        )}
+      </Box>
     </Fragment>
   );
 }

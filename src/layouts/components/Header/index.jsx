@@ -1,8 +1,7 @@
-import { Box, useMediaQuery, Drawer, IconButton } from "@mui/material";
+import { Box, useMediaQuery, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { THEME_MODE } from "src/constants";
 import TeamLogo from "src/components/TeamLogo";
-import SwitchThemeButton from "src/components/SwitchThemeButton";
 import EnterAppButton from "src/components/EnterAppButton";
 import { SCREEN_SIZE } from "src/constants";
 import { useLocation, NavLink } from "react-router-dom";
@@ -39,21 +38,17 @@ export default function Header() {
         onClose={() => setOpenDialog(false)}
       />
       <MobileMenu open={openMobileMenu} setOpen={setOpenMobileMenu} />
-      <Drawer
-        variant="permanent"
-        anchor="top"
-        PaperProps={{
-          sx: {
-            boxShadow: `0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)`,
-            background: "white",
-            zIndex: 1205,
-            overflow: "hidden",
-            paddingX: 2.5,
-            paddingY: 1.5,
-            boxSizing: "border-box",
-          },
+      <Box
+        sx={{
+          boxShadow: `0px 0px 6px 1.5px rgba(53, 53, 53, 0.2)`,
+          background: "white",
+          zIndex: 1205,
+          paddingX: 6,
+          paddingY: 1.5,
+          boxSizing: "border-box",
+          position: "sticky",
+          top: 0,
         }}
-        sx={{ width: "100%", height: 55, maxHeight: 55 }}
       >
         <Box width="100%" display="flex" justifyContent="space-between">
           <Box width="100%" display="flex" alignItems="center">
@@ -92,16 +87,11 @@ export default function Header() {
                   }}
                   minWidth="100px"
                   sx={{
-                    mr: 2,
                     cursor: "pointer",
-                    background:
-                      themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#434343",
+                    background: "#f2f2f2",
                     py: "5px",
-                    border:
-                      themeMode === THEME_MODE.DARK
-                        ? "1px solid rgba(216, 216, 216, 0.4)"
-                        : "1px solid rgba(53, 53, 53, 0.4)",
-                    borderRadius: "10px",
+                    border: "1px solid rgba(53, 53, 53, 0.4)",
+                    borderRadius: "5px",
                   }}
                 >
                   <CustomTypography textAlign="center">
@@ -109,14 +99,6 @@ export default function Header() {
                   </CustomTypography>
                 </Box>
               )}
-
-            {!(
-              mobile &&
-              path !== "/welcome" &&
-              path !== "/login" &&
-              !path.includes("/import") &&
-              path !== "/register"
-            ) && <SwitchThemeButton style={{ marginRight: 3 }} />}
 
             {!mobile && path === "/welcome" && <EnterAppButton />}
             {mobile &&
@@ -139,7 +121,7 @@ export default function Header() {
               )}
           </Box>
         </Box>
-      </Drawer>
+      </Box>
     </>
   );
 }

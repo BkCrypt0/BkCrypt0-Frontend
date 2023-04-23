@@ -22,9 +22,9 @@ export default function Identity() {
 
   return (
     <>
-      <Box width="100%">
-        <CustomTypography variant="h4" mb={3}>
-          My Account
+      <Box>
+        <CustomTypography variant="h4" mb="36px">
+          Tài khoản của tôi
         </CustomTypography>
         <Box width="100%">
           <Paper

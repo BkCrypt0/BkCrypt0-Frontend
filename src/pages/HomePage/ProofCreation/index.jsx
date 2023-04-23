@@ -33,8 +33,8 @@ export default function ProofCreation() {
       )}
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box>
-        <CustomTypography variant="h4" mb={3}>
-          Create a proof
+        <CustomTypography variant="h4" mb="36px">
+          Tạo bằng chứng mới
         </CustomTypography>
         {identityStatus === 2 && (
           <>
@@ -44,7 +44,8 @@ export default function ProofCreation() {
         )}
         {identityStatus !== 2 && (
           <CustomTypography variant="h5" mb={3}>
-            Cannot create proof because your identity is not active or revoked
+            Không thể tạo bằng chứng mới do tài khoản của bạn chưa kích hoạt
+            hoặc đã bị vô hiệu hóa
           </CustomTypography>
         )}
       </Box>

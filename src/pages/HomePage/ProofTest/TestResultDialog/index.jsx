@@ -23,7 +23,7 @@ export default function TestResultDialog({ open, onClose, res }) {
           padding: 3,
           background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
           width: mobile ? "99%" : tablet ? "50%" : "40%",
-          borderRadius: "10px",
+          borderRadius: "5px",
         },
       }}
     >

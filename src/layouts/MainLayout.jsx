@@ -11,21 +11,17 @@ import { changeActiveAccount } from "src/redux/accountSlice";
 import BackgroundDesktop from "src/assets/bg_desktop.png";
 
 const MainContentWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(4, 8, 7, 8),
-  marginLeft: 220,
-  minHeight: "calc(100vh - 87px)",
-  transition: "margin-left 300ms ease",
-  display: "flex",
-  flexDirection: "column",
+  flexGrow: 1,
   [theme.breakpoints.up("xs")]: {
-    marginLeft: 0,
-    padding: theme.spacing(4, 2, 0, 2),
+    padding: "18px",
   },
   [theme.breakpoints.up("sm")]: {
-    marginLeft: 240,
+    padding: "36px",
+    marginLeft: "240px",
   },
   [theme.breakpoints.up("lg")]: {
-    padding: theme.spacing(4, 4, 0, 4),
+    padding: "36px",
+    marginLeft: "240px",
   },
 }));
 
@@ -60,28 +56,33 @@ export default function MainLayout(props) {
   }, []);
 
   return (
-    <Fragment>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+      }}
+    >
       {(condition() === true || login === undefined) && (
         <Redirect to="/login" />
       )}
       <Header />
       <Box
-        component="main"
         sx={{
-          pt: { xsm: 7 },
-          minHeight: { xs: "calc(100vh - 55)", xsm: "100vh" },
           backgroundImage: `url(${BackgroundDesktop})`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: !mobile ? "120% 100%" : "170% 100%",
+          backgroundSize: !mobile ? "120% 100%" : "190% 100%",
           backgroundPosition: "top",
+          flexGrow: 1,
+          display: "flex",
+          position: "relative",
         }}
       >
         {!mobile && <Sidebar />}
-        <MainContentWrapper>
-          <Box sx={{ flexGrow: 1 }}>{children}</Box>
-          <Footer />
-        </MainContentWrapper>
+        <MainContentWrapper>{children}</MainContentWrapper>
+        <Footer />
       </Box>
-    </Fragment>
+    </Box>
   );
 }

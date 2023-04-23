@@ -18,7 +18,7 @@ export default function Province() {
       <Box
         sx={{
           width: mobile ? "100%" : tablet ? "90%" : "30%",
-          borderRadius: "10px",
+          borderRadius: "5px",
           paddingY: 3,
           mb: 3,
         }}
@@ -39,7 +39,7 @@ export default function Province() {
           justifyContent="center"
           sx={{
             background: INFO_STATUS[1]?.color,
-            borderRadius: "10px",
+            borderRadius: "5px",
             textAlign: "center",
             border: `2px solid ${INFO_STATUS[1]?.stroke}`,
             mb: 3,

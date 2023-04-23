@@ -19,8 +19,8 @@ export default function ProofTest() {
       )}
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box>
-        <CustomTypography variant="h4" mb={3}>
-          Test your proofs
+        <CustomTypography variant="h4" mb="36px">
+          Kiểm tra bằng chứng của bạn
         </CustomTypography>
         <TestAge />
         <TestProvince />

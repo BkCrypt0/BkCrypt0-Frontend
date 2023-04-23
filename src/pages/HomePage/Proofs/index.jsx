@@ -27,8 +27,8 @@ export default function Proofs() {
       )}
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box width="100%">
-        <CustomTypography variant="h4" mb={3}>
-          My Proofs
+        <CustomTypography variant="h4" mb={"36px"}>
+          Bằng chứng của tôi
         </CustomTypography>
         {ageProof === undefined && (
           <Box

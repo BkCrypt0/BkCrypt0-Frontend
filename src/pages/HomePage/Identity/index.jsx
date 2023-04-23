@@ -59,8 +59,8 @@ export default function Identity() {
     <>
       {role === "admin" && <Redirect to="/home/identity-manager" />}
       <Box width="100%">
-        <CustomTypography variant="h4" mb={3}>
-          My Identity
+        <CustomTypography variant="h4" mb="36px">
+          Định danh của tôi
         </CustomTypography>
         <Box
           width="100%"
@@ -240,7 +240,8 @@ export default function Identity() {
                   <CustomTypography buttonText>Claim Identity</CustomTypography>
                 )}
                 {claimingIdentityStatus === FS.FETCHING && (
-                  <CircularProgress disableShrink
+                  <CircularProgress
+                    disableShrink
                     sx={{
                       color:
                         themeMode === THEME_MODE.LIGHT ? "white" : "#434343",

@@ -98,9 +98,9 @@ export default function MobileMenu({ open, setOpen }) {
           alignItems="center"
           width="90%"
         >
-          <NavigationButton label="My Account" link="/home/my-account" />
+          <NavigationButton label="Tài khoản của tôi" link="/home/my-account" />
           {role === "user" && (
-            <NavigationButton label="My Identity" link="/home/identity" />
+            <NavigationButton label="CCCD của tôi" link="/home/identity" />
           )}
           {role === "admin" && (
             <NavigationButton
@@ -109,7 +109,7 @@ export default function MobileMenu({ open, setOpen }) {
             />
           )}
           {role === "user" && (
-            <NavigationButton label="My Proofs" link="/home/proofs" />
+            <NavigationButton label="Bằng chứng của tôi" link="/home/proofs" />
           )}
           {role === "user" && (
             <NavigationButton

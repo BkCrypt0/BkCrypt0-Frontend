@@ -9,11 +9,15 @@ export default function Footer() {
   const theme = useTheme();
   return (
     <Box
-      width="100%"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="63px"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        bottom: "0px",
+        paddingY: 2,
+        width: "100%",
+      }}
     >
       <CustomTypography variant={mobile ? undefined : "h6"} mr={1}>
         2023

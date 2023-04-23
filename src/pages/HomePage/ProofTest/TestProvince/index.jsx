@@ -53,6 +53,7 @@ export default function TestProvince() {
           }`,
           paddingY: 3,
           mb: 3,
+          boxSizing: "border-box",
         }}
       >
         <Box width="90%">

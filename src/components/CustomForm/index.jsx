@@ -68,7 +68,7 @@ export default function CustomForm({
                 ? "1.5px solid rgba(216, 216, 216, 0.4)"
                 : "1.5px solid rgba(53, 53, 53, 0.4)",
             background: themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#434343",
-            borderRadius: "10px",
+            borderRadius: "5px",
             boxSizing: "border-box",
             ...props,
           }}
