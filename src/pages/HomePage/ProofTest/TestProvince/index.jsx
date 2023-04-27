@@ -52,14 +52,14 @@ export default function TestProvince() {
               : "rgba(53, 53, 53, 0.4)"
           }`,
           paddingY: 3,
-          mb: 3,
+          mb: mobile ? 10 : 3,
           boxSizing: "border-box",
         }}
       >
         <Box width="90%">
           <Box width="100%" display="flex" flexDirection="column">
             <CustomTypography fontWeight="bold" mr={1} variant="h5" mb={3}>
-              Place Verifier
+              Kiểm tra bằng chứng về nơi ở
             </CustomTypography>
             <Box
               width="100%"
@@ -182,7 +182,7 @@ export default function TestProvince() {
               }}
             >
               {loading === false && (
-                <CustomTypography buttonText={true}>Verify</CustomTypography>
+                <CustomTypography buttonText={true}>Kiểm tra</CustomTypography>
               )}
               {loading === true && (
                 <CircularProgress

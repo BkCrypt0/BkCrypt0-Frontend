@@ -47,7 +47,9 @@ export default function Proofs() {
               alignItems: "center",
             }}
           >
-            <CustomTypography variant="h5">Age proof empty</CustomTypography>
+            <CustomTypography variant="h5">
+              Chưa có bằng chứng tuổi
+            </CustomTypography>
           </Box>
         )}
         {ageProof !== undefined && <Age />}
@@ -84,7 +86,7 @@ export default function Proofs() {
             }}
           >
             <CustomTypography variant="h5">
-              Province proof empty
+              Chưa có bằng chứng về nơi ở
             </CustomTypography>
           </Box>
         )}

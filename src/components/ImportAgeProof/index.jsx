@@ -73,7 +73,7 @@ export default function ImportAgeProof() {
           }}
         />
         <CustomTypography mb={2}>
-          Upload your proof (.JSON file)
+          Tải lên bằng chứng (.JSON)
         </CustomTypography>
       </Box>
     </>

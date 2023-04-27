@@ -25,7 +25,7 @@ export default function ImportProvinceProof() {
       return;
     }
     if (!fileObj.type.includes("json")) {
-      enqueueSnackbar("Unsupported file type! Please upload a JSON file", {
+      enqueueSnackbar("Định dạng file không hỗ trợ! Hãy tải lên 1 file JSON", {
         variant: "error",
         dense: "true",
         preventDuplicate: true,
@@ -72,9 +72,7 @@ export default function ImportProvinceProof() {
             color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
           }}
         />
-        <CustomTypography mb={2}>
-          Upload your proof (.JSON file)
-        </CustomTypography>
+        <CustomTypography mb={2}>Tải lên bằng chứng (.JSON)</CustomTypography>
       </Box>
     </>
   );

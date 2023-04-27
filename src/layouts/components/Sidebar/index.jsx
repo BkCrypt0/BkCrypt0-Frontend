@@ -1,4 +1,4 @@
-import { Drawer, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { Fragment } from "react";
 import NavigationButton from "./NavigationButton";
 import { useSelector } from "react-redux";

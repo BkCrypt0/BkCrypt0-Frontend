@@ -1,10 +1,10 @@
-import { Box, useMediaQuery } from "@mui/material";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import CustomForm from "src/components/CustomForm";
 import { useState, useEffect } from "react";
 import { createNewPassword, generatePairKeys } from "src/redux/accountSlice";
@@ -12,13 +12,12 @@ import { createNewPassword, generatePairKeys } from "src/redux/accountSlice";
 export default function CreatePassword({ setActiveStep, activeStep }) {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
-
+  const theme = useTheme();
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
@@ -99,11 +98,11 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
       >
         <ArrowBackTwoToneIcon
           sx={{
-            color: themeMode === THEME_MODE.DARK ? "white" : "black",
+            color: theme.colors.dark_3,
             mr: 0.5,
           }}
         />
-        <CustomTypography>Back to login page</CustomTypography>
+        <CustomTypography>Quay lại trang đăng nhập</CustomTypography>
       </NavLink>
     </Box>
   );

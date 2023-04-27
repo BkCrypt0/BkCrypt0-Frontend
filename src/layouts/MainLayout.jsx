@@ -1,5 +1,4 @@
 import { Box, styled, useMediaQuery } from "@mui/material";
-import { Fragment } from "react";
 import Header from "./components/Header/index";
 import Sidebar from "./components/Sidebar/index";
 import Footer from "./components/Footer";

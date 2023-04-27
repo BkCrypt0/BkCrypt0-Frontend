@@ -85,7 +85,7 @@ export default function Identity() {
           >
             {identity === undefined && (
               <CustomTypography ml={3} variant="h5">
-                Undefined
+                Chưa xác định
               </CustomTypography>
             )}
             {identity !== undefined && (
@@ -208,7 +208,7 @@ export default function Identity() {
                 mr={mobile ? 0 : 3}
                 onClick={() => setClickCreate(true)}
               >
-                <CustomTypography buttonText>Create Identity</CustomTypography>
+                <CustomTypography buttonText>Tạo định danh</CustomTypography>
               </CustomButton>
             )}
             {identity === undefined && <ImportIdentityButton />}

@@ -85,7 +85,7 @@ export default function ImportIdentityButton() {
           handleClick();
         }}
       >
-        <CustomTypography buttonText={true}>IMPORT IDENTITY</CustomTypography>
+        <CustomTypography buttonText={true}>Tải lên định danh</CustomTypography>
       </CustomButton>
     </>
   );

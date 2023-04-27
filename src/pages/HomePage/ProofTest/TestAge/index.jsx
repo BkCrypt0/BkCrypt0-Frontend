@@ -33,7 +33,8 @@ export default function TestAge() {
         display="flex"
         justifyContent="center"
         sx={{
-          background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+          mr: "36px",
+          background: "white",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
           borderRadius: "10px",
           boxShadow: `5px 5px 15px 3px ${
@@ -53,7 +54,7 @@ export default function TestAge() {
             flexDirection={mobile ? "column" : "row"}
           >
             <CustomTypography fontWeight="bold" mr={1} variant="h5" mb={3}>
-              Age Verifier
+              Kiểm tra bằng chứng tuổi
             </CustomTypography>
           </Box>
           <Box
@@ -81,7 +82,9 @@ export default function TestAge() {
                   color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
                 }}
               />
-              <CustomTypography textAlign="center">Your age</CustomTypography>
+              <CustomTypography textAlign="center">
+                Tuổi của bạn
+              </CustomTypography>
               <ArrowBackIosIcon
                 sx={{
                   color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
@@ -158,7 +161,7 @@ export default function TestAge() {
               }}
             >
               {loading === false && (
-                <CustomTypography buttonText={true}>Verify</CustomTypography>
+                <CustomTypography buttonText={true}>Kiểm tra</CustomTypography>
               )}
               {loading === true && (
                 <CircularProgress
