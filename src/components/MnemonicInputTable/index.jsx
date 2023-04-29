@@ -1,8 +1,7 @@
-import { Box, Grid, styled, useMediaQuery } from "@mui/material";
+import { Box, Grid, styled, useMediaQuery, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
-import { useSelector } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { NavLink } from "react-router-dom";
@@ -32,7 +31,6 @@ export default function MnemonicInputTable({
   restore = false,
   setDisplay = { undefined },
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -54,6 +52,8 @@ export default function MnemonicInputTable({
   }));
 
   const dp = useDispatch();
+  const theme = useTheme();
+
   return (
     <Box
       width={mobile ? "95%" : tablet ? "60%" : "50%"}
@@ -68,14 +68,11 @@ export default function MnemonicInputTable({
         flexDirection="column"
         alignItems="center"
         sx={{
-          borderRadius: "20px",
+          borderRadius: "5px",
           pt: 3,
           pb: 3,
-          border: !mobile
-            ? themeMode === THEME_MODE.DARK
-              ? "2px solid rgba(216, 216, 216, 0.7)"
-              : "2px solid rgba(53, 53, 53, 0.7)"
-            : undefined,
+          border: `2px solid ${theme.colors.dark_2}`,
+          background: theme.colors.neutral_gray,
         }}
       >
         <Grid container spacing={1}>
@@ -122,7 +119,7 @@ export default function MnemonicInputTable({
         {err === true && <CloseIcon sx={{ color: "#FF3C30", mr: 1 }} />}
         {err === true && (
           <CustomTypography color="#FF3C30">
-            You must enter the correct mnemonic!
+            Bạn phải nhập đúng mã gợi nhớ!
           </CustomTypography>
         )}
       </Box>
@@ -149,7 +146,7 @@ export default function MnemonicInputTable({
               }
             }}
           >
-            <CustomTypography buttonText>CONTINUE</CustomTypography>
+            <CustomTypography buttonText>Tiếp tục</CustomTypography>
           </CustomButton>
         </Box>
       )}
@@ -167,11 +164,11 @@ export default function MnemonicInputTable({
       >
         <ArrowBackTwoToneIcon
           sx={{
-            color: themeMode === THEME_MODE.DARK ? "white" : "black",
+            color: theme.colors.dark_3,
             mr: 0.5,
           }}
         />
-        <CustomTypography>Back to login page</CustomTypography>
+        <CustomTypography>Quay lại trang đăng nhập</CustomTypography>
       </NavLink>
     </Box>
   );

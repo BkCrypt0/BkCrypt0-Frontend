@@ -28,7 +28,7 @@ export default function ImportIdentityButton() {
       return;
     }
     if (!fileObj.type.includes("json")) {
-      enqueueSnackbar("Unsupported file type! Please upload a JSON file", {
+      enqueueSnackbar("Định dạng file không hỗ trợ! Hãy tải lên file .JSON", {
         variant: "error",
         dense: "true",
         preventDuplicate: true,
@@ -40,12 +40,15 @@ export default function ImportIdentityButton() {
     const importIdentity = JSON.parse(identityJSON);
 
     if (importIdentity.publicKey !== accounts[activeAccount]?.publicKey) {
-      enqueueSnackbar("Unmatched publicKey! Please import your own identity", {
-        variant: "error",
-        dense: "true",
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-      });
+      enqueueSnackbar(
+        "Khóa công khai không trùng khớp! Hãy tải lên định danh của bạn",
+        {
+          variant: "error",
+          dense: "true",
+          preventDuplicate: true,
+          autoHideDuration: 3000,
+        }
+      );
     } else if (
       importIdentity.publicKey === accounts[activeAccount]?.publicKey
     ) {
@@ -60,7 +63,7 @@ export default function ImportIdentityButton() {
           importIdentity.BirthPlace
         )
       );
-      enqueueSnackbar("Import identity successfully", {
+      enqueueSnackbar("Tải lên định danh thành công", {
         variant: "success",
         dense: "true",
         preventDuplicate: true,

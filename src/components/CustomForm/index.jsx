@@ -1,7 +1,5 @@
 import CustomTypography from "../CustomTypography";
-import { THEME_MODE } from "src/constants";
-import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 export default function CustomForm({
   onSubmit,
@@ -24,7 +22,7 @@ export default function CustomForm({
   value = undefined,
   ...props
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const theme = useTheme();
 
   return (
     <Box width="100%">
@@ -57,17 +55,14 @@ export default function CustomForm({
             fontSize: "17px",
             MozAppearance: "textfield",
             WebkitAppearance: "textfield",
-            color: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
+            color: theme.colors.dark_3,
             width: !width ? "100%" : width,
             height: !height ? "50px" : height,
             padding: !padding ? "12px 20px" : padding,
             margin: !margin ? "8px 0" : margin,
             display: "inline-block",
-            border:
-              themeMode === THEME_MODE.DARK
-                ? "1.5px solid rgba(216, 216, 216, 0.4)"
-                : "1.5px solid rgba(53, 53, 53, 0.4)",
-            background: themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#434343",
+            border: `1px solid ${theme.colors.medium_2}`,
+            background: "#f2f2f2",
             borderRadius: "5px",
             boxSizing: "border-box",
             ...props,

@@ -22,7 +22,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
       setError(confirmPassword !== password);
-      setErrorText("Passwords do not match!");
+      setErrorText("Mật khẩu không trùng khớp");
     }
   }, [confirmPassword, password]);
 
@@ -37,11 +37,11 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
       sx={{ display: activeStep === 0 ? "block" : "none" }}
     >
       <CustomForm
-        label="Enter password"
+        label="Nhập mật khẩu"
         type="password"
         id="passwd"
         name="password"
-        placeHolder="Password..."
+        placeHolder="Mật khẩu..."
         onChange={() => setPassword(document.getElementById("passwd").value)}
         error={error}
         errorText={errorText}
@@ -49,11 +49,11 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
       <Box mb={1} />
       <CustomForm
         targetButtonId="create_password_button"
-        label="Confirm password"
+        label="Xác nhận mật khẩu"
         type="password"
         id="cfpasswd"
         name="confirm password"
-        placeHolder="Confirm password..."
+        placeHolder="Xác nhận mật khẩu..."
         onChange={() =>
           setConfirmPassword(document.getElementById("cfpasswd").value)
         }
@@ -82,7 +82,7 @@ export default function CreatePassword({ setActiveStep, activeStep }) {
           }
         }}
       >
-        <CustomTypography buttonText>Next step</CustomTypography>
+        <CustomTypography buttonText>Tiếp tục</CustomTypography>
       </CustomButton>
       <Box mb={2} />
       <NavLink

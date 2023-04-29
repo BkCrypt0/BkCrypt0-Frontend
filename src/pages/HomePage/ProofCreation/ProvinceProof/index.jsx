@@ -99,7 +99,7 @@ export default function ProvinceProof({ proof }) {
         sx={{
           background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
-          borderRadius: "10px",
+          borderRadius: "5px",
           boxShadow: `5px 5px 15px 3px ${
             themeMode === THEME_MODE.DARK
               ? "rgba(0, 0, 0, 0.7)"
@@ -145,7 +145,7 @@ export default function ProvinceProof({ proof }) {
                       minWidth: "50px",
                       minHeight: "30px",
                       maxHeight: "35px",
-                      borderRadius: "10px",
+                      borderRadius: "5px",
                       background:
                         themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
                       cursor: "pointer",

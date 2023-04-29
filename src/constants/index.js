@@ -34,29 +34,29 @@ export const INFO_STATUS = {
   0: {
     color: "rgba(20, 153, 250, 0.5)",
     stroke: "#006DBC",
-    text: "This identity is available to claim",
+    text: "Bạn có thể xác minh mình là người có định danh này",
   },
   1: {
     stroke: "#976D00",
     color: "rgba(238, 171, 0, 0.5)",
-    text: "This identity is claimed. Please wait until it is active",
+    text: "Xác minh thành công. Hãy đợi định danh này được kích hoạt",
   },
   2: {
     stroke: "#008E30",
     color: "rgba(32, 215, 83, 0.5)",
-    text: "This identity is active",
+    text: "Đinh danh này đã được kích hoạt",
   },
   3: {
     stroke: "#8C0000",
     color: "rgba(255, 46, 0, 0.5)",
-    text: "This identity is revoked",
+    text: "Định danh này đã bị chính phủ khóa kích hoạt",
   },
 };
 
 export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
-export const BASE_API_URL = "http://localhost:8000";
-// export const BASE_API_URL = "http://192.168.1.37:8000";
+// export const BASE_API_URL = "http://localhost:8000";
+export const BASE_API_URL = "http://192.168.1.37:8000";
 
 export const CONTRACT_ADDRESS = "0x0BE7E9fa7D3C22856d37e1DF9C0d52423801752e";
 

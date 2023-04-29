@@ -53,7 +53,7 @@ export default function ImportProvinceProof() {
         justifyContent="center"
         sx={{
           cursor: "pointer",
-          borderRadius: "10px",
+          borderRadius: "5px",
           border:
             themeMode === THEME_MODE.DARK
               ? "1.5px solid rgba(216, 216, 216, 0.4)"

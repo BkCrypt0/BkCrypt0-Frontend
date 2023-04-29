@@ -1,7 +1,6 @@
-import { Dialog, Box, useMediaQuery} from "@mui/material";
-import { useSelector } from "react-redux";
+import { Dialog, Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "../CustomTypography";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import CustomButton from "../CustomButton";
 
 export default function DetailInformationDialog({
@@ -10,7 +9,6 @@ export default function DetailInformationDialog({
   setOpen,
   information,
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
 
@@ -25,20 +23,20 @@ export default function DetailInformationDialog({
       PaperProps={{
         sx: {
           padding: 3,
-          background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          background: "white",
           width: mobile ? "99%" : tablet ? "50%" : "40%",
           borderRadius: "10px",
         },
       }}
     >
       <CustomTypography variant="h5" mb={2}>
-        Detail information
+        Thông tin chi tiết
       </CustomTypography>
       {information !== undefined && (
         <Box width="100%">
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              First name:{" "}
+              Tên:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.firstName}
@@ -46,7 +44,7 @@ export default function DetailInformationDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Last name:{" "}
+              Họ:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.lastName}
@@ -55,7 +53,7 @@ export default function DetailInformationDialog({
 
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Identity number:{" "}
+              Số CCCD:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.CCCD}
@@ -63,7 +61,7 @@ export default function DetailInformationDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Gender:{" "}
+              Giới tính:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.sex === 1 ? "Male" : "Female"}
@@ -71,7 +69,7 @@ export default function DetailInformationDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Date Of Birth:{" "}
+              Ngày sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.DoBdate?.toString().slice(0, 4) +
@@ -83,7 +81,7 @@ export default function DetailInformationDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Birth Place:{" "}
+              Nơi sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {information?.BirthPlace}
@@ -95,10 +93,7 @@ export default function DetailInformationDialog({
         sx={{
           mt: 2,
           mb: 2,
-          background:
-            themeMode === THEME_MODE.DARK
-              ? "rgba(216, 216, 216, 0.3)"
-              : "rgba(53, 53, 53, 0.3)",
+          background: "rgba(53, 53, 53, 0.3)",
           borderRadius: "20px",
         }}
         width="100%"
@@ -119,7 +114,7 @@ export default function DetailInformationDialog({
             setOpen(false);
           }}
         >
-          <CustomTypography buttonText>Close</CustomTypography>
+          <CustomTypography buttonText>Thoát</CustomTypography>
         </CustomButton>
       </Box>
     </Dialog>

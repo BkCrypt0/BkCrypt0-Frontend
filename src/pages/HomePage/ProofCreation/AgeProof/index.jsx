@@ -97,7 +97,7 @@ export default function AgeProof({ proof }) {
         sx={{
           background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
-          borderRadius: "10px",
+          borderRadius: "5px",
           boxShadow: `5px 5px 15px 3px ${
             themeMode === THEME_MODE.DARK
               ? "rgba(0, 0, 0, 0.7)"

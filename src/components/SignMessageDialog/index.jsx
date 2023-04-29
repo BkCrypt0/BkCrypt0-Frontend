@@ -31,7 +31,7 @@ export default function SignMessageDialog({
           padding: 3,
           background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
           width: mobile ? "99%" : tablet ? "50%" : "40%",
-          borderRadius: "10px",
+          borderRadius: "5px",
         },
       }}
     >
@@ -43,7 +43,7 @@ export default function SignMessageDialog({
         <Box width="100%">
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Public Key:{" "}
+              Khóa công khai:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {formatAddress(identity?.publicKey, 10)}
@@ -51,7 +51,7 @@ export default function SignMessageDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              First name:{" "}
+              Tên:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.firstName}
@@ -59,7 +59,7 @@ export default function SignMessageDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Last name:{" "}
+              Họ:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.lastName}
@@ -68,7 +68,7 @@ export default function SignMessageDialog({
 
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Identity number:{" "}
+              Số CCCD:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.CCCD}
@@ -76,7 +76,7 @@ export default function SignMessageDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Gender:{" "}
+              Giới tính:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.sex === 1 ? "Male" : "Female"}
@@ -84,7 +84,7 @@ export default function SignMessageDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Date Of Birth:{" "}
+              Ngày sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.DoBdate?.toString().slice(0, 4) +
@@ -96,7 +96,7 @@ export default function SignMessageDialog({
           </Box>
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Birth Place:{" "}
+              Nơi sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
               {identity?.BirthPlace}

@@ -1,6 +1,6 @@
 import { Box, useMediaQuery, Paper, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, INFO_STATUS, FS } from "src/constants";
+import { SCREEN_SIZE, INFO_STATUS, FS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import CreateIdentity from "./CreateIdentity";
@@ -13,7 +13,6 @@ import { useSnackbar } from "notistack";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [clickCreate, setClickCreate] = useState(false);
@@ -37,14 +36,14 @@ export default function Identity() {
 
   useEffect(() => {
     if (claimingIdentityStatus === FS.SUCCESS) {
-      enqueueSnackbar("Claim identity successfully!", {
+      enqueueSnackbar("Xác minh danh tính thành công!", {
         variant: "success",
         dense: "true",
         preventDuplicate: true,
         autoHideDuration: 2500,
       });
     } else if (claimingIdentityStatus === FS.FAILED) {
-      enqueueSnackbar("Claim identity failed! Please try again!", {
+      enqueueSnackbar("Xác minh danh tính thất bại! Xin hãy thử lại!", {
         variant: "error",
         dense: "true",
         preventDuplicate: true,
@@ -68,14 +67,10 @@ export default function Identity() {
         >
           <Paper
             sx={{
-              background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              background: "white",
               width: mobile ? "100%" : tablet ? "90%" : "50%",
               borderRadius: "10px",
-              boxShadow: `5px 5px 15px 3px ${
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(0, 0, 0, 0.7)"
-                  : "rgba(53, 53, 53, 0.4)"
-              }`,
+              boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
               paddingY: 3,
               mb: 3,
               display: "flex",
@@ -92,7 +87,7 @@ export default function Identity() {
               <Box width="93%">
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Public Key:{" "}
+                    Khóa công khai:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {formatAddress(identity?.publicKey, 10)}
@@ -100,7 +95,7 @@ export default function Identity() {
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    First name:{" "}
+                    Tên:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.firstName}
@@ -108,7 +103,7 @@ export default function Identity() {
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Last name:{" "}
+                    Họ:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.lastName}
@@ -117,7 +112,7 @@ export default function Identity() {
 
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Identity number:{" "}
+                    Số CCCD:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.CCCD}
@@ -125,7 +120,7 @@ export default function Identity() {
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Gender:{" "}
+                    Giới tính:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.sex === 1 ? "Male" : "Female"}
@@ -133,7 +128,7 @@ export default function Identity() {
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Date Of Birth:{" "}
+                    Ngày sinh:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.DoBdate?.toString().slice(0, 4) +
@@ -145,7 +140,7 @@ export default function Identity() {
                 </Box>
                 <Box display="flex" alignItems="baseline">
                   <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                    Birth Place:{" "}
+                    Nơi sinh:{" "}
                   </CustomTypography>
                   <CustomTypography variant="h6" mr={1}>
                     {identity?.BirthPlace}
@@ -157,11 +152,8 @@ export default function Identity() {
               sx={{
                 mt: 2,
                 mb: 2,
-                background:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.3)"
-                    : "rgba(53, 53, 53, 0.3)",
-                borderRadius: "20px",
+                background: "rgba(53, 53, 53, 0.3)",
+                borderRadius: "5px",
               }}
               width="93%"
               height="2px"
@@ -174,18 +166,14 @@ export default function Identity() {
                   justifyContent="center"
                   sx={{
                     background: INFO_STATUS[identityStatus]?.color,
-                    borderRadius: "10px",
+                    borderRadius: "5px",
                     textAlign: "center",
                     border: `2px solid ${INFO_STATUS[identityStatus]?.stroke}`,
                   }}
                   paddingY={1}
                 >
                   <CustomTypography
-                    color={
-                      themeMode === THEME_MODE.DARK
-                        ? "white"
-                        : INFO_STATUS[identityStatus]?.stroke
-                    }
+                    color={INFO_STATUS[identityStatus]?.stroke}
                     fontWeight="semi-bold"
                     letterSpacing="1px"
                   >
@@ -237,14 +225,15 @@ export default function Identity() {
               >
                 {(claimingIdentityStatus === FS.IDLE ||
                   claimingIdentityStatus === FS.FAILED) && (
-                  <CustomTypography buttonText>Claim Identity</CustomTypography>
+                  <CustomTypography buttonText>
+                    Xác minh danh tính
+                  </CustomTypography>
                 )}
                 {claimingIdentityStatus === FS.FETCHING && (
                   <CircularProgress
                     disableShrink
                     sx={{
-                      color:
-                        themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                      color: "white",
                     }}
                   />
                 )}

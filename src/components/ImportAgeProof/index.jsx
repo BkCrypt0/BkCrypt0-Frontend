@@ -1,15 +1,13 @@
 import { useRef } from "react";
 import { useSnackbar } from "notistack";
-import { useSelector, useDispatch } from "react-redux";
-import { THEME_MODE } from "src/constants";
+import { useDispatch } from "react-redux";
 import CustomTypography from "src/components/CustomTypography";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { Upload } from "@mui/icons-material";
 import { handleImportAgeProof } from "src/redux/proofSlice";
 
 export default function ImportAgeProof() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
-
+  const theme = useTheme();
   const inputRef = useRef(null);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -25,7 +23,7 @@ export default function ImportAgeProof() {
       return;
     }
     if (!fileObj.type.includes("json")) {
-      enqueueSnackbar("Unsupported file type! Please upload a JSON file", {
+      enqueueSnackbar("Định dạng file không hỗ trợ! Hãy tải lên file .JSON", {
         variant: "error",
         dense: "true",
         preventDuplicate: true,
@@ -53,12 +51,9 @@ export default function ImportAgeProof() {
         justifyContent="center"
         sx={{
           cursor: "pointer",
-          borderRadius: "10px",
-          border:
-            themeMode === THEME_MODE.DARK
-              ? "1.5px solid rgba(216, 216, 216, 0.4)"
-              : "1.5px solid rgba(53, 53, 53, 0.4)",
-          background: themeMode === THEME_MODE.LIGHT ? "#f2f2f2" : "#333333",
+          borderRadius: "5px",
+          border: `1.5px solid ${theme.colors.dark_3}`,
+          background: theme.colors.neutral_gray,
         }}
         onClick={async () => {
           handleClick();
@@ -69,12 +64,10 @@ export default function ImportAgeProof() {
           sx={{
             mt: 2,
             mb: 1,
-            color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+            color: theme.colors.dark_3,
           }}
         />
-        <CustomTypography mb={2}>
-          Tải lên bằng chứng (.JSON)
-        </CustomTypography>
+        <CustomTypography mb={2}>Tải lên bằng chứng (.JSON)</CustomTypography>
       </Box>
     </>
   );

@@ -1,7 +1,5 @@
 import { Box, Collapse } from "@mui/material";
 import CustomTypography from "../CustomTypography";
-import { useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
 import { useState } from "react";
 import CustomForm from "../CustomForm";
 
@@ -17,7 +15,6 @@ export default function CustomCollapse({
   displaySearch = true,
   ...props
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const [provinceInput, setProvinceInput] = useState("");
 
   return (
@@ -32,12 +29,9 @@ export default function CustomCollapse({
         width: 220,
         maxHeight: 220,
         overflowY: "auto",
-        background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+        background: "white",
         borderRadius: "10px",
-        boxShadow: `5px 5px 15px 3px ${
-          themeMode === THEME_MODE.DARK
-            ? "rgba(0, 0, 0, 0.7)"
-            : "rgba(53, 53, 53, 0.4)"
+        boxShadow: `5px 5px 15px 3px rgba(53, 53, 53, 0.4)"
         }`,
         ...props,
       }}
@@ -47,7 +41,7 @@ export default function CustomCollapse({
           sx={{
             position: "sticky",
             top: 0,
-            background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+            background: "white",
             zIndex: 1000,
             paddingTop: 1,
           }}
@@ -74,10 +68,7 @@ export default function CustomCollapse({
               borderRadius: "10px",
               cursor: "pointer",
               "&:hover": {
-                background:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.1)"
-                    : "rgba(53, 53, 53, 0.1)",
+                background: "rgba(53, 53, 53, 0.1)",
                 cursor: "pointer",
               },
             }}

@@ -1,8 +1,8 @@
-import { Dialog, Box, useMediaQuery, Tooltip } from "@mui/material";
+import { Dialog, Box, useMediaQuery, Tooltip, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import { changeActiveAccount, logout } from "src/redux/accountSlice";
 import { clearIdentity } from "src/redux/identitySlice";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,11 +10,12 @@ import { NavLink } from "react-router-dom";
 import { handleClearProof } from "src/redux/proofSlice";
 
 export default function ChangeAccountDialog({ open, onClose, setOpen }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const dp = useDispatch();
+  const theme = useTheme();
+
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
@@ -29,9 +30,9 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
       PaperProps={{
         sx: {
           padding: 2,
-          background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          background: "white",
           width: mobile ? "99%" : tablet ? "50%" : "20%",
-          borderRadius: "10px",
+          borderRadius: "5px",
         },
       }}
     >
@@ -52,10 +53,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           sx={{
             borderRadius: "10px",
             "&:hover": {
-              background:
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(216, 216, 216, 0.1)"
-                  : "rgba(53, 53, 53, 0.1)",
+              background: theme.colors.light_1,
               cursor: "pointer",
             },
           }}
@@ -79,14 +77,10 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
               <Box ml={2} px={1}>
                 <CustomTypography
                   variant="subtitle"
-                  color={
-                    themeMode === THEME_MODE.DARK
-                      ? "rgba(216, 216, 216, 0.5)"
-                      : "rgba(53, 53, 53, 0.5)"
-                  }
+                  color={theme.colors.light_3}
                   whiteSpace="nowrap"
                 >
-                  Switch to this account
+                  Chuyển sang tài khoản này
                 </CustomTypography>
               </Box>
             )}
@@ -97,7 +91,7 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
           </CustomTypography>
         </Box>
       ))}
-      <Tooltip title="Add another account" arrow={true}>
+      <Tooltip title="Thêm tài khoản mới" arrow={true}>
         <NavLink to="/login" style={{ textDecoration: "none" }}>
           <Box
             py={2}
@@ -107,20 +101,14 @@ export default function ChangeAccountDialog({ open, onClose, setOpen }) {
             sx={{
               borderRadius: "10px",
               "&:hover": {
-                background:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.1)"
-                    : "rgba(53, 53, 53, 0.1)",
+                background: theme.colors.light_1,
                 cursor: "pointer",
               },
             }}
           >
             <AddIcon
               sx={{
-                color:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 1)"
-                    : "rgba(53, 53, 53, 1)",
+                color: theme.colors.dark_3,
               }}
             />
           </Box>

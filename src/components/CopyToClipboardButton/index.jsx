@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
-import { Tooltip, IconButton } from "@mui/material";
-import { THEME_MODE } from "src/constants";
+import { Tooltip, IconButton, useTheme } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DoneIcon from "@mui/icons-material/Done";
 
@@ -10,7 +8,8 @@ export default function CopyToClipboardButton({
   copy,
   setCopy,
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const theme = useTheme();
+
   return (
     <>
       {copy === false && (
@@ -26,10 +25,7 @@ export default function CopyToClipboardButton({
           >
             <ContentCopyIcon
               sx={{
-                color:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.6)"
-                    : "rgba(53, 53, 53, 0.6)",
+                color: theme.colors.dark_3,
               }}
               fontSize="small"
             />
@@ -47,10 +43,7 @@ export default function CopyToClipboardButton({
             <DoneIcon
               fontSize="small"
               sx={{
-                color:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.6)"
-                    : "rgba(53, 53, 53, 0.6)",
+                color: theme.colors.dark_3,
               }}
             />
           </IconButton>

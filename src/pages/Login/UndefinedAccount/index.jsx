@@ -49,7 +49,7 @@ export default function UndefinedAccount() {
               themeMode === THEME_MODE.DARK
                 ? "rgba(216, 216, 216, 0.3)"
                 : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
+            borderRadius: "5px",
           }}
           width="45%"
           height="2px"
@@ -61,7 +61,7 @@ export default function UndefinedAccount() {
               themeMode === THEME_MODE.DARK
                 ? "rgba(216, 216, 216, 0.3)"
                 : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
+            borderRadius: "5px",
           }}
           width="45%"
           height="2px"

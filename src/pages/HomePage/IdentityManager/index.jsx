@@ -154,15 +154,15 @@ export default function IdentityManager() {
     <>
       <CustomBackdrop
         open={publishingDataStatus === FS.FETCHING}
-        label="Publishing data..."
+        label="Đang phát hành CCCD..."
       />
       <CustomBackdrop
         open={revokingDataStatus === FS.FETCHING}
-        label="Revoking data..."
+        label="Đang khóa thẻ CCCD..."
       />
       <CustomBackdrop
         open={unRevokingDataStatus === FS.FETCHING}
-        label="Unrevoking data..."
+        label="Đang mở khóa thẻ CCCD..."
       />
       {role === "user" && login !== undefined && (
         <Redirect to="/home/identity" />
@@ -170,13 +170,13 @@ export default function IdentityManager() {
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
-          Identity Manager
+          Trình quản lý CCCD
         </CustomTypography>
         <StatusTable
           tableId="no1"
-          tableName="Pending"
-          btn1="Publish"
-          btn2="New identity"
+          tableName="Đang chờ"
+          btn1="Phát hành tất cả"
+          btn2="Tạo CCCD mới"
           data={issueList.filter((e) => e.status < 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => {
@@ -184,7 +184,7 @@ export default function IdentityManager() {
               metamaskAccount?.toString().toLowerCase() !==
               CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
             ) {
-              enqueueSnackbar("You are not the owner of the contract!", {
+              enqueueSnackbar("Bạn không phải chủ sở hữu của hợp đồng này!", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
@@ -196,21 +196,21 @@ export default function IdentityManager() {
         />
         <StatusTable
           tableId="no2"
-          tableName="Published"
-          btn1="UnRevoke"
-          btn2="Revoke"
+          tableName="Đã phát hành"
+          btn1="Mở khóa CCCD"
+          btn2="Khóa CCCD"
           data={issueList.filter((e) => e.status >= 2)}
           fetchingStatus={fetchingStatus}
           btn1Handler={async () => {
             if (identityList.length === 0) {
-              enqueueSnackbar("You must select 1 identity before unrevoke it", {
+              enqueueSnackbar("Bạn phải chọn 1 thẻ CCCD trước khi mở khóa nó", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
                 autoHideDuration: 2000,
               });
             } else if (identityList.length > 1) {
-              enqueueSnackbar("You can only unrevoke 1 identity at a time", {
+              enqueueSnackbar("Bạn chỉ có thể mở khóa 1 thẻ CCCD cùng lúc", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
@@ -233,7 +233,7 @@ export default function IdentityManager() {
                 metamaskAccount?.toString().toLowerCase() !==
                 CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
               ) {
-                enqueueSnackbar("You are not the owner of the contract!", {
+                enqueueSnackbar("Bạn không phải chủ sở hữu của hợp đồng này", {
                   variant: "error",
                   dense: "true",
                   preventDuplicate: true,
@@ -247,7 +247,7 @@ export default function IdentityManager() {
           }}
           btn2Handler={async () => {
             if (identityList.length === 0) {
-              enqueueSnackbar("You must select identities before revoke them", {
+              enqueueSnackbar("Bạn phải chọn thẻ trước khi khóa", {
                 variant: "error",
                 dense: "true",
                 preventDuplicate: true,
@@ -255,22 +255,19 @@ export default function IdentityManager() {
               });
               dp(clearSelectedListAndCheckedList());
             } else if (statusList.includes("REVOKED")) {
-              enqueueSnackbar(
-                "You cannot revoke identities with status REVOKED",
-                {
-                  variant: "error",
-                  dense: "true",
-                  preventDuplicate: true,
-                  autoHideDuration: 2000,
-                }
-              );
+              enqueueSnackbar("Bạn không thể khóa thẻ đã bị khóa rồi", {
+                variant: "error",
+                dense: "true",
+                preventDuplicate: true,
+                autoHideDuration: 2000,
+              });
               dp(clearSelectedListAndCheckedList());
             } else {
               if (
                 metamaskAccount?.toString().toLowerCase() !==
                 CONTRACT_OWNER_ADDRESS.toString().toLowerCase()
               ) {
-                enqueueSnackbar("You are not the owner of the contract!", {
+                enqueueSnackbar("Bạn không phải chủ sở hữu của hợp đồng này!", {
                   variant: "error",
                   dense: "true",
                   preventDuplicate: true,

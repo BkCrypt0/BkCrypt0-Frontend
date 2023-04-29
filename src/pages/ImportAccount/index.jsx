@@ -1,9 +1,9 @@
 import MnemonicInputTable from "src/components/MnemonicInputTable";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
+import { useDispatch } from "react-redux";
+import { SCREEN_SIZE, LS } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
@@ -20,18 +20,18 @@ export default function ImportAccount() {
   const [display, setDisplay] = useState("none");
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
   const [password, setPassword] = useState(undefined);
   const [confirmPassword, setConfirmPassword] = useState(undefined);
   const [error, setError] = useState(false);
   const [errorText, setErrorText] = useState("Password is required!");
   const dp = useDispatch();
+  const theme = useTheme();
 
   useEffect(() => {
     if (password !== undefined && confirmPassword !== undefined) {
       setError(confirmPassword !== password);
-      setErrorText("Passwords do not match!");
+      setErrorText("Mật khẩu không trùng khớp!");
     }
   }, [confirmPassword, password]);
 
@@ -39,8 +39,8 @@ export default function ImportAccount() {
     <Box width="100%" display="flex" flexDirection="column" alignItems="center">
       <CustomTypography variant="h5" mb={5} mt={5} textAlign="center">
         {display === "none"
-          ? "Import your mnemonic to restore your password"
-          : "Enter your new password"}
+          ? "Nhập mã gợi nhớ để khôi phục mật khẩu của bạn"
+          : "Nhập mật khẩu mới"}
       </CustomTypography>
       <MnemonicInputTable
         restore={true}
@@ -57,22 +57,22 @@ export default function ImportAccount() {
         sx={{ display: display }}
       >
         <CustomForm
-          label="Enter password"
+          label="Nhập mật khẩu"
           type="password"
           id="passwd"
           name="password"
-          placeHolder="Password..."
+          placeHolder="Mật khẩu..."
           onChange={() => setPassword(document.getElementById("passwd").value)}
           error={error}
           errorText={errorText}
         />
         <Box mb={1} />
         <CustomForm
-          label="Confirm password"
+          label="Xác nhận mật khẩu"
           type="password"
           id="cfpasswd"
           name="confirm password"
-          placeHolder="Confirm password..."
+          placeHolder="Xác nhận mật khẩu..."
           targetButtonId="restore-password"
           onChange={() =>
             setConfirmPassword(document.getElementById("cfpasswd").value)
@@ -116,7 +116,7 @@ export default function ImportAccount() {
               }
             }}
           >
-            <CustomTypography buttonText>Restore password</CustomTypography>
+            <CustomTypography buttonText>Khôi phục mật khẩu</CustomTypography>
           </CustomButton>
         </NavLink>
         <Box mb={2} />
@@ -133,11 +133,11 @@ export default function ImportAccount() {
         >
           <ArrowBackTwoToneIcon
             sx={{
-              color: themeMode === THEME_MODE.DARK ? "white" : "black",
+              color: theme.colors.dark_3,
               mr: 0.5,
             }}
           />
-          <CustomTypography>Back to login page</CustomTypography>
+          <CustomTypography>Quay lại trang đăng nhập</CustomTypography>
         </NavLink>
       </Box>
     </Box>

@@ -49,7 +49,7 @@ export default function IssueNewIdentity() {
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box width="100%">
         <CustomTypography variant="h4" mb={3}>
-          Issue a new Identity
+          Phát hành thẻ CCCD mới
         </CustomTypography>
         <Box
           width={mobile ? "100%" : tablet ? "70%" : "50%"}
@@ -58,7 +58,7 @@ export default function IssueNewIdentity() {
           }}
         >
           <CustomForm
-            label="Identity Number"
+            label="Số CCCD"
             type="text"
             id="iden"
             placeHolder="CCCD..."
@@ -67,25 +67,25 @@ export default function IssueNewIdentity() {
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="First name"
+            label="Tên"
             type="text"
             id="first-name"
-            placeHolder="First name..."
+            placeHolder="Tên..."
             error={!checkValid("first-name") && err}
             errorText={"This field is required!"}
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Last name"
+            label="Họ"
             type="text"
             id="last-name"
-            placeHolder="Last name..."
+            placeHolder="Họ..."
             error={!checkValid("last-name") && err}
             errorText={"This field is required!"}
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Gender"
+            label="Giới tính"
             type="text"
             id="gender"
             placeHolder="Male / Female"
@@ -94,7 +94,7 @@ export default function IssueNewIdentity() {
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Date of birth"
+            label="Ngày sinh"
             type="text"
             id="dob"
             placeHolder="YYYY/MM/DD..."
@@ -105,10 +105,10 @@ export default function IssueNewIdentity() {
           <ClickAwayListener onClickAway={() => setOpen(false)}>
             <Box>
               <CustomForm
-                label="Birth place"
+                label="Nơi ở"
                 type="text"
                 id="bp"
-                placeHolder="Province..."
+                placeHolder="Nơi ở..."
                 error={!checkValid("bp") && err}
                 errorText={"This field is required!"}
                 onChange={() =>
@@ -167,7 +167,7 @@ export default function IssueNewIdentity() {
                         document.getElementById("bp").value.toString()
                       ].index,
                   });
-                  enqueueSnackbar("Issue a new identity successfully!", {
+                  enqueueSnackbar("Phát hành CCCD thành công!", {
                     variant: "success",
                     dense: "true",
                     preventDuplicate: true,
@@ -185,14 +185,14 @@ export default function IssueNewIdentity() {
               }
             }}
           >
-            <CustomTypography buttonText={true}>Submit</CustomTypography>
+            <CustomTypography buttonText={true}>Xác nhận</CustomTypography>
           </CustomButton>
           <CustomButton
             minHeight="50px"
             minWidth="150px"
             onClick={() => history.push("/home/identity-manager")}
           >
-            <CustomTypography buttonText={true}>Discard</CustomTypography>
+            <CustomTypography buttonText={true}>Hủy bỏ</CustomTypography>
           </CustomButton>
         </Box>
       </Box>

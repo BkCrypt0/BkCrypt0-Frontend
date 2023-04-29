@@ -31,7 +31,7 @@ export default function Identity() {
             sx={{
               background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
               width: mobile ? "100%" : tablet ? "90%" : "50%",
-              borderRadius: "4px",
+              borderRadius: "5px",
               boxShadow: `5px 5px 15px 3px ${
                 themeMode === THEME_MODE.DARK
                   ? "rgba(0, 0, 0, 0.7)"
@@ -47,7 +47,7 @@ export default function Identity() {
             <Box width="93%">
               <Box display="flex" alignItems="baseline">
                 <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                  Public Key:{" "}
+                  Khóa công khai:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" mr={1}>
                   {formatAddress(publicKey, 10)}
@@ -61,7 +61,7 @@ export default function Identity() {
               </Box>
               <Box display="flex" alignItems="baseline">
                 <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                  Private key:{" "}
+                  Khóa bí mật:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" mr={1}>
                   {formatAddress(privateKey, 10)}
@@ -75,7 +75,7 @@ export default function Identity() {
               </Box>
               <Box display="flex" alignItems="baseline">
                 <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-                  Role:{" "}
+                  Vai trò:{" "}
                 </CustomTypography>
                 <CustomTypography variant="h6" mr={1}>
                   {role}

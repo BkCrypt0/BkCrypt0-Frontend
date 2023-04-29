@@ -49,7 +49,7 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
         flexDirection="column"
         alignItems="center"
         sx={{
-          borderRadius: "20px",
+          borderRadius: "5px",
           pt: 3,
           pb: 3,
           border: !mobile

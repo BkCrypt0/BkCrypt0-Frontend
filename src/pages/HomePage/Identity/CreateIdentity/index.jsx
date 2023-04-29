@@ -39,7 +39,9 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
         width="100%"
         sx={{ display: clickCreate === true ? "block" : "none" }}
       >
-        <CustomTypography variant="h5">Fill in your identity</CustomTypography>
+        <CustomTypography variant="h5">
+          Điền vào định danh của bạn
+        </CustomTypography>
         <Box
           width={mobile ? "100%" : tablet ? "70%" : "50%"}
           sx={{
@@ -47,7 +49,7 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
           }}
         >
           <CustomForm
-            label="Identity Number"
+            label="Số CCCD"
             type="text"
             id="iden"
             placeHolder="CCCD..."
@@ -56,25 +58,25 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="First name"
+            label="Tên"
             type="text"
             id="first-name"
-            placeHolder="First name..."
+            placeHolder="Tên..."
             error={!checkValid("first-name") && err}
             errorText={"This field is required!"}
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Last name"
+            label="Họ"
             type="text"
             id="last-name"
-            placeHolder="Last name..."
+            placeHolder="Họ..."
             error={!checkValid("last-name") && err}
             errorText={"This field is required!"}
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Gender"
+            label="Giới tính"
             type="text"
             id="gender"
             placeHolder="Male / Female"
@@ -83,7 +85,7 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
             onFocus={() => setErr(false)}
           />
           <CustomForm
-            label="Date of birth"
+            label="Ngày sinh"
             type="text"
             id="dob"
             placeHolder="YYYY/MM/DD..."
@@ -94,10 +96,10 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
           <ClickAwayListener onClickAway={() => setOpen(false)}>
             <Box>
               <CustomForm
-                label="Birth place"
+                label="Nơi sinh"
                 type="text"
                 id="bp"
-                placeHolder="Province..."
+                placeHolder="Nơi sinh..."
                 error={!checkValid("bp") && err}
                 errorText={"This field is required!"}
                 onChange={() =>
@@ -155,14 +157,14 @@ export default function CreateIdentity({ clickCreate, setClickCreate }) {
               }
             }}
           >
-            <CustomTypography buttonText={true}>Submit</CustomTypography>
+            <CustomTypography buttonText={true}>Xác nhận</CustomTypography>
           </CustomButton>
           <CustomButton
             minHeight="50px"
             minWidth="150px"
             onClick={() => setClickCreate(false)}
           >
-            <CustomTypography buttonText={true}>Discard</CustomTypography>
+            <CustomTypography buttonText={true}>Hủy bỏ</CustomTypography>
           </CustomButton>
         </Box>
       </Box>

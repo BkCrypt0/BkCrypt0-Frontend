@@ -36,7 +36,7 @@ export default function TestAge() {
           mr: "36px",
           background: "white",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
-          borderRadius: "10px",
+          borderRadius: "5px",
           boxShadow: `5px 5px 15px 3px ${
             themeMode === THEME_MODE.DARK
               ? "rgba(0, 0, 0, 0.7)"

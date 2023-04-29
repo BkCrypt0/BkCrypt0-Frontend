@@ -28,10 +28,10 @@ export default function RegistrationCompleted({ activeStep }) {
         mb={2}
         fontWeight="bold"
       >
-        You are ready!
+        bạn đã sẵn sàng!
       </CustomTypography>
       <CustomTypography textAlign="center" variant="h5" mb={3}>
-        Let's login to our platform
+        Hãy đăng nhập vào hệ thống của chúng tôi
       </CustomTypography>
       <NavLink to="/login" style={{ textDecoration: "none" }}>
         <CustomButton
@@ -40,7 +40,7 @@ export default function RegistrationCompleted({ activeStep }) {
           onClick={() => dp(constructAccountsArrayFromLocalStorage())}
         >
           <CustomTypography buttonText={true}>
-            Go to login page
+            Đi đến trang đăng nhập
           </CustomTypography>
         </CustomButton>
       </NavLink>

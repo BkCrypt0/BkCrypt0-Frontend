@@ -9,11 +9,12 @@ import {
   TableCell,
   CircularProgress,
   Checkbox,
+  useTheme,
 } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useSelector, useDispatch } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, FS, ID_STATUS } from "src/constants";
+import { SCREEN_SIZE, FS, ID_STATUS } from "src/constants";
 import { formatAddress } from "src/utility";
 import {
   addToCheckedList,
@@ -38,7 +39,6 @@ export default function StatusTable({
   fetchingStatus,
   tableId,
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const selectedList = useSelector((state) => state.adminSlice.selectedList);
   const checkedList = useSelector((state) => state.adminSlice.checkedList);
@@ -47,7 +47,8 @@ export default function StatusTable({
   const [inputIdentity, setInputIdentity] = useState("");
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(undefined);
-  
+  const theme = useTheme();
+
   return (
     <>
       <DetailInformationDialog
@@ -73,7 +74,7 @@ export default function StatusTable({
               mb={mobile && 2}
               ml={1}
             >
-              {`(${selectedList.length}/${revokeLimit} selected)`}
+              {`(Đã chọn ${selectedList.length}/${revokeLimit})`}
             </CustomTypography>
           )}
         </Box>
@@ -81,7 +82,7 @@ export default function StatusTable({
           <CustomForm
             type="text"
             id={`identity${tableId}`}
-            placeHolder="Search identity..."
+            placeHolder="Tìm CCCD..."
             onChange={() => {
               setInputIdentity(
                 document.getElementById(`identity${tableId}`).value
@@ -94,7 +95,7 @@ export default function StatusTable({
             <CustomForm
               type="text"
               id={`identity${tableId}`}
-              placeHolder="Search identity..."
+              placeHolder="Tìm CCCD..."
               onChange={() => {
                 setInputIdentity(
                   document.getElementById(`identity${tableId}`).value
@@ -104,7 +105,7 @@ export default function StatusTable({
             />
             <CustomButton
               minHeight="50px"
-              minWidth="150px"
+              minWidth="200px"
               mr={2}
               ml={!mobile && 2}
               onClick={btn1Handler}
@@ -113,7 +114,7 @@ export default function StatusTable({
             </CustomButton>
             <CustomButton
               minHeight="50px"
-              minWidth="150px"
+              minWidth="200px"
               onClick={btn2Handler}
             >
               <CustomTypography buttonText={true}>{btn2}</CustomTypography>
@@ -123,14 +124,10 @@ export default function StatusTable({
       </Box>
       <Paper
         sx={{
-          background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+          background: "white",
           width: "100%",
-          borderRadius: "10px",
-          boxShadow: `5px 5px 15px 3px ${
-            themeMode === THEME_MODE.DARK
-              ? "rgba(0, 0, 0, 0.7)"
-              : "rgba(53, 53, 53, 0.4)"
-          }`,
+          borderRadius: "5px",
+          boxShadow: "2px 2px 8px 1px rgba(53, 53, 53, 0.4)",
           paddingBottom: 3,
           mb: 3,
           mt: mobile && 2,
@@ -143,8 +140,7 @@ export default function StatusTable({
             sx={{
               position: "sticky",
               top: 0,
-              background:
-                themeMode === THEME_MODE.LIGHT ? "#edebeb" : "#333333",
+              background: theme.colors.neutral_gray,
               zIndex: 1000,
             }}
           >
@@ -157,8 +153,7 @@ export default function StatusTable({
                   position: "sticky",
                   left: 0,
                   borderBottom: "none",
-                  background:
-                    themeMode === THEME_MODE.LIGHT ? "#edebeb" : "#333333",
+                  background: theme.colors.neutral_gray,
                 }}
               ></TableCell>
               <TableCell
@@ -168,20 +163,25 @@ export default function StatusTable({
                   position: "sticky",
                   left: 0,
                   borderBottom: "none",
-                  background:
-                    themeMode === THEME_MODE.LIGHT ? "#edebeb" : "#333333",
+                  background: theme.colors.neutral_gray,
                 }}
               >
-                <CustomTypography fontWeight="bold">ID Card</CustomTypography>
+                <CustomTypography fontWeight="bold">Số CCCD</CustomTypography>
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
-                <CustomTypography fontWeight="bold">Issuer</CustomTypography>
+                <CustomTypography fontWeight="bold">
+                  Người phát hành
+                </CustomTypography>
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
-                <CustomTypography fontWeight="bold">Issue at</CustomTypography>
+                <CustomTypography fontWeight="bold">
+                  Ngày phát hành
+                </CustomTypography>
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
-                <CustomTypography fontWeight="bold">State</CustomTypography>
+                <CustomTypography fontWeight="bold">
+                  Trạng thái
+                </CustomTypography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -197,7 +197,7 @@ export default function StatusTable({
                     opacity={0.5}
                     mt={5}
                   >
-                    Nothing to display
+                    Không có dữ liệu
                   </CustomTypography>
                 </TableCell>
                 <TableCell sx={{ borderBottom: "none" }} />
@@ -233,8 +233,7 @@ export default function StatusTable({
                         position: "sticky",
                         left: 0,
                         borderBottom: "none",
-                        background:
-                          themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                        background: "white",
                       }}
                     >
                       {tableId === "no2" && (
@@ -268,8 +267,7 @@ export default function StatusTable({
                         position: "sticky",
                         left: 0,
                         borderBottom: "none",
-                        background:
-                          themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                        background: "ưhite",
                       }}
                     >
                       <CustomTypography>{e.CCCD}</CustomTypography>
@@ -303,7 +301,7 @@ export default function StatusTable({
           <CircularProgress
             disableShrink
             sx={{
-              color: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              color: "white",
             }}
           />
         )}

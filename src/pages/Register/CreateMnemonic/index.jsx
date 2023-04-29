@@ -1,5 +1,5 @@
 import { generatePairKeys } from "src/redux/accountSlice";
-import { Box, Grid, styled, useMediaQuery } from "@mui/material";
+import { Box, Grid, styled, useMediaQuery, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ export default function CreateMnemonic({ setActiveStep, activeStep }) {
   const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
+  const theme = useTheme();
 
   const dp = useDispatch();
   useEffect(() => {
@@ -39,14 +40,12 @@ export default function CreateMnemonic({ setActiveStep, activeStep }) {
       <Box
         width="100%"
         sx={{
-          borderRadius: "20px",
+          borderRadius: "5px",
           pt: 3,
           pb: 3,
-          border: !mobile
-            ? themeMode === THEME_MODE.DARK
-              ? "2px solid rgba(216, 216, 216, 0.7)"
-              : "2px solid rgba(53, 53, 53, 0.7)"
-            : undefined,
+          border: `2px solid ${theme.colors.medium_3}`,
+          boxSizing: "border-box",
+          background: theme.colors.neutral_gray,
         }}
       >
         <Grid container spacing={1}>
@@ -75,7 +74,7 @@ export default function CreateMnemonic({ setActiveStep, activeStep }) {
           setActiveStep(2);
         }}
       >
-        <CustomTypography buttonText>Next step</CustomTypography>
+        <CustomTypography buttonText>Bước tiếp theo</CustomTypography>
       </CustomButton>
       <Box mb={2} />
       <NavLink
@@ -95,7 +94,7 @@ export default function CreateMnemonic({ setActiveStep, activeStep }) {
             mr: 0.5,
           }}
         />
-        <CustomTypography>Back to login page</CustomTypography>
+        <CustomTypography>Quay lại trang đăng nhập</CustomTypography>
       </NavLink>
     </Box>
   );

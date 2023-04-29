@@ -11,10 +11,9 @@ import CustomTypography from "../CustomTypography";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
-import { useSelector } from "react-redux";
+import { SCREEN_SIZE } from "src/constants";
 
-const steps = ["Create password", "Generate mnemonic", "Confirm mnemonic"];
+const steps = ["Tạo mật khẩu mới", "Tạo mã gợi nhớ", "Xác nhận mã gợi nhớ"];
 
 export default function CustomStepper({
   activeStep,
@@ -24,7 +23,6 @@ export default function CustomStepper({
 }) {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
 
   const CustomConnector = styled(StepConnector)(() => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -34,7 +32,7 @@ export default function CustomStepper({
     },
     [`&.${stepConnectorClasses.active}`]: {
       [`& .${stepConnectorClasses.line}`]: {
-        borderColor: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
+        borderColor: "#353535",
       },
     },
     [`&.${stepConnectorClasses.completed}`]: {
@@ -43,25 +41,19 @@ export default function CustomStepper({
       },
     },
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor:
-        themeMode === THEME_MODE.DARK
-          ? "rgba(216, 216, 216, 0.3)"
-          : "rgba(53, 53, 53, 0.3)",
+      borderColor: "rgba(53, 53, 53, 0.3)",
       borderTopWidth: 3,
       borderRadius: 1,
     },
   }));
 
   const CustomStepIconRoot = styled("div")(({ ownerState }) => ({
-    color:
-      themeMode === THEME_MODE.DARK
-        ? "rgba(216, 216, 216, 0.3)"
-        : "rgba(53, 53, 53, 0.3)",
+    color: "rgba(53, 53, 53, 0.3)",
     display: "flex",
     height: 22,
     alignItems: "center",
     ...(ownerState.active && {
-      color: themeMode === THEME_MODE.DARK ? "#D8D8D8" : "#353535",
+      color: "#353535",
     }),
     "& .CustomStepIcon-completedIcon": {
       color: "#0DC74C",
@@ -104,9 +96,7 @@ export default function CustomStepper({
                 <CustomTypography
                   color={
                     index > activeStep
-                      ? themeMode === THEME_MODE.DARK
-                        ? "rgba(216, 216, 216, 0.3)"
-                        : "rgba(53, 53, 53, 0.3)"
+                      ? "rgba(53, 53, 53, 0.3)"
                       : index < activeStep
                       ? "#0DC74C"
                       : undefined

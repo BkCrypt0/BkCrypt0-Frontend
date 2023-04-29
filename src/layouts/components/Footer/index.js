@@ -28,7 +28,7 @@ export default function Footer() {
       <Box
         sx={{
           background: theme.colors.dark_3,
-          borderRadius: "10px",
+          borderRadius: "5px",
           mx: 1.5,
         }}
         width={2}

@@ -1,10 +1,9 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
 import CustomForm from "src/components/CustomForm";
 import { formatAddress } from "src/utility";
-import { THEME_MODE } from "src/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
@@ -21,7 +20,6 @@ import { login } from "src/redux/accountSlice";
 const { verify } = require("password-hash");
 
 export default function AccountExisted() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
@@ -32,6 +30,7 @@ export default function AccountExisted() {
   const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const dp = useDispatch();
+  const theme = useTheme();
 
   useEffect(() => {
     dp(constructAccountsArrayFromLocalStorage());
@@ -83,10 +82,7 @@ export default function AccountExisted() {
             <DriveFileRenameOutlineIcon
               ml={2}
               sx={{
-                color:
-                  themeMode === THEME_MODE.DARK
-                    ? "rgba(216, 216, 216, 0.6)"
-                    : "rgba(53, 53, 53, 0.6)",
+                color: theme.colors.dark_3,
               }}
             />
           </IconButton>
@@ -114,7 +110,7 @@ export default function AccountExisted() {
           targetButtonId="login_button"
           type="password"
           id="inputpasswd"
-          placeHolder={"Enter password..."}
+          placeHolder={"Mật khẩu..."}
           onChange={() =>
             setInput(document.getElementById("inputpasswd").value)
           }
@@ -135,7 +131,7 @@ export default function AccountExisted() {
             mb={2}
             onClick={() => {
               if (verify(input, accounts[activeAccount]?.password)) {
-                enqueueSnackbar("Login successfully!", {
+                enqueueSnackbar("Đăng nhập thành công!", {
                   variant: "success",
                   dense: "true",
                   preventDuplicate: true,
@@ -144,7 +140,7 @@ export default function AccountExisted() {
 
                 dp(login(accounts[activeAccount].publicKey));
               } else
-                enqueueSnackbar("Wrong password!", {
+                enqueueSnackbar("Mật khẩu không đúng!", {
                   variant: "error",
                   dense: "true",
                   preventDuplicate: true,
@@ -152,7 +148,7 @@ export default function AccountExisted() {
                 });
             }}
           >
-            <CustomTypography buttonText>Login</CustomTypography>
+            <CustomTypography buttonText>Đăng nhập</CustomTypography>
           </CustomButton>
         </NavLink>
         <Box
@@ -163,23 +159,17 @@ export default function AccountExisted() {
         >
           <Box
             sx={{
-              background:
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(216, 216, 216, 0.3)"
-                  : "rgba(53, 53, 53, 0.3)",
-              borderRadius: "20px",
+              background: "rgba(53, 53, 53, 0.3)",
+              borderRadius: "5px",
             }}
             width="45%"
             height="2px"
           />
-          <CustomTypography>OR</CustomTypography>
+          <CustomTypography>Hoặc</CustomTypography>
           <Box
             sx={{
-              background:
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(216, 216, 216, 0.3)"
-                  : "rgba(53, 53, 53, 0.3)",
-              borderRadius: "20px",
+              background: "rgba(53, 53, 53, 0.3)",
+              borderRadius: "5px",
             }}
             width="45%"
             height="2px"
@@ -191,7 +181,7 @@ export default function AccountExisted() {
           style={{ width: "100%", textDecoration: "none" }}
         >
           <CustomButton fullWidth={true} minHeight="50px" mb={2}>
-            <CustomTypography buttonText>Import mnemonic</CustomTypography>
+            <CustomTypography buttonText>Nhập mã gợi nhớ</CustomTypography>
           </CustomButton>
         </NavLink>
         <NavLink
@@ -199,7 +189,7 @@ export default function AccountExisted() {
           style={{ textDecoration: "none", width: "100%" }}
         >
           <CustomButton fullWidth={true} minHeight="50px" mb={2}>
-            <CustomTypography buttonText>Import Private Key</CustomTypography>
+            <CustomTypography buttonText>Nhập khóa bí mật</CustomTypography>
           </CustomButton>
         </NavLink>
         <NavLink
@@ -207,7 +197,7 @@ export default function AccountExisted() {
           style={{ width: "100%", textDecoration: "none" }}
         >
           <CustomButton fullWidth={true} minHeight="50px" mb={3}>
-            <CustomTypography buttonText>Create a new account</CustomTypography>
+            <CustomTypography buttonText>Tạo tài khoản mới</CustomTypography>
           </CustomButton>
         </NavLink>
       </Box>
