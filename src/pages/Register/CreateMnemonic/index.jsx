@@ -4,13 +4,12 @@ import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { SCREEN_SIZE, THEME_MODE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import { NavLink } from "react-router-dom";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 
 export default function CreateMnemonic({ setActiveStep, activeStep }) {
   const mnemonic = useSelector((state) => state.accountSlice.mnemonic);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const theme = useTheme();
@@ -90,7 +89,7 @@ export default function CreateMnemonic({ setActiveStep, activeStep }) {
       >
         <ArrowBackTwoToneIcon
           sx={{
-            color: themeMode === THEME_MODE.DARK ? "white" : "black",
+            color: theme.colors.dark_3,
             mr: 0.5,
           }}
         />

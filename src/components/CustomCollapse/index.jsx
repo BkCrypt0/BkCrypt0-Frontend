@@ -49,7 +49,7 @@ export default function CustomCollapse({
           <CustomForm
             type="text"
             id="find-province"
-            placeHolder="Search province..."
+            placeHolder="Tìm tỉnh thành..."
             onChange={() =>
               setProvinceInput(document.getElementById("find-province").value)
             }

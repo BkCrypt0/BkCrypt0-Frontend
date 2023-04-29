@@ -1,7 +1,6 @@
-import { Box, CircularProgress, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { THEME_MODE } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
@@ -13,7 +12,6 @@ import TestResultDialog from "../TestResultDialog";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function TestAge() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
@@ -21,6 +19,7 @@ export default function TestAge() {
   const ageProof = useSelector((state) => state.proofSlice.ageProof);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
 
   return (
     <>
@@ -37,11 +36,7 @@ export default function TestAge() {
           background: "white",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
           borderRadius: "5px",
-          boxShadow: `5px 5px 15px 3px ${
-            themeMode === THEME_MODE.DARK
-              ? "rgba(0, 0, 0, 0.7)"
-              : "rgba(53, 53, 53, 0.4)"
-          }`,
+          boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
           paddingY: 3,
           mb: 3,
           boxSizing: "border-box",
@@ -79,7 +74,7 @@ export default function TestAge() {
             >
               <ArrowBackIosIcon
                 sx={{
-                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                  color: theme.colors.dark_3,
                 }}
               />
               <CustomTypography textAlign="center">
@@ -87,7 +82,7 @@ export default function TestAge() {
               </CustomTypography>
               <ArrowBackIosIcon
                 sx={{
-                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                  color: theme.colors.dark_3,
                 }}
               />
             </Box>
@@ -166,7 +161,7 @@ export default function TestAge() {
               {loading === true && (
                 <CircularProgress
                   sx={{
-                    color: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                    color: "white",
                   }}
                 />
               )}

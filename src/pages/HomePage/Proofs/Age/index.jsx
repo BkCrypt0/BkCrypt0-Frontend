@@ -1,6 +1,6 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE, INFO_STATUS } from "src/constants";
+import { SCREEN_SIZE, INFO_STATUS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import DownloadTwoToneIcon from "@mui/icons-material/DownloadTwoTone";
@@ -8,10 +8,10 @@ import DownloadTwoToneIcon from "@mui/icons-material/DownloadTwoTone";
 var FileSaver = require("file-saver");
 
 export default function Age() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const ageProof = useSelector((state) => state.proofSlice.ageProof);
+  const theme = useTheme();
 
   return (
     <>
@@ -24,12 +24,12 @@ export default function Age() {
         }}
       >
         <CustomTypography variant="h5">
-          {`Proof that your age is between ${ageProof?.minAge} and ${ageProof?.maxAge}`}{" "}
+          {`Bằng chứng chứng minh tuổi của bạn nằm trong khoảng từ ${ageProof?.minAge} đến ${ageProof?.maxAge}`}{" "}
         </CustomTypography>
         <pre style={{ marginBottom: "30px" }}>
           <code
             style={{
-              color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+              color: theme.colors.dark_3,
             }}
           >
             {'{\n "proof": ' + ageProof?.proof + ",\n\n "}
@@ -50,13 +50,11 @@ export default function Age() {
           paddingY={1}
         >
           <CustomTypography
-            color={
-              themeMode === THEME_MODE.DARK ? "white" : INFO_STATUS[1]?.stroke
-            }
+            color={INFO_STATUS[1]?.stroke}
             fontWeight="semi-bold"
             letterSpacing="1px"
           >
-            This proof expires in 10 minutes
+            Bằng chứng có hiệu lực trong 10 phút
           </CustomTypography>
         </Box>
         <CustomButton
@@ -71,11 +69,11 @@ export default function Age() {
         >
           <DownloadTwoToneIcon
             sx={{
-              color: themeMode === THEME_MODE.DARK ? "#353535" : "#D8D8D8",
+              color: "white",
               mr: 1,
             }}
           />
-          <CustomTypography buttonText>Save this proof</CustomTypography>
+          <CustomTypography buttonText>Lưu bằng chứng</CustomTypography>
         </CustomButton>
       </Box>
     </>

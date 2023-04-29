@@ -1,7 +1,3 @@
-export const THEME_MODE = {
-  DARK: "dark",
-  LIGHT: "light",
-};
 export const LS = {
   THEME: "theme",
   PUBLIC_KEY: "public key",
@@ -55,8 +51,8 @@ export const INFO_STATUS = {
 
 export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
 
-// export const BASE_API_URL = "http://localhost:8000";
-export const BASE_API_URL = "http://192.168.1.37:8000";
+export const BASE_API_URL = "http://localhost:8000";
+// export const BASE_API_URL = "http://192.168.1.37:8000";
 
 export const CONTRACT_ADDRESS = "0x0BE7E9fa7D3C22856d37e1DF9C0d52423801752e";
 

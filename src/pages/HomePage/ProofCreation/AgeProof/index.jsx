@@ -1,7 +1,7 @@
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { THEME_MODE, SCREEN_SIZE, FS } from "src/constants";
+import { SCREEN_SIZE, FS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomForm from "src/components/CustomForm";
 import CustomButton from "src/components/CustomButton";
@@ -13,7 +13,6 @@ import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
 export default function AgeProof({ proof }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
@@ -29,6 +28,7 @@ export default function AgeProof({ proof }) {
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
+  const theme = useTheme();
 
   useEffect(() => {
     if (generateAgeProofStatus === FS.SUCCESS && click === true) {
@@ -95,14 +95,10 @@ export default function AgeProof({ proof }) {
         display="flex"
         justifyContent="center"
         sx={{
-          background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+          background: "white",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
           borderRadius: "5px",
-          boxShadow: `5px 5px 15px 3px ${
-            themeMode === THEME_MODE.DARK
-              ? "rgba(0, 0, 0, 0.7)"
-              : "rgba(53, 53, 53, 0.4)"
-          }`,
+          boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
           paddingY: 3,
           mb: 3,
         }}
@@ -115,10 +111,11 @@ export default function AgeProof({ proof }) {
               flexDirection={mobile ? "column" : "row"}
             >
               <CustomTypography fontWeight="bold" mr={1}>
-                Age:
+                Tuổi:
               </CustomTypography>
               <CustomTypography width={"100%"}>
-                Prove that your age is in the following range
+                Tạo bằng chứng chứng minh độ tuổi của bạn nằm trong khoảng dưới
+                đây
               </CustomTypography>
             </Box>
           </Box>
@@ -144,13 +141,15 @@ export default function AgeProof({ proof }) {
             >
               <ArrowBackIosIcon
                 sx={{
-                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                  color: theme.colors.dark_3,
                 }}
               />
-              <CustomTypography textAlign="center">Your age</CustomTypography>
+              <CustomTypography textAlign="center">
+                Tuổi của bạn
+              </CustomTypography>
               <ArrowBackIosIcon
                 sx={{
-                  color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                  color: theme.colors.dark_3,
                 }}
               />
             </Box>
@@ -176,7 +175,7 @@ export default function AgeProof({ proof }) {
               }}
             >
               <CustomTypography buttonText={true}>
-                Create Proof
+                Tạo bằng chứng
               </CustomTypography>
             </CustomButton>
           </Box>

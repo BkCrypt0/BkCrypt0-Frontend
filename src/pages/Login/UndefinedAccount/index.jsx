@@ -2,11 +2,9 @@ import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { NavLink } from "react-router-dom";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
-import { useSelector } from "react-redux";
+import { SCREEN_SIZE } from "src/constants";
 
 export default function UndefinedAccount() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
 
   return (
@@ -19,14 +17,14 @@ export default function UndefinedAccount() {
       height="80vh"
     >
       <CustomTypography variant={mobile ? "h5" : "h4"} mb={5}>
-        Login to BKCrypt0 Platform
+        Đăng nhập vào hệ thống Zk:Elite
       </CustomTypography>
       <NavLink
         to="/import-mnemonic"
         style={{ textDecoration: "none", width: "100%" }}
       >
         <CustomButton fullWidth={true} minHeight="50px" mb={2}>
-          <CustomTypography buttonText>Import Mnemonic</CustomTypography>
+          <CustomTypography buttonText>Nhập mã gợi nhớ</CustomTypography>
         </CustomButton>
       </NavLink>
       <NavLink
@@ -34,7 +32,7 @@ export default function UndefinedAccount() {
         style={{ textDecoration: "none", width: "100%" }}
       >
         <CustomButton fullWidth={true} minHeight="50px" mb={2}>
-          <CustomTypography buttonText>Import Private Key</CustomTypography>
+          <CustomTypography buttonText>Nhập khóa bí mật</CustomTypography>
         </CustomButton>
       </NavLink>
       <Box
@@ -45,22 +43,16 @@ export default function UndefinedAccount() {
       >
         <Box
           sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
+            background: "rgba(53, 53, 53, 0.3)",
             borderRadius: "5px",
           }}
           width="45%"
           height="2px"
         />
-        <CustomTypography>OR</CustomTypography>
+        <CustomTypography>Hoặc</CustomTypography>
         <Box
           sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
+            background: "rgba(53, 53, 53, 0.3)",
             borderRadius: "5px",
           }}
           width="45%"
@@ -70,7 +62,7 @@ export default function UndefinedAccount() {
       <Box mb={2} />
       <NavLink to="/register" style={{ width: "100%", textDecoration: "none" }}>
         <CustomButton fullWidth={true} minHeight="50px" mb={3}>
-          <CustomTypography buttonText>Create a new account</CustomTypography>
+          <CustomTypography buttonText>Tạo tài khoản mới</CustomTypography>
         </CustomButton>
       </NavLink>
     </Box>

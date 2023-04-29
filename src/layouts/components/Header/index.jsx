@@ -1,6 +1,5 @@
 import { Box, useMediaQuery, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
 import TeamLogo from "src/components/TeamLogo";
 import EnterAppButton from "src/components/EnterAppButton";
 import { SCREEN_SIZE } from "src/constants";
@@ -15,7 +14,6 @@ import { useTheme } from "@mui/material";
 
 export default function Header() {
   const theme = useTheme();
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const path = useLocation().pathname;
   const dp = useDispatch();
@@ -113,8 +111,7 @@ export default function Header() {
                   <MenuIcon
                     fontSize="large"
                     sx={{
-                      color:
-                        themeMode === THEME_MODE.LIGHT ? "#353535" : "white",
+                      color: theme.colors.dark_3,
                     }}
                   />
                 </IconButton>

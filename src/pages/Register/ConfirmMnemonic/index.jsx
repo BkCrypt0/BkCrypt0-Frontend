@@ -1,9 +1,9 @@
 import { validateMnemonic12Phrases } from "src/redux/accountSlice";
-import { Box, Grid, styled, useMediaQuery } from "@mui/material";
+import { Box, Grid, styled, useMediaQuery, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
 import { useDispatch, useSelector } from "react-redux";
-import { SCREEN_SIZE, THEME_MODE, LS } from "src/constants";
+import { SCREEN_SIZE, LS } from "src/constants";
 import CustomForm from "src/components/CustomForm";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import { NavLink } from "react-router-dom";
@@ -13,7 +13,7 @@ import { generateAccount, changeActiveAccount } from "src/redux/accountSlice";
 
 export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
   const mnemonic = useSelector((state) => state.accountSlice.mnemonic);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const theme = useTheme();
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -52,11 +52,8 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
           borderRadius: "5px",
           pt: 3,
           pb: 3,
-          border: !mobile
-            ? themeMode === THEME_MODE.DARK
-              ? "2px solid rgba(216, 216, 216, 0.7)"
-              : "2px solid rgba(53, 53, 53, 0.7)"
-            : undefined,
+          border: `2px solid ${theme.colors.dark_3}`,
+          background: theme.colors.neutral_gray,
         }}
       >
         <Grid container spacing={1}>
@@ -165,7 +162,7 @@ export default function ConfirmMnemonic({ setActiveStep, activeStep }) {
       >
         <ArrowBackTwoToneIcon
           sx={{
-            color: themeMode === THEME_MODE.DARK ? "white" : "black",
+            color: theme.colors.dark_3,
             mr: 0.5,
           }}
         />

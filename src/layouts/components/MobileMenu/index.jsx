@@ -1,9 +1,7 @@
-import { Drawer, Box, Button } from "@mui/material";
+import { Drawer, Box, Button, useTheme } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import NavigationButton from "../Sidebar/NavigationButton";
 import { useSelector } from "react-redux";
-import { THEME_MODE } from "src/constants";
-import SwitchThemeButton from "src/components/SwitchThemeButton";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { formatAddress } from "src/utility";
 import { NavLink } from "react-router-dom";
@@ -12,12 +10,12 @@ import ChangeAccountDialog from "src/components/ChangeAccountDialog";
 import { constructAccountsArrayFromLocalStorage } from "src/redux/accountSlice";
 
 export default function MobileMenu({ open, setOpen }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
   const [openDialog, setOpenDialog] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     constructAccountsArrayFromLocalStorage();
@@ -42,7 +40,7 @@ export default function MobileMenu({ open, setOpen }) {
             flexDirection: "column",
             alignItems: "center",
             width: 240,
-            background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+            background: "white",
             top: 55,
           },
         }}
@@ -58,7 +56,7 @@ export default function MobileMenu({ open, setOpen }) {
           <AccountCircleOutlinedIcon
             fontSize="large"
             sx={{
-              color: themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+              color: theme.colors.dark_3,
               mb: 1,
             }}
           />
@@ -80,11 +78,8 @@ export default function MobileMenu({ open, setOpen }) {
           mt={3}
           mb={2}
           sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
+            background: "rgba(53, 53, 53, 0.3)",
+            borderRadius: "5px",
           }}
           width="90%"
           height="2px"
@@ -113,7 +108,7 @@ export default function MobileMenu({ open, setOpen }) {
           )}
           {role === "user" && (
             <NavigationButton
-              label="Create Proofs"
+              label="Tạo bằng chứng"
               link="/home/proof-creation"
             />
           )}
@@ -125,25 +120,12 @@ export default function MobileMenu({ open, setOpen }) {
           mt={2}
           mb={1}
           sx={{
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
-            borderRadius: "20px",
+            background: "rgba(53, 53, 53, 0.3)",
+            borderRadius: "5px",
           }}
           width="90%"
           height="2px"
         />
-        <Box
-          width="90%"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mt={2}
-        >
-          <CustomTypography ml={2}>{themeMode} mode</CustomTypography>
-          <SwitchThemeButton />
-        </Box>
         <NavLink
           to="/login"
           style={{
@@ -162,12 +144,11 @@ export default function MobileMenu({ open, setOpen }) {
               disableFocusRipple
               sx={{
                 mt: 3,
-                borderColor:
-                  themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                borderColor: theme.colors.dark_3,
                 borderWidth: "2.5px",
               }}
             >
-              <CustomTypography>LOG OUT</CustomTypography>
+              <CustomTypography>Đăng xuất</CustomTypography>
             </Button>
           </Box>
         </NavLink>

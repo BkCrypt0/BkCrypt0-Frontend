@@ -1,6 +1,6 @@
-import { Box, useMediaQuery, IconButton } from "@mui/material";
+import { Box, useMediaQuery, IconButton, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { FS, THEME_MODE } from "src/constants";
+import { FS } from "src/constants";
 import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import CustomButton from "src/components/CustomButton";
@@ -15,7 +15,7 @@ import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
 export default function ProvinceProof({ proof }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
+  const theme = useTheme();
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [open, setOpen] = useState(false);
@@ -97,14 +97,10 @@ export default function ProvinceProof({ proof }) {
         display="flex"
         justifyContent="center"
         sx={{
-          background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+          background: "white",
           width: mobile ? "100%" : tablet ? "90%" : "45%",
           borderRadius: "5px",
-          boxShadow: `5px 5px 15px 3px ${
-            themeMode === THEME_MODE.DARK
-              ? "rgba(0, 0, 0, 0.7)"
-              : "rgba(53, 53, 53, 0.4)"
-          }`,
+          boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
           paddingY: 3,
           mb: 3,
         }}
@@ -117,11 +113,11 @@ export default function ProvinceProof({ proof }) {
               flexDirection={mobile ? "column" : "row"}
             >
               <CustomTypography fontWeight="bold" mr={1}>
-                Home:
+                Nơi ở:
               </CustomTypography>
               <CustomTypography>
-                Prove that your home town belongs to one of these following
-                provinces
+                Tạo bằng chứng chứng minh nơi ở của bạn là một trong số tỉnh
+                thành này
               </CustomTypography>
             </Box>
             <Box
@@ -146,8 +142,7 @@ export default function ProvinceProof({ proof }) {
                       minHeight: "30px",
                       maxHeight: "35px",
                       borderRadius: "5px",
-                      background:
-                        themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                      background: theme.colors.medium_3,
                       cursor: "pointer",
                     }}
                     onClick={() => {
@@ -166,8 +161,7 @@ export default function ProvinceProof({ proof }) {
               <IconButton onClick={() => setOpen(true)}>
                 <AddIcon
                   sx={{
-                    color:
-                      themeMode === THEME_MODE.LIGHT ? "#353535" : "#D8D8D8",
+                    color: theme.colors.dark_3,
                   }}
                 />
               </IconButton>
@@ -195,7 +189,7 @@ export default function ProvinceProof({ proof }) {
               onClick={() => setOpenDialog(true)}
             >
               <CustomTypography buttonText={true}>
-                Create Proof
+                Tạo bằng chứng
               </CustomTypography>
             </CustomButton>
           </Box>

@@ -1,13 +1,12 @@
 import { Box, useMediaQuery, Paper } from "@mui/material";
 import { useSelector } from "react-redux";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
 import { formatAddress } from "src/utility";
 import CopyToClipboardButton from "src/components/CopyToClipboardButton";
 import { useState } from "react";
 
 export default function Identity() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const accounts = useSelector((state) => state.accountSlice.accounts);
@@ -29,14 +28,10 @@ export default function Identity() {
         <Box width="100%">
           <Paper
             sx={{
-              background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              background: "white",
               width: mobile ? "100%" : tablet ? "90%" : "50%",
               borderRadius: "5px",
-              boxShadow: `5px 5px 15px 3px ${
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(0, 0, 0, 0.7)"
-                  : "rgba(53, 53, 53, 0.4)"
-              }`,
+              boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
               paddingY: 3,
               mb: 3,
               display: "flex",

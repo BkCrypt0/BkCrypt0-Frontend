@@ -2,7 +2,7 @@ import { Dialog, Box, useMediaQuery, CircularProgress } from "@mui/material";
 import { useSelector } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 import ImportIdentityButton from "../CustomButton/ImportIdentityButton";
 import CustomButton from "../CustomButton";
 
@@ -13,7 +13,6 @@ export default function SignMessageDialog({
   loading,
   setClick,
 }) {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
@@ -29,14 +28,14 @@ export default function SignMessageDialog({
       PaperProps={{
         sx: {
           padding: 3,
-          background: themeMode === THEME_MODE.DARK ? "#353535" : "white",
+          background: "white",
           width: mobile ? "99%" : tablet ? "50%" : "40%",
           borderRadius: "5px",
         },
       }}
     >
       <CustomTypography variant="h5" mb={2}>
-        Sign to create proof
+        Ký & tạo bằng chứng
       </CustomTypography>
       {identity === undefined && <ImportIdentityButton />}
       {identity !== undefined && (
@@ -108,10 +107,7 @@ export default function SignMessageDialog({
         sx={{
           mt: 2,
           mb: 2,
-          background:
-            themeMode === THEME_MODE.DARK
-              ? "rgba(216, 216, 216, 0.3)"
-              : "rgba(53, 53, 53, 0.3)",
+          background: "rgba(53, 53, 53, 0.3)",
           borderRadius: "20px",
         }}
         width="100%"
@@ -124,7 +120,9 @@ export default function SignMessageDialog({
         justifyContent={mobile ? undefined : "space-between"}
         alignItems="center"
       >
-        <CustomTypography mb={2}>Proof expires in 10 minutes</CustomTypography>
+        <CustomTypography mb={2}>
+          Bằng chứng có hiệu lực trong 10 phút
+        </CustomTypography>
         <CustomButton
           minHeight="50px"
           minWidth={!mobile ? "150px" : undefined}
@@ -136,14 +134,14 @@ export default function SignMessageDialog({
         >
           {loading === false && (
             <CustomTypography buttonText={true}>
-              Sign & Create proof
+              Ký & tạo bằng chứng
             </CustomTypography>
           )}
           {loading === true && (
             <CircularProgress
               disableShrink
               sx={{
-                color: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+                color: "white",
               }}
             />
           )}

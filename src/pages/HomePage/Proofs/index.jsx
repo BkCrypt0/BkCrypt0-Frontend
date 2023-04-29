@@ -4,12 +4,11 @@ import { Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "src/components/CustomTypography";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { THEME_MODE, SCREEN_SIZE } from "src/constants";
+import { SCREEN_SIZE } from "src/constants";
 
 export default function Proofs() {
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const login = useSelector((state) => state.accountSlice.isLogin);
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
 
@@ -33,14 +32,10 @@ export default function Proofs() {
         {ageProof === undefined && (
           <Box
             sx={{
-              background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              background: "white",
               width: mobile ? "100%" : tablet ? "90%" : "50%",
               borderRadius: "5px",
-              boxShadow: `5px 5px 15px 3px ${
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(0, 0, 0, 0.7)"
-                  : "rgba(53, 53, 53, 0.4)"
-              }`,
+              boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
               paddingY: 3,
               display: "flex",
               flexDirection: "column",
@@ -57,10 +52,7 @@ export default function Proofs() {
         <Box
           sx={{
             mt: 4,
-            background:
-              themeMode === THEME_MODE.DARK
-                ? "rgba(216, 216, 216, 0.3)"
-                : "rgba(53, 53, 53, 0.3)",
+            background: "rgba(53, 53, 53, 0.3)",
             borderRadius: "5px",
             width: mobile ? "100%" : tablet ? "90%" : "50%",
             mb: 4,
@@ -70,14 +62,10 @@ export default function Proofs() {
         {provinceProof === undefined && (
           <Box
             sx={{
-              background: themeMode === THEME_MODE.LIGHT ? "white" : "#434343",
+              background: "white",
               width: mobile ? "100%" : tablet ? "90%" : "50%",
               borderRadius: "5px",
-              boxShadow: `5px 5px 15px 3px ${
-                themeMode === THEME_MODE.DARK
-                  ? "rgba(0, 0, 0, 0.7)"
-                  : "rgba(53, 53, 53, 0.4)"
-              }`,
+              boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
               paddingY: 3,
               mb: 3,
               display: "flex",
