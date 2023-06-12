@@ -124,7 +124,7 @@ export class RemoteVerifier {
         Logger.info(response);
         const verifyResponseData = response.data;
         Logger.info(verifyResponseData);
-        successCallback(verifyResponseData.success);
+        successCallback(verifyResponseData.message);
       })
       .catch(function (error) {
         Logger.error(error);
