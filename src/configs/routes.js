@@ -75,6 +75,12 @@ const routeConfig = [
     component: React.lazy(() => import("../pages/HomePage/MyAccount")),
     layout: LayoutOptions.MAIN,
   },
+  {
+    path: "/home/KYC",
+    exact: true,
+    component: React.lazy(() => import("../pages/HomePage/KYC")),
+    layout: LayoutOptions.MAIN,
+  },
 ];
 
 export default routeConfig;

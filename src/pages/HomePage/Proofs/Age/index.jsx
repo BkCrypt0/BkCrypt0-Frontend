@@ -69,8 +69,8 @@ export default function Age() {
         >
           <DownloadTwoToneIcon
             sx={{
-              color: "white",
-              mr: 1,
+color: "white",
+                            mr: 1,
             }}
           />
           <CustomTypography buttonText>Lưu bằng chứng</CustomTypography>

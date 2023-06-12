@@ -9,6 +9,7 @@ module.exports = function override(config) {
     https: require.resolve("https-browserify"),
     os: require.resolve("os-browserify"),
     url: require.resolve("url"),
+    path: require.resolve("path-browserify"),
   });
   config.resolve.fallback = fallback;
   config.plugins = (config.plugins || []).concat([
@@ -16,6 +17,11 @@ module.exports = function override(config) {
       process: "process/browser",
       Buffer: ["buffer", "Buffer"],
     }),
+    new (require("veaury/webpack/VeauryVuePlugin"))(),
   ]);
+  config.loader = {
+    test: /\.vue$/,
+    loader: "vue-loader",
+  };
   return config;
 };

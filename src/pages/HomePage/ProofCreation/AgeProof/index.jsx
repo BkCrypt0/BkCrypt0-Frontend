@@ -124,7 +124,7 @@ export default function AgeProof({ proof }) {
             width="100%"
             display="flex"
             flexDirection="row"
-            justifyContent="space-evenly"
+            justifyContent="space-evenly"Create proof failed
             alignItems="center"
           >
             <CustomForm

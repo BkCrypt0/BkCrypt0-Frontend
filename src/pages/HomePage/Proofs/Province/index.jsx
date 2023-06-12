@@ -8,7 +8,6 @@ import DownloadTwoToneIcon from "@mui/icons-material/DownloadTwoTone";
 var FileSaver = require("file-saver");
 
 export default function Province() {
-  const themeMode = useSelector((state) => state.themeSlice.themeMode);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const provinceProof = useSelector((state) => state.proofSlice.provinceProof);

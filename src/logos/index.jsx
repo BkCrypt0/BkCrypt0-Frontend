@@ -24,8 +24,8 @@ export const TeamLogoDark = (props) => {
           y2="234"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#25404B" />
-          <stop offset="1" stop-color="#537E91" />
+          <stop stopColor="#25404B" />
+          <stop offset="1" stopColor="#537E91" />
         </linearGradient>
       </defs>
     </MuiSvgIcon>
@@ -56,8 +56,8 @@ export const TeamLogoLight = (props) => {
           y2="234"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#789EB3" />
-          <stop offset="1" stop-color="#C8DEE9" />
+          <stop stopColor="#789EB3" />
+          <stop offset="1" stopColor="#C8DEE9" />
         </linearGradient>
       </defs>
     </MuiSvgIcon>

@@ -6,6 +6,7 @@ import { Layouts } from "./layouts";
 import { Suspense } from "react";
 import { SnackbarProvider } from "notistack";
 import { createTheme, ThemeProvider } from "@mui/material";
+require("dotenv").config();
 
 const theme = createTheme({
   typography: {
