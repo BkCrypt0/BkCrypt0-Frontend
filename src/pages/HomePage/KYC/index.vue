@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT-0
     <Challenge
       v-else-if="step === 2"
       :details="challengeDetails"
+      :imageIDBase64="imageIDBase64"
       @local-success="onLocalSuccess($event)"
       @local-fail="onLocalFail()"
       @error="onError($event)"
@@ -49,6 +50,9 @@ export default defineComponent({
     Spinner,
     Result,
     Error,
+  },
+  props: {
+    imageIDBase64: String,
   },
   data() {
     return {

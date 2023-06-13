@@ -15,20 +15,23 @@ export class ChallengeProcessor {
     canvasElementId,
     endCallback,
     helpMessageCallback,
-    helpAnimatonCallback
+    helpAnimatonCallback,
+    imageIDBase64
   ) {
     this.endCallback = endCallback;
     this.helpMessageCallback = helpMessageCallback;
     this.helpAnimatonCallback = helpAnimatonCallback;
     this.stateManager = new StateManager(challengeDetails);
     this.videoElement = document.getElementById(videoElementId);
+    this.imageIDBase64 = imageIDBase64;
     if (!this.videoElement) {
       throw "Video element not found";
     }
     this.remoteVerifier = new RemoteVerifier(
       challengeDetails.id,
       challengeDetails.token,
-      this.videoElement
+      this.videoElement,
+      this.imageIDBase64
     );
 
     this.canvasElement = document.getElementById(canvasElementId);

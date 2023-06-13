@@ -63,6 +63,7 @@ export default defineComponent({
   },
   props: {
     details: Object,
+    imageIDBase64: String,
   },
   data() {
     return {
@@ -112,7 +113,8 @@ export default defineComponent({
         "overlayCanvas",
         self.onLocalEnd,
         self.onHelpMessage,
-        self.onHelpAnimation
+        self.onHelpAnimation,
+        self.imageIDBase64,
       );
     });
   },

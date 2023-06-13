@@ -4,6 +4,7 @@ import accountSlice from "./accountSlice";
 import adminSlice from "./adminSlice";
 import walletSlice from "./walletSlice";
 import proofSlice from "./proofSlice";
+import imageIDSlice from "./imageIDSlice";
 
 export default configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export default configureStore({
     adminSlice: adminSlice,
     walletSlice: walletSlice,
     proofSlice: proofSlice,
+    imageIDSlice: imageIDSlice,
   },
 });

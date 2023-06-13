@@ -6,11 +6,12 @@ import Logger from "js-logger";
 import { Utils } from "./Utils.js";
 
 export class RemoteVerifier {
-  constructor(challengeId, token, videoElement) {
+  constructor(challengeId, token, videoElement, imageIDBase64) {
     this.challengeId = challengeId;
     this.token = token;
     this.videoElement = videoElement;
     this.promises = [];
+    this.imageIDBase64 = imageIDBase64;
 
     // Create canvas to convert video frames to blob
     this.invisibleCanvas = document.createElement("canvas");
@@ -103,6 +104,9 @@ export class RemoteVerifier {
       Logger.info("all frames uploaded");
       const requestData = {
         token: self.token,
+        imageIDBase64: self.imageIDBase64.substr(
+          self.imageIDBase64.indexOf(",") + 1
+        ),
       };
       self.callVerificationApi(requestData, successCallback, errorCallback);
     });
