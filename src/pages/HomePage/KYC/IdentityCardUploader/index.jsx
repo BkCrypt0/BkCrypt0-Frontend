@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { uploadImageID } from "src/redux/imageIDSlice";
+import QrScanner from "qr-scanner";
 
 function IdentityCardUploader() {
   const imageIDBase64 = useSelector(
@@ -12,6 +13,14 @@ function IdentityCardUploader() {
     const reader = new FileReader();
 
     reader.onload = (event) => {
+      var img = new Image();
+      img.src = event.target.result;
+      img.onload = function () {
+        QrScanner.scanImage(event.target.result)
+          .then((result) => console.log(result))
+          .catch((error) => console.log(error || "No QR code found."));
+      };
+
       dp(uploadImageID(event.target.result));
     };
 

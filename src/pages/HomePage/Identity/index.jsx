@@ -1,4 +1,10 @@
-import { Box, useMediaQuery, Paper, CircularProgress } from "@mui/material";
+import {
+  Box,
+  useMediaQuery,
+  Paper,
+  CircularProgress,
+  useTheme,
+} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { SCREEN_SIZE, INFO_STATUS, FS } from "src/constants";
 import CustomTypography from "src/components/CustomTypography";
@@ -10,6 +16,7 @@ import { Redirect } from "react-router-dom";
 import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButton";
 import { fetchIdentity, claimIdentity } from "src/redux/identitySlice";
 import { useSnackbar } from "notistack";
+import { FaceIDSvg } from "src/logos";
 
 export default function Identity() {
   const identity = useSelector((state) => state.identitySlice.identity);
@@ -20,6 +27,7 @@ export default function Identity() {
   const identityStatus = useSelector(
     (state) => state.identitySlice.identityStatus
   );
+  const theme = useTheme();
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
   );
@@ -62,6 +70,38 @@ export default function Identity() {
           Định danh của tôi
         </CustomTypography>
         <Box
+          width="100%"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <FaceIDSvg
+            style={{
+              width: "100px",
+              height: "auto",
+              fill: theme.colors.dark_1,
+            }}
+          />
+          <CustomTypography
+            marginBottom="10px"
+            textAlign="center"
+            variant={mobile ? "subtitle2" : undefined}
+          >
+            <p>
+              Bạn chưa có tài khoản định danh số trên hệ thống.
+              <br /> Hãy bắt đầu gửi yêu cầu định danh.
+            </p>
+          </CustomTypography>
+          <CustomButton>Bắt đầu định danh</CustomButton>
+        </Box>
+
+        {/* <CustomTypography>
+          {" "}
+          Hãy bắt đầu gửi yêu cầu định danh đến nhà phát hành
+        </CustomTypography> */}
+        {/* <Box
           width="100%"
           sx={{ display: clickCreate === false ? "block" : "none" }}
         >
@@ -243,7 +283,7 @@ export default function Identity() {
         <CreateIdentity
           clickCreate={clickCreate}
           setClickCreate={setClickCreate}
-        />
+        /> */}
       </Box>
     </>
   );
