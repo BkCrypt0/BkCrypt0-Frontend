@@ -13,9 +13,8 @@ import StepConnector, {
 } from "@mui/material/StepConnector";
 import { SCREEN_SIZE } from "src/constants";
 
-const steps = ["Tạo mật khẩu mới", "Tạo mã gợi nhớ", "Xác nhận mã gợi nhớ"];
-
 export default function CustomStepper({
+  steps,
   activeStep,
   handleBack,
   handleReset,
@@ -83,7 +82,11 @@ export default function CustomStepper({
   }
 
   return (
-    <Box sx={{ width: mobile ? "100%" : tablet ? "80%" : "50%", mb: 3, mt: 3 }}>
+    <Box
+      sx={{
+        width: mobile ? "100%" : tablet ? "80%" : "50%",
+      }}
+    >
       <Stepper
         activeStep={activeStep}
         alternativeLabel
@@ -93,22 +96,29 @@ export default function CustomStepper({
           return (
             <Step key={label}>
               <StepLabel StepIconComponent={CustomStepIcon}>
-                <CustomTypography
-                  color={
-                    index > activeStep
-                      ? "rgba(53, 53, 53, 0.3)"
-                      : index < activeStep
-                      ? "#0DC74C"
-                      : undefined
-                  }
-                >
-                  {label}
-                </CustomTypography>
+                {!mobile && (
+                  <CustomTypography
+                    color={
+                      index > activeStep
+                        ? "rgba(53, 53, 53, 0.3)"
+                        : index < activeStep
+                        ? "#0DC74C"
+                        : undefined
+                    }
+                  >
+                    {label}
+                  </CustomTypography>
+                )}
               </StepLabel>
             </Step>
           );
         })}
       </Stepper>
+      {mobile && (
+        <CustomTypography textAlign="center" marginTop={2} variant="h6">
+          {`Bước ${activeStep + 1}: ${steps[activeStep]}`}
+        </CustomTypography>
+      )}
     </Box>
   );
 }

@@ -4,10 +4,11 @@ SPDX-License-Identifier: MIT-0
 -->
 
 <template>
-  <div id="app">
+  <div id="app" v-bind:class="active">
     <Welcome
       v-if="step === 1"
       :ready="mediaStreamReady"
+      :mobile="mobile"
       @challenge-details="onChallengeDetails($event)"
       @error="onError($event)"
     />
@@ -15,12 +16,18 @@ SPDX-License-Identifier: MIT-0
       v-else-if="step === 2"
       :details="challengeDetails"
       :imageIDBase64="imageIDBase64"
+      :mobile="mobile"
       @local-success="onLocalSuccess($event)"
       @local-fail="onLocalFail()"
       @error="onError($event)"
     />
     <Spinner v-else-if="step === 3" />
-    <Result v-else-if="step === 4" :success="success" @restart="onRestart()" />
+    <Result
+      v-else-if="step === 4"
+      :success="success"
+      @restart="onRestart()"
+      @complete="handleCompleteFaceScan()"
+    />
     <Error
       v-else-if="step === -1"
       :message="errorMessage"
@@ -53,9 +60,13 @@ export default defineComponent({
   },
   props: {
     imageIDBase64: String,
+    activeStep: Number,
+    setActiveStep: Function,
+    mobile: Boolean
   },
   data() {
     return {
+      active: this.activeStep === 1 ? 'active' : 'normal',
       challengeDetails: {},
       success: false,
       step: 1,
@@ -64,6 +75,9 @@ export default defineComponent({
     };
   },
   methods: {
+    handleCompleteFaceScan() {
+      this.setActiveStep(2);
+    },
     onChallengeDetails(challengeDetails) {
       this.challengeDetails = challengeDetails;
       this.step = 2;
@@ -105,7 +119,8 @@ export default defineComponent({
       function (message) {
         self.errorMessage = message;
         self.step = -1;
-      }
+      },
+      this.mobile
     );
   },
 });
@@ -113,6 +128,11 @@ export default defineComponent({
 
 <style>
 #app {
-  margin: 15px;
+  display: none;
+}
+.active {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

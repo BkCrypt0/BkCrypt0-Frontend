@@ -17,8 +17,10 @@ import ImportIdentityButton from "src/components/CustomButton/ImportIdentityButt
 import { fetchIdentity, claimIdentity } from "src/redux/identitySlice";
 import { useSnackbar } from "notistack";
 import { FaceIDSvg } from "src/logos";
+import KYC from "../KYC";
 
 export default function Identity() {
+  const [start, setStart] = useState(false);
   const identity = useSelector((state) => state.identitySlice.identity);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
@@ -77,24 +79,31 @@ export default function Identity() {
             alignItems: "center",
           }}
         >
-          <FaceIDSvg
-            style={{
-              width: "100px",
-              height: "auto",
-              fill: theme.colors.dark_1,
-            }}
-          />
-          <CustomTypography
-            marginBottom="10px"
-            textAlign="center"
-            variant={mobile ? "subtitle2" : undefined}
-          >
-            <p>
-              Bạn chưa có tài khoản định danh số trên hệ thống.
-              <br /> Hãy bắt đầu gửi yêu cầu định danh.
-            </p>
-          </CustomTypography>
-          <CustomButton>Bắt đầu định danh</CustomButton>
+          {!start && (
+            <>
+              <FaceIDSvg
+                style={{
+                  width: "100px",
+                  height: "auto",
+                  fill: theme.colors.dark_1,
+                }}
+              />
+              <CustomTypography
+                marginBottom="10px"
+                textAlign="center"
+                variant={mobile ? "subtitle2" : undefined}
+              >
+                <p>
+                  Bạn chưa có tài khoản định danh số trên hệ thống.
+                  <br /> Hãy bắt đầu gửi yêu cầu định danh.
+                </p>
+              </CustomTypography>
+              <CustomButton onClick={() => setStart(true)}>
+                Bắt đầu định danh
+              </CustomButton>
+            </>
+          )}
+          {start && <KYC />}
         </Box>
 
         {/* <CustomTypography>

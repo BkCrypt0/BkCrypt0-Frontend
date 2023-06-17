@@ -23,6 +23,7 @@ export default function Register() {
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center">
       <CustomSteppers
+        steps={["Tạo mật khẩu mới", "Tạo mã gợi nhớ", "Xác nhận mã gợi nhớ"]}
         activeStep={activeStep}
         handleNext={handleNext}
         handleBack={handleBack}

@@ -111,7 +111,7 @@ export class NoseState extends State {
     return {
       nextState: nextState,
       drawOptions: drawOptions,
-      helpMessage: "Move the tip of your nose inside the yellow area",
+      helpMessage: "Di chuyển sao cho mũi ở trong vùng nhỏ",
       helpAnimationNumber: 2,
     };
   }
@@ -160,7 +160,7 @@ export class AreaState extends State {
     return {
       nextState: nextState,
       drawOptions: drawOptions,
-      helpMessage: "Center your face inside the area",
+      helpMessage: "Đưa mặt bạn vào chính giữa",
       helpAnimationNumber: 1,
     };
   }
@@ -182,13 +182,14 @@ export class FaceState extends State {
     let helpMessage = undefined;
     switch (faces.length) {
       case 0:
-        helpMessage = "No face detected. Look at the camera.";
+        helpMessage = "Không thấy mặt. Hãy nhìn vào camera";
         break;
       case 1:
         nextState = new AreaState(this.challengeDetails);
         break;
       default:
-        helpMessage = "More than one face detected. Should be one.";
+        helpMessage =
+          "Phát hiện nhiều khuôn mặt. Chỉ được một người trong hình";
     }
     const drawOptions = {
       faceDrawBoxOptions: {

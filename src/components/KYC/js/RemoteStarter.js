@@ -6,7 +6,7 @@ import Logger from "js-logger";
 import { Utils } from "./Utils.js";
 
 export class RemoteStarter {
-  static startChallenge(successCallback, errorCallback) {
+  static startChallenge(successCallback, errorCallback, mobile) {
     const url =
       Utils.getConfig().API_URL + Utils.getConfig().API_START_ENDPOINT;
     const startRequestData = {

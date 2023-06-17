@@ -43,12 +43,16 @@ export class Utils {
     window.Logger = Logger;
   }
 
-  static loadMediaStream(successCallback, errorCallback) {
+  static loadMediaStream(successCallback, errorCallback, mobile) {
     const constraints = {
       audio: false,
       video: {
-        width: parseInt(Utils.getConfig().IMAGE_WIDTH),
-        height: parseInt(Utils.getConfig().IMAGE_HEIGHT),
+        width: mobile
+          ? window.innerWidth - 36
+          : parseInt(Utils.getConfig().IMAGE_WIDTH),
+        height: mobile
+          ? window.innerWidth * 1.1
+          : parseInt(Utils.getConfig().IMAGE_HEIGHT),
         facingMode: "user",
       },
     };

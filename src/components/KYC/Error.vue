@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT-0
         d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"
       />
     </svg>
-    <h2 class="mt-4">Something went wrong</h2>
+    <h2 class="mt-4">Đã xảy ra lỗi</h2>
     <h3 class="mt-2">
       <small class="text-muted">{{ message }}</small>
     </h3>

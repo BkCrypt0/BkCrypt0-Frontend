@@ -64,10 +64,11 @@ export default defineComponent({
   props: {
     details: Object,
     imageIDBase64: String,
+    mobile: Boolean,
   },
   data() {
     return {
-      message: "Loading...",
+      message: "Đang tải...",
       animation: -1,
       // @ts-ignore
       lottieOptions1: { animationData: help1.default },
@@ -141,11 +142,12 @@ export default defineComponent({
   padding-top: var(--help-container-padding-top);
 }
 .messageContainer {
-  height: 100px;
-  display: table;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .message {
-  display: table-cell;
-  vertical-align: middle;
+  font-family: "Lexend Deca", sans-serif;
+  color: #253f4b;
 }
 </style>

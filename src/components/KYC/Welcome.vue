@@ -6,16 +6,15 @@ SPDX-License-Identifier: MIT-0
 <template>
   <div class="text-center">
     <lottie :options="lottieOptions" :height="300" :width="300" />
-    <h4 class="display-4 mt-4"><strong>Liveness</strong> Detection</h4>
     <div v-if="loading" class="spinner-border mt-5" role="status" />
     <button
       v-else
       type="button"
       :disabled="!ready"
-      class="btn btn-primary btn-lg mt-5"
+      class="css-ey2eoo-MuiButtonBase-root-MuiButton-root vue-btn"
       @click="start()"
     >
-      Verify now!
+      Bắt đầu
     </button>
   </div>
 </template>
@@ -33,6 +32,7 @@ export default defineComponent({
   },
   props: {
     ready: Boolean,
+    mobile: Boolean,
   },
   data() {
     return {
@@ -50,6 +50,7 @@ export default defineComponent({
       const self = this;
       RemoteStarter.startChallenge(
         function (challengeDetails) {
+          console.log(challengeDetails);
           // Make sure all models are loaded
           Promise.all(window.modelPromises).then(function () {
             self.$emit("challenge-details", challengeDetails);
@@ -57,11 +58,21 @@ export default defineComponent({
         },
         function (error) {
           self.$emit("error", error);
-        }
+        },
+        this.mobile
       );
     },
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.vue-btn {
+  margin-top: 20px;
+}
+.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

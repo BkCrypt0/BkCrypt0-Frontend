@@ -6,14 +6,22 @@ SPDX-License-Identifier: MIT-0
 <template>
   <div class="text-center">
     <lottie :options="lottieOptions" :height="200" :width="200" />
-    <h2 class="mt-4">{{ title }}</h2>
-    <h3 class="mt-2">
+    <div
+      class="MuiTypography-root MuiTypography-h4 css-v0rmzm-MuiTypography-root"
+    >
+      {{ title }}
+    </div>
+    <div
+      style="margin-top: 0 !important"
+      class="MuiTypography-root MuiTypography-h6 css-v0rmzm-MuiTypography-root"
+    >
       <small class="text-muted">{{ message }}</small>
-    </h3>
+    </div>
     <button
       type="button"
-      class="btn btn-primary btn-lg mt-5"
-      @click="$emit('restart')"
+      style="margin-top: 25px"
+      class="css-ey2eoo-MuiButtonBase-root-MuiButton-root vue-btn"
+      @click="completed"
     >
       {{ buttonText }}
     </button>
@@ -25,12 +33,12 @@ import Lottie from "vue-lottie";
 import * as successData from "src/assets/lottie/success.json";
 import * as failData from "src/assets/lottie/fail.json";
 
-const SUCCESS_TITLE = "Verified!";
-const SUCCESS_MESSAGE = "Successfully verified as a live person.";
-const SUCCESS_BUTTON = "Start over";
-const FAIL_TITLE = "Uh-oh.";
-const FAIL_MESSAGE = "We could not detect a live person.";
-const FAIL_BUTTON = "Try again";
+const SUCCESS_TITLE = "Xác thực thành công";
+const SUCCESS_MESSAGE = "Khuôn mặt trùng khớp!";
+const SUCCESS_BUTTON = "Bước tiếp theo";
+const FAIL_TITLE = "Xác thực thất bại";
+const FAIL_MESSAGE = "Không phát hiện được người thật!";
+const FAIL_BUTTON = "Thử lại";
 
 import { defineComponent } from "vue";
 
@@ -41,6 +49,12 @@ export default defineComponent({
   },
   props: {
     success: Boolean,
+    setActiveStep: Function,
+  },
+  methods: {
+    completed() {
+      return this.success ? this.$emit('complete') : this.$emit('restart');
+    },
   },
   computed: {
     title(){
@@ -63,4 +77,10 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style>
+.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

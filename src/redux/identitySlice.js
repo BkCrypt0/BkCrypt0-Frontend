@@ -34,11 +34,13 @@ export const createNewIdentity =
   (
     publicKey,
     CCCD,
+    name,
     firstName,
     lastName,
     sex,
-    DoBdate,
-    BirthPlace,
+    dob,
+    birthPlace,
+    expireDate,
     save = false
   ) =>
   (dispatch) => {
@@ -46,11 +48,12 @@ export const createNewIdentity =
       createNewIdentitySuccess({
         publicKey: publicKey,
         CCCD: CCCD,
+        name: name,
         firstName: firstName,
         lastName: lastName,
         sex: sex,
-        DoBdate: DoBdate,
-        BirthPlace: BirthPlace,
+        dob: dob,
+        birthPlace: birthPlace,
         save: save,
       })
     );
@@ -64,10 +67,11 @@ export const claimIdentity =
   ({
     publicKey,
     privateKey,
+    name,
     CCCD,
     sex,
-    DoBdate,
-    BirthPlace,
+    dob,
+    birthPlace,
     firstName,
     lastName,
   }) =>
@@ -79,8 +83,8 @@ export const claimIdentity =
       BigInt(publicKeyPair[1]).value,
       BigInt(CCCD).value,
       BigInt(sex).value,
-      BigInt(DoBdate).value,
-      BigInt(BirthPlace).value,
+      BigInt(dob).value,
+      BigInt(birthPlace).value,
     ]);
     const privateKeyArray = Buffer.from(privateKey.toString(), "hex");
     const signature = eddsa.signMiMC(privateKeyArray, hashValue);
@@ -94,8 +98,8 @@ export const claimIdentity =
       firstName: firstName,
       lastName: lastName,
       sex: sex,
-      DoBdate: DoBdate,
-      BirthPlace: BirthPlace,
+      dob: dob,
+      birthPlace: birthPlace,
       signature: {
         R8x: R8x,
         R8y: R8y,
@@ -134,8 +138,8 @@ export const fetchIdentity = (publicKey) => async (dispatch) => {
           firstName: data.firstName,
           lastName: data.lastName,
           sex: data.sex,
-          DoBdate: data.DoBdate,
-          BirthPlace: data.BirthPlace,
+          dob: data.DoBdate,
+          birthPlace: data.BirthPlace,
         },
       })
     );
@@ -153,11 +157,12 @@ const identitySlice = createSlice({
       const newIdentity = {
         publicKey: action.payload.publicKey,
         CCCD: action.payload.CCCD,
+        name: action.payload.name,
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         sex: action.payload.sex,
-        DoBdate: action.payload.DoBdate,
-        BirthPlace: action.payload.BirthPlace,
+        dob: action.payload.dob,
+        birthPlace: action.payload.birthPlace,
       };
       state.identity = newIdentity;
       if (action.payload.save === true) {
