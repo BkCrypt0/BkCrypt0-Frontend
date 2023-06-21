@@ -170,12 +170,12 @@ export default function StatusTable({
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">
-                  Người phát hành
+                  Người yêu cầu
                 </CustomTypography>
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
                 <CustomTypography fontWeight="bold">
-                  Ngày phát hành
+                  Ngày yêu cầu
                 </CustomTypography>
               </TableCell>
               <TableCell align="center" sx={{ borderBottom: "none" }}>
@@ -275,10 +275,10 @@ export default function StatusTable({
                     <TableCell align="center" sx={{ borderBottom: "none" }}>
                       <CustomTypography>
                         {formatAddress(
-                          e.issuer !== undefined &&
+                          e.requester !== undefined &&
                             babyJub
                               .packPoint(
-                                e.issuer.map((pub) => BigInt(pub).value)
+                                e.requester.map((pub) => BigInt(pub).value)
                               )
                               .toString("hex"),
                           10
@@ -287,7 +287,7 @@ export default function StatusTable({
                     </TableCell>
                     <TableCell align="center" sx={{ borderBottom: "none" }}>
                       <CustomTypography>
-                        {new Date(e.issueAt).toLocaleDateString()}
+                        {new Date(e.requestAt).toLocaleDateString()}
                       </CustomTypography>
                     </TableCell>
                     <TableCell align="center" sx={{ borderBottom: "none" }}>

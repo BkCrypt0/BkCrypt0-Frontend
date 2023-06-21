@@ -6,4 +6,5 @@ export default function TeamLogo({ style, type = "dark" }) {
   ) : (
     <TeamLogoDark style={style} />
   );
+
 }

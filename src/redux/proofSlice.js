@@ -1,15 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FS } from "../constants";
-import { calculateAgeProof, calculateProvinceProof } from "src/service/utils";
+import {
+  calculateAgeProof,
+  calculateProvinceProof,
+  decryptQRData,
+} from "src/service/utils";
 
 const initialState = {
   generateAgeProofStatus: FS.IDLE,
   ageProof: undefined,
   provinceProof: undefined,
   generateProvinceProofStatus: FS.IDLE,
+  challenge: undefined,
 };
 
-export const handleCaculateAgeProof = (input) => async (dispatch) => {
+export const getChallenge = (encryptedQrData) => (dispatch) => {
+  var qrData = decryptQRData(encryptedQrData);
+  dispatch(getChallengeSuccess(JSON.parse(qrData)));
+};
+
+export const handleCalculateAgeProof = (input) => async (dispatch) => {
   dispatch(startGenerateAgeProof());
   try {
     calculateAgeProof(input).then((res) => {
@@ -31,7 +41,7 @@ export const handleCaculateAgeProof = (input) => async (dispatch) => {
   }
 };
 
-export const handleCaculateProvinceProof = (input) => async (dispatch) => {
+export const handleCalculateProvinceProof = (input) => async (dispatch) => {
   dispatch(startGenerateProvinceProof());
   try {
     calculateProvinceProof(input).then((res) => {
@@ -78,6 +88,9 @@ const proofSlice = createSlice({
   name: "proofSlice",
   initialState: initialState,
   reducers: {
+    getChallengeSuccess: (state, action) => {
+      state.challenge = action.payload;
+    },
     startGenerateAgeProof: (state) => {
       state.generateAgeProofStatus = FS.FETCHING;
     },
@@ -109,6 +122,7 @@ const proofSlice = createSlice({
 
 export default proofSlice.reducer;
 export const {
+  getChallengeSuccess,
   startGenerateAgeProof,
   generateAgeProofSuccess,
   generateAgeProofFailed,

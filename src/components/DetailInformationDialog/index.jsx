@@ -2,6 +2,12 @@ import { Dialog, Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "../CustomTypography";
 import { SCREEN_SIZE } from "src/constants";
 import CustomButton from "../CustomButton";
+import { useDispatch } from "react-redux";
+import { approveIdentity } from "src/redux/adminSlice";
+import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import { FS } from "src/constants";
 
 export default function DetailInformationDialog({
   open,
@@ -11,7 +17,36 @@ export default function DetailInformationDialog({
 }) {
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
+  const dp = useDispatch();
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
+  const approverKey = accounts[activeAccount]?.publicKey;
+  const approvingDataStatus = useSelector(
+    (state) => state.adminSlice.approvingDataStatus
+  );
+  const { enqueueSnackbar } = useSnackbar();
 
+  useEffect(() => {
+    if (approvingDataStatus === FS.SUCCESS) {
+      enqueueSnackbar("Phê duyệt định danh thành công!", {
+        variant: "success",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2500,
+      });
+      setOpen(false);
+    } else if (approvingDataStatus === FS.FAILED) {
+      enqueueSnackbar("Phê duyệt định danh thất bại! Xin hãy thử lại!", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 2500,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [approvingDataStatus]);
   return (
     <Dialog
       display="flex"
@@ -39,18 +74,9 @@ export default function DetailInformationDialog({
               Tên:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
-              {information?.firstName}
+              {information?.name}
             </CustomTypography>
           </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Họ:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {information?.lastName}
-            </CustomTypography>
-          </Box>
-
           <Box display="flex" alignItems="baseline">
             <CustomTypography variant="h6" fontWeight="bold" mr={1}>
               Số CCCD:{" "}
@@ -64,7 +90,7 @@ export default function DetailInformationDialog({
               Giới tính:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
-              {information?.sex === 1 ? "Male" : "Female"}
+              {information?.sexDetail}
             </CustomTypography>
           </Box>
           <Box display="flex" alignItems="baseline">
@@ -72,11 +98,7 @@ export default function DetailInformationDialog({
               Ngày sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
-              {information?.DoBdate?.toString().slice(0, 4) +
-                "/" +
-                information?.DoBdate?.toString().slice(4, 6) +
-                "/" +
-                information?.DoBdate?.toString().slice(6)}
+              {information?.DoBdate}
             </CustomTypography>
           </Box>
           <Box display="flex" alignItems="baseline">
@@ -84,7 +106,7 @@ export default function DetailInformationDialog({
               Nơi sinh:{" "}
             </CustomTypography>
             <CustomTypography variant="h6" mr={1}>
-              {information?.BirthPlace}
+              {information?.BirthPlaceDetail}
             </CustomTypography>
           </Box>
         </Box>
@@ -107,14 +129,19 @@ export default function DetailInformationDialog({
         alignItems="center"
       >
         <CustomButton
-          minHeight="50px"
           minWidth={!mobile ? "150px" : undefined}
           fullWidth={mobile}
           onClick={() => {
-            setOpen(false);
+            dp(
+              approveIdentity(
+                approverKey,
+                information?.requester,
+                information?.CCCD
+              )
+            );
           }}
         >
-          <CustomTypography buttonText>Thoát</CustomTypography>
+          <CustomTypography buttonText>Phê duyệt</CustomTypography>
         </CustomButton>
       </Box>
     </Dialog>

@@ -10,7 +10,7 @@ import CustomCollapse from "src/components/CustomCollapse";
 import { useEffect, useState } from "react";
 import SignMessageDialog from "src/components/SignMessageDialog";
 import { calculatePlace, getProvinceInput } from "src/service/utils";
-import { handleCaculateProvinceProof } from "src/redux/proofSlice";
+import { handleCalculateProvinceProof } from "src/redux/proofSlice";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
 
@@ -88,7 +88,7 @@ export default function ProvinceProof({ proof }) {
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
-            dp(handleCaculateProvinceProof(input));
+            dp(handleCalculateProvinceProof(input));
           }
         }}
         loading={generateProvinceProofStatus === FS.FETCHING}

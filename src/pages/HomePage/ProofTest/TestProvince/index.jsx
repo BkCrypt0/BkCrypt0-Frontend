@@ -13,7 +13,7 @@ import CustomButton from "src/components/CustomButton";
 import { verifyProof } from "src/contract";
 import ImportProvinceProof from "src/components/ImportProvinceProof";
 import { useSnackbar } from "notistack";
-import TestResultDialog from "../TestResultDialog";
+import VerifyResultDialog from "../VerifyResultDialog";
 import CustomCollapse from "src/components/CustomCollapse";
 import AddIcon from "@mui/icons-material/Add";
 import provinceCode from "src/documents/provinces_code.json";
@@ -34,7 +34,7 @@ export default function TestProvince() {
 
   return (
     <>
-      <TestResultDialog
+      <VerifyResultDialog
         open={openDialog}
         res={res}
         onClose={() => setOpenDialog(false)}

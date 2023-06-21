@@ -23,6 +23,7 @@ const theme = createTheme({
     light_3: "#8eb1c2",
     light_2: "#acc8d7",
     light_1: "#c8dfea",
+    lighter: "#e1f0f7",
     neutral_gray: "#f2f2f2",
   },
 });

@@ -8,7 +8,7 @@ import { Box, useMediaQuery } from "@mui/material";
 import { SCREEN_SIZE } from "src/constants";
 import IdentityRequest from "./IdentityRequest";
 
-export default function KYC() {
+export default function KYC({ setStart }) {
   const KYCConsole = applyPureVueInReact(KYCVue);
   const imageIDBase64 = useSelector(
     (state) => state.imageIDSlice.imageIDBase64
@@ -57,7 +57,11 @@ export default function KYC() {
           mobile={mobile}
         />
       </Box>
-      <IdentityRequest activeStep={activeStep} setActiveStep={setActiveStep} />
+      <IdentityRequest
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        setStart={setStart}
+      />
     </Box>
   );
 }

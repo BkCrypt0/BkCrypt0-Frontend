@@ -1,7 +1,6 @@
 import { Backdrop, Box } from "@mui/material";
 import CustomTypography from "../CustomTypography";
 
-
 export default function CustomBackdrop({ open, label }) {
   return (
     <Backdrop

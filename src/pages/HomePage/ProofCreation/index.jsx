@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import CustomTypography from "src/components/CustomTypography";
 import { Redirect } from "react-router-dom";
 import AgeProof from "./AgeProof";
-import ProvinceProof from "./ProvinceProof";
 import { fetchIdentity, fetchUserProof } from "src/redux/identitySlice";
 import { useEffect } from "react";
 
@@ -34,12 +33,11 @@ export default function ProofCreation() {
       {role === "admin" && login === undefined && <Redirect to="/login" />}
       <Box>
         <CustomTypography variant="h4" mb="36px">
-          Tạo bằng chứng mới
+          Xác minh điều kiện
         </CustomTypography>
         {identityStatus === 2 && (
           <>
             <AgeProof proof={proof} />
-            <ProvinceProof proof={proof} />
           </>
         )}
         {identityStatus !== 2 && (

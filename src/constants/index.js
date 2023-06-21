@@ -28,14 +28,14 @@ export const CONNECTION_STATUS = {
 
 export const INFO_STATUS = {
   0: {
-    color: "rgba(20, 153, 250, 0.5)",
-    stroke: "#006DBC",
-    text: "Bạn có thể xác minh mình là người có định danh này",
+    color: "rgba(238, 171, 0, 0.5)",
+    stroke: "#976D00",
+    text: "Định danh của bạn đang chờ được phê duyệt",
   },
   1: {
-    stroke: "#976D00",
-    color: "rgba(238, 171, 0, 0.5)",
-    text: "Xác minh thành công. Hãy đợi định danh này được kích hoạt",
+    stroke: "#006DBC",
+    color: "rgba(20, 153, 250, 0.5)",
+    text: "Định danh của bạn đang chờ được kích hoạt",
   },
   2: {
     stroke: "#008E30",
@@ -49,12 +49,17 @@ export const INFO_STATUS = {
   },
 };
 
-export const ID_STATUS = ["PENDING", "CLAIMED", "PUBLISHED", "REVOKED"];
+export const ID_STATUS = [
+  "Chờ phê duyệt",
+  "Đã duyệt",
+  "Đã phát hành",
+  "Đã khoá",
+];
 
 export const BASE_API_URL = "http://localhost:8000";
 // export const BASE_API_URL = "http://192.168.1.37:8000";
 
-export const CONTRACT_ADDRESS = "0x7ef69AfA184D1F922D352daf7Fe13D6665F3f195";
+export const CONTRACT_ADDRESS = "0x82559921806e305D55739E523bc4887A12401Aa7";
 
 export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 

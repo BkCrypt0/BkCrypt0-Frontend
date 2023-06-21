@@ -2,22 +2,22 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { SCREEN_SIZE, FS } from "src/constants";
-import CustomTypography from "src/components/CustomTypography";
-import CustomForm from "src/components/CustomForm";
-import CustomButton from "src/components/CustomButton";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SignMessageDialog from "src/components/SignMessageDialog";
 import { getAgeInput } from "src/service/utils";
-import { handleCaculateAgeProof } from "src/redux/proofSlice";
+import { handleCalculateAgeProof } from "src/redux/proofSlice";
 import { useSnackbar } from "notistack";
-import { useHistory } from "react-router-dom";
+import QRScanner from "src/components/QRScanner";
+import VerifyResultDialog from "../../ProofTest/VerifyResultDialog";
+import { verifyProof } from "src/contract";
 
 export default function AgeProof({ proof }) {
   const identity = useSelector((state) => state.identitySlice.identity);
-  const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
-  const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
   const [openDialog, setOpenDialog] = useState(false);
+  const [res, setRes] = useState(false);
+  const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
+
   const [click, setClick] = useState(false);
+  const challenge = useSelector((state) => state.proofSlice.challenge);
   const accounts = useSelector((state) => state.accountSlice.accounts);
   const activeAccount = useSelector(
     (state) => state.accountSlice.activeAccount
@@ -25,10 +25,10 @@ export default function AgeProof({ proof }) {
   const generateAgeProofStatus = useSelector(
     (state) => state.proofSlice.generateAgeProofStatus
   );
+  const ageProof = useSelector((state) => state.proofSlice.ageProof);
   const dp = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const history = useHistory();
-  const theme = useTheme();
+  const [isScanning, setIsScanning] = useState(false);
 
   useEffect(() => {
     if (generateAgeProofStatus === FS.SUCCESS && click === true) {
@@ -39,7 +39,7 @@ export default function AgeProof({ proof }) {
         autoHideDuration: 2000,
       });
       setOpenDialog(false);
-      history.push("/home/proofs");
+      // history.push("/home/proofs");
     } else if (generateAgeProofStatus === FS.FAILED) {
       enqueueSnackbar("Create proof failed", {
         variant: "error",
@@ -65,8 +65,58 @@ export default function AgeProof({ proof }) {
 
   const serverInfo = { ...proof, ...{ challenge: 100 } };
 
+  const startVerifyProof = async () => {
+    console.log(ageProof);
+    const res = await verifyProof({
+      optionName: "VERIFIER_AGE",
+      pi_a: [
+        JSON.parse(ageProof?.proof).pi_a[0],
+        JSON.parse(ageProof?.proof).pi_a[1],
+      ],
+      pi_b: [
+        [
+          JSON.parse(ageProof?.proof).pi_b[0][1],
+          JSON.parse(ageProof?.proof).pi_b[0][0],
+        ],
+        [
+          JSON.parse(ageProof?.proof).pi_b[1][1],
+          JSON.parse(ageProof?.proof).pi_b[1][0],
+        ],
+      ],
+      pi_c: [
+        JSON.parse(ageProof?.proof).pi_c[0],
+        JSON.parse(ageProof?.proof).pi_c[1],
+      ],
+      input: JSON.parse(ageProof?.input),
+    });
+    if (res === -1) {
+      enqueueSnackbar("Verification failed due to some errors", {
+        variant: "error",
+        dense: "true",
+        preventDuplicate: true,
+        autoHideDuration: 3000,
+      });
+    } else {
+      console.log(res);
+      setRes(res);
+      setOpenVerifyDialog(true);
+    }
+  };
+
+  useEffect(() => {
+    if (ageProof !== undefined) {
+      console.log(ageProof);
+      startVerifyProof();
+    }
+  }, [ageProof]);
+
   return (
     <>
+      <VerifyResultDialog
+        open={openVerifyDialog}
+        res={res}
+        onClose={() => setOpenVerifyDialog(false)}
+      />
       <SignMessageDialog
         loading={generateAgeProofStatus === FS.FETCHING}
         setClick={setClick}
@@ -80,107 +130,22 @@ export default function AgeProof({ proof }) {
               currentYear: date().currentYear,
               currentMonth: date().currentMonth,
               currentDay: date().currentDay,
-              minAge: Number(document.getElementById("min-age").value),
-              maxAge: Number(document.getElementById("max-age").value),
-              // thay place thi tu currentYear -> maxAge thanh placesExpecting => gan so tu calcPlace
+              minAge: Number(challenge?.minAge),
+              maxAge:
+                challenge?.maxAge !== "" ? Number(challenge?.maxAge) : 100,
               expireTime: date().expireTime,
               infoObject: identity,
               privateKey: accounts[activeAccount]?.privateKey,
             });
-            dp(handleCaculateAgeProof(input));
+            dp(handleCalculateAgeProof(input));
           }
         }}
       />
-      <Box
-        display="flex"
-        justifyContent="center"
-        sx={{
-          background: "white",
-          width: mobile ? "100%" : tablet ? "90%" : "45%",
-          borderRadius: "5px",
-          boxShadow: "5px 5px 15px 3px rgba(53, 53, 53, 0.4)",
-          paddingY: 3,
-          mb: 3,
-        }}
-      >
-        <Box width="90%">
-          <Box width="100%">
-            <Box
-              width="100%"
-              display="flex"
-              flexDirection={mobile ? "column" : "row"}
-            >
-              <CustomTypography fontWeight="bold" mr={1}>
-                Tuổi:
-              </CustomTypography>
-              <CustomTypography width={"100%"}>
-                Tạo bằng chứng chứng minh độ tuổi của bạn nằm trong khoảng dưới
-                đây
-              </CustomTypography>
-            </Box>
-          </Box>
-          <Box
-            my={2}
-            width="100%"
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-evenly"Create proof failed
-            alignItems="center"
-          >
-            <CustomForm
-              placeHolder="Min"
-              type="number"
-              defaultValue={1}
-              id="min-age"
-            />
-            <Box
-              display="flex"
-              minWidth="50%"
-              alignItems="center"
-              justifyContent="space-evenly"
-            >
-              <ArrowBackIosIcon
-                sx={{
-                  color: theme.colors.dark_3,
-                }}
-              />
-              <CustomTypography textAlign="center">
-                Tuổi của bạn
-              </CustomTypography>
-              <ArrowBackIosIcon
-                sx={{
-                  color: theme.colors.dark_3,
-                }}
-              />
-            </Box>
-            <CustomForm
-              placeHolder="Max"
-              type="number"
-              defaultValue={100}
-              id="max-age"
-            />
-          </Box>
-          <Box
-            width="100%"
-            display="flex"
-            flexDirection="row"
-            justifyContent="flex-end"
-            sx={{ mt: 5 }}
-          >
-            <CustomButton
-              width={mobile ? "100%" : undefined}
-              minHeight="50px"
-              onClick={() => {
-                setOpenDialog(true);
-              }}
-            >
-              <CustomTypography buttonText={true}>
-                Tạo bằng chứng
-              </CustomTypography>
-            </CustomButton>
-          </Box>
-        </Box>
-      </Box>
+      <QRScanner
+        setOpenDialog={setOpenDialog}
+        isScanning={isScanning}
+        setIsScanning={setIsScanning}
+      />
     </>
   );
 }

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import Axios from "axios";
 import { BASE_API_URL, FS } from "../constants";
 import { updateRootClaim, updateRootRevoke } from "src/contract";
+import { generatePublicKeyPair } from "src/service/utils";
 
 const initialState = {
   issueList: [],
@@ -9,6 +10,7 @@ const initialState = {
   publishingDataStatus: FS.IDLE,
   revokingDataStatus: FS.IDLE,
   unRevokingDataStatus: FS.IDLE,
+  approvingDataStatus: FS.IDLE,
   revokeLimit: 3,
   selectedList: [],
   checkedList: [],
@@ -17,13 +19,30 @@ const initialState = {
 export const fetchData = () => async (dispatch) => {
   dispatch(startGetIssueList());
   try {
-    const res = await Axios.get(`${BASE_API_URL}/issue`);
+    const res = await Axios.get(`${BASE_API_URL}/request`);
     const data = res.data;
     dispatch(getIssueListSuccess(data));
   } catch (err) {
     dispatch(getIssueListFail());
   }
 };
+
+export const approveIdentity =
+  (approver, requesterKeyPair, CCCD) => async (dispatch) => {
+    dispatch(startApproveIdentity());
+    const approverKeyPair = generatePublicKeyPair(approver);
+    try {
+      await Axios.post(`${BASE_API_URL}/approve`, {
+        requester: requesterKeyPair,
+        approver: approverKeyPair,
+        CCCD: CCCD,
+      });
+      dispatch(approveIdentitySuccess());
+    } catch (err) {
+      dispatch(approveIdentityFail());
+      console.log(err);
+    }
+  };
 
 export const handleResetPublishDataStatus = () => (dispatch) => {
   dispatch(resetPublishDataStatus());
@@ -211,6 +230,15 @@ const adminSlice = createSlice({
   name: "adminSlice",
   initialState: initialState,
   reducers: {
+    startApproveIdentity: (state) => {
+      state.approvingDataStatus = FS.FETCHING;
+    },
+    approveIdentityFail: (state) => {
+      state.approvingDataStatus = FS.FAILED;
+    },
+    approveIdentitySuccess: (state) => {
+      state.approvingDataStatus = FS.SUCCESS;
+    },
     startGetIssueList: (state) => {
       state.fetchingStatus = FS.FETCHING;
     },
@@ -291,6 +319,9 @@ const adminSlice = createSlice({
 
 export default adminSlice.reducer;
 export const {
+  startApproveIdentity,
+  approveIdentitySuccess,
+  approveIdentityFail,
   startGetIssueList,
   getIssueListSuccess,
   getIssueListFail,

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FS, BASE_API_URL } from "src/constants";
 import { generatePublicKeyPair } from "src/service/utils";
+import { extractPlaceInformation } from "src/service/utils";
 import Axios from "axios";
 const BigInt = require("big-integer");
 
@@ -9,7 +10,7 @@ const { eddsa, mimc7 } = require("circomlib");
 
 const initialState = {
   fetchingStatus: FS.IDLE,
-  claimingIdentityStatus: FS.IDLE,
+  requestingIdentityStatus: FS.IDLE,
   fetchingIdentityStatus: FS.IDLE,
   fetchingUserProofStatus: FS.IDLE,
   identityStatus: 0,
@@ -31,29 +32,18 @@ export const fetchUserProof = (publicKey) => async (dispatch) => {
 };
 
 export const createNewIdentity =
-  (
-    publicKey,
-    CCCD,
-    name,
-    firstName,
-    lastName,
-    sex,
-    dob,
-    birthPlace,
-    expireDate,
-    save = false
-  ) =>
+  (publicKey, CCCD, name, sex, dob, birthPlace, save = false) =>
   (dispatch) => {
     dispatch(
       createNewIdentitySuccess({
         publicKey: publicKey,
         CCCD: CCCD,
         name: name,
-        firstName: firstName,
-        lastName: lastName,
         sex: sex,
+        sexID: sex === "Nam" ? 1 : 0,
         dob: dob,
         birthPlace: birthPlace,
+        birthPlaceID: extractPlaceInformation(birthPlace),
         save: save,
       })
     );
@@ -63,28 +53,29 @@ export const clearIdentity = () => (dispatch) => {
   dispatch(clearIdentitySuccess());
 };
 
-export const claimIdentity =
-  ({
+export const requestIdentity =
+  (
     publicKey,
     privateKey,
     name,
     CCCD,
     sex,
+    sexID,
     dob,
     birthPlace,
-    firstName,
-    lastName,
-  }) =>
+    birthPlaceID
+  ) =>
   async (dispatch) => {
-    dispatch(startClaimIdentity());
-    const publicKeyPair = generatePublicKeyPair(publicKey);
+    dispatch(startRequestIdentity());
+    console.log(publicKey);
+    const publicKeyPair = generatePublicKeyPair(publicKey?.toString());
     const hashValue = mimc7.multiHash([
       BigInt(publicKeyPair[0]).value,
       BigInt(publicKeyPair[1]).value,
       BigInt(CCCD).value,
-      BigInt(sex).value,
+      BigInt(sexID).value,
       BigInt(dob).value,
-      BigInt(birthPlace).value,
+      BigInt(birthPlaceID).value,
     ]);
     const privateKeyArray = Buffer.from(privateKey.toString(), "hex");
     const signature = eddsa.signMiMC(privateKeyArray, hashValue);
@@ -93,13 +84,14 @@ export const claimIdentity =
     const S = signature.S.toString();
 
     const requestBody = {
-      publicKey: publicKeyPair,
+      requester: publicKeyPair,
       CCCD: CCCD,
-      firstName: firstName,
-      lastName: lastName,
-      sex: sex,
-      dob: dob,
-      birthPlace: birthPlace,
+      name: name,
+      sexDetail: sex,
+      sex: sexID,
+      DoBdate: dob,
+      BirthPlaceDetail: birthPlace,
+      BirthPlace: birthPlaceID,
       signature: {
         R8x: R8x,
         R8y: R8y,
@@ -108,16 +100,16 @@ export const claimIdentity =
     };
 
     try {
-      await Axios.post(`${BASE_API_URL}/claimed`, requestBody);
+      await Axios.post(`${BASE_API_URL}/request`, requestBody);
       dispatch(fetchIdentity());
-      dispatch(claimIdentitySuccess());
+      dispatch(requestIdentitySuccess());
       setTimeout(() => {
-        dispatch(resetClaimingIdentityStatus());
+        dispatch(resetRequestingIdentityStatus());
       }, 1000);
     } catch (err) {
-      dispatch(claimIdentityFailed());
+      dispatch(requestIdentityFailed());
       setTimeout(() => {
-        dispatch(resetClaimingIdentityStatus());
+        dispatch(resetRequestingIdentityStatus());
       }, 1000);
     }
   };
@@ -133,13 +125,16 @@ export const fetchIdentity = (publicKey) => async (dispatch) => {
     dispatch(
       fetchIdentitySuccess({
         identity: {
-          publicKey: publicKey,
+          requester: publicKey,
           CCCD: data.CCCD,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          sex: data.sex,
+          name: data.name,
+          sex: data.sexDetail,
+          sexID: data.sex,
           dob: data.DoBdate,
-          birthPlace: data.BirthPlace,
+          birthPlace: data.BirthPlaceDetail,
+          birthPlaceID: data.BirthPlace,
+          requestAt: data.requestAt,
+          status: data.status,
         },
       })
     );
@@ -158,11 +153,11 @@ const identitySlice = createSlice({
         publicKey: action.payload.publicKey,
         CCCD: action.payload.CCCD,
         name: action.payload.name,
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName,
         sex: action.payload.sex,
+        sexID: action.payload.sexID,
         dob: action.payload.dob,
         birthPlace: action.payload.birthPlace,
+        birthPlaceID: action.payload.birthPlaceID,
       };
       state.identity = newIdentity;
       if (action.payload.save === true) {
@@ -176,14 +171,14 @@ const identitySlice = createSlice({
     clearIdentitySuccess: (state) => {
       state.identity = undefined;
     },
-    startClaimIdentity: (state) => {
-      state.claimingIdentityStatus = FS.FETCHING;
+    startRequestIdentity: (state) => {
+      state.requestingIdentityStatus = FS.FETCHING;
     },
-    claimIdentityFailed: (state) => {
-      state.claimingIdentityStatus = FS.FAILED;
+    requestIdentityFailed: (state) => {
+      state.requestingIdentityStatus = FS.FAILED;
     },
-    claimIdentitySuccess: (state) => {
-      state.claimingIdentityStatus = FS.SUCCESS;
+    requestIdentitySuccess: (state) => {
+      state.requestingIdentityStatus = FS.SUCCESS;
     },
     startFetchIdentity: (state) => {
       state.fetchingIdentityStatus = FS.FETCHING;
@@ -209,8 +204,8 @@ const identitySlice = createSlice({
     fetchUserProofFailed: (state) => {
       state.fetchingUserProofStatus = FS.FAILED;
     },
-    resetClaimingIdentityStatus: (state) => {
-      state.claimingIdentityStatus = FS.IDLE;
+    resetRequestingIdentityStatus: (state) => {
+      state.requestingIdentityStatus = FS.IDLE;
     },
   },
 });
@@ -219,9 +214,9 @@ export default identitySlice.reducer;
 export const {
   createNewIdentitySuccess,
   clearIdentitySuccess,
-  startClaimIdentity,
-  claimIdentityFailed,
-  claimIdentitySuccess,
+  startRequestIdentity,
+  requestIdentityFailed,
+  requestIdentitySuccess,
   startFetchIdentity,
   fetchIdentityFailed,
   fetchIdentitySuccess,
@@ -229,5 +224,5 @@ export const {
   startFetchUserProof,
   fetchUserProofSuccess,
   fetchUserProofFailed,
-  resetClaimingIdentityStatus,
+  resetRequestingIdentityStatus,
 } = identitySlice.actions;

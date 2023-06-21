@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import CustomTypography from "../CustomTypography";
 import { formatAddress } from "src/utility";
 import { SCREEN_SIZE } from "src/constants";
-import ImportIdentityButton from "../CustomButton/ImportIdentityButton";
 import CustomButton from "../CustomButton";
 
 export default function SignMessageDialog({
@@ -14,6 +13,7 @@ export default function SignMessageDialog({
   setClick,
 }) {
   const identity = useSelector((state) => state.identitySlice.identity);
+  const challenge = useSelector((state) => state.proofSlice.challenge);
   const mobile = useMediaQuery(SCREEN_SIZE.MOBILE);
   const tablet = useMediaQuery(SCREEN_SIZE.TABLET);
 
@@ -35,72 +35,18 @@ export default function SignMessageDialog({
       }}
     >
       <CustomTypography variant="h5" mb={2}>
-        Ký & tạo bằng chứng
+        Điều kiện xác thực
       </CustomTypography>
-      {identity === undefined && <ImportIdentityButton />}
       {identity !== undefined && (
         <Box width="100%">
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Khóa công khai:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {formatAddress(identity?.publicKey, 10)}
-            </CustomTypography>
-          </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Tên:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.firstName}
-            </CustomTypography>
-          </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Họ:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.lastName}
-            </CustomTypography>
-          </Box>
-
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Số CCCD:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.CCCD}
-            </CustomTypography>
-          </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Giới tính:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.sex === 1 ? "Male" : "Female"}
-            </CustomTypography>
-          </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Ngày sinh:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.DoBdate?.toString().slice(0, 4) +
-                "/" +
-                identity?.DoBdate?.toString().slice(4, 6) +
-                "/" +
-                identity?.DoBdate?.toString().slice(6)}
-            </CustomTypography>
-          </Box>
-          <Box display="flex" alignItems="baseline">
-            <CustomTypography variant="h6" fontWeight="bold" mr={1}>
-              Nơi sinh:{" "}
-            </CustomTypography>
-            <CustomTypography variant="h6" mr={1}>
-              {identity?.BirthPlace}
-            </CustomTypography>
-          </Box>
+          <CustomTypography>
+            <strong>{challenge?.merchantName}</strong> yêu cầu bạn phải đủ{" "}
+            {challenge?.minAge} tuổi trở lên{" "}
+            {challenge?.maxAge === ""
+              ? ""
+              : `và không quá ${challenge?.maxAge} tuổi`}{" "}
+            để có thể sử dụng dịch vụ của họ
+          </CustomTypography>
         </Box>
       )}
       <Box
@@ -121,10 +67,10 @@ export default function SignMessageDialog({
         alignItems="center"
       >
         <CustomTypography mb={2}>
-          Bằng chứng có hiệu lực trong 10 phút
+          Điều kiện được tạo lúc{" "}
+          {new Date(Number(challenge?.createdAt)).toLocaleString()}
         </CustomTypography>
         <CustomButton
-          minHeight="50px"
           minWidth={!mobile ? "150px" : undefined}
           fullWidth={mobile}
           onClick={() => {
@@ -134,7 +80,7 @@ export default function SignMessageDialog({
         >
           {loading === false && (
             <CustomTypography buttonText={true}>
-              Ký & tạo bằng chứng
+              Bắt đầu xác thực
             </CustomTypography>
           )}
           {loading === true && (

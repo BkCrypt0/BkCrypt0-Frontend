@@ -1,11 +1,28 @@
-import { Box, useTheme, Grid } from "@mui/material";
-import React from "react";
-import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { requestIdentity } from "src/redux/identitySlice";
 import CustomButton from "src/components/CustomButton";
 import CustomTypography from "src/components/CustomTypography";
-function IdentityRequest({ activeStep }) {
+import IdentityCard from "src/components/IdentityCard";
+import { FS } from "src/constants";
+import { changeDateFormat } from "src/service/utils";
+
+function IdentityRequest({ activeStep, setActiveStep, setStart }) {
   const identity = useSelector((state) => state.identitySlice.identity);
-  const theme = useTheme();
+  const accounts = useSelector((state) => state.accountSlice.accounts);
+  const activeAccount = useSelector(
+    (state) => state.accountSlice.activeAccount
+  );
+  const publicKey = accounts[activeAccount]?.publicKey;
+  const privateKey = accounts[activeAccount]?.privateKey;
+  const requestingIdentityStatus = useSelector(
+    (state) => state.identitySlice.requestingIdentityStatus
+  );
+  console.log(requestingIdentityStatus);
+
+  const dp = useDispatch();
+
   console.log(identity);
 
   const extractedData = {
@@ -16,40 +33,59 @@ function IdentityRequest({ activeStep }) {
     "Quê quán": identity?.birthPlace,
   };
 
+  useEffect(() => {
+    if (requestingIdentityStatus === FS.SUCCESS) setActiveStep(3);
+  }, [requestingIdentityStatus]);
   return (
-    <Box
-      sx={{
-        width: "100%",
-        display: activeStep === 2 ? "flex" : "none",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Grid
-        container
-        spacing={1.5}
+    <>
+      <Box
         sx={{
-          background: theme.colors.light_1,
-          border: `2px dashed ${theme.colors.dark_2}`,
-          borderRadius: "10px",
-          padding: 2,
-          maxWidth: "600px",
-          margin: 0,
+          width: "100%",
+          display: activeStep === 2 ? "flex" : "none",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        {Object.entries(extractedData).map(([key, value]) => (
-          <React.Fragment key={key}>
-            <Grid item xs={4} sm={4}>
-              <CustomTypography fontWeight="bold">{key}:</CustomTypography>
-            </Grid>
-            <Grid item xs={8} sm={8}>
-              <CustomTypography>{value}</CustomTypography>
-            </Grid>
-          </React.Fragment>
-        ))}
-      </Grid>
-      <CustomButton marginTop="23px">Gửi yêu cầu định danh</CustomButton>
-    </Box>
+        <IdentityCard data={extractedData} />
+        <CustomButton
+          marginTop="23px"
+          onClick={() => {
+            dp(
+              requestIdentity(
+                publicKey,
+                privateKey,
+                identity.name,
+                identity.CCCD,
+                identity.sex,
+                identity.sexID,
+                changeDateFormat(identity.dob),
+                identity.birthPlace,
+                identity.birthPlaceID
+              )
+            );
+          }}
+        >
+          Gửi yêu cầu định danh
+        </CustomButton>
+      </Box>
+      {activeStep === 3 && (
+        <Box
+          width="100%"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CustomTypography variant="h5">
+            Gửi yêu cầu định danh thành công!
+          </CustomTypography>
+          <CustomButton marginTop={3} onClick={() => setStart(false)}>
+            Quay về trang chủ
+          </CustomButton>
+        </Box>
+      )}
+    </>
   );
 }
 

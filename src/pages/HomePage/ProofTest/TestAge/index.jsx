@@ -8,7 +8,7 @@ import CustomForm from "src/components/CustomForm";
 import { verifyProof } from "src/contract";
 import ImportAgeProof from "src/components/ImportAgeProof";
 import { useSnackbar } from "notistack";
-import TestResultDialog from "../TestResultDialog";
+import VerifyResultDialog from "../VerifyResultDialog";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 export default function TestAge() {
@@ -23,7 +23,7 @@ export default function TestAge() {
 
   return (
     <>
-      <TestResultDialog
+      <VerifyResultDialog
         open={openDialog}
         res={res}
         onClose={() => setOpenDialog(false)}

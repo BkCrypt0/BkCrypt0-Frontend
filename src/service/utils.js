@@ -1,8 +1,15 @@
 import data from "src/documents/provinces_code.json";
+import unorm from "unorm";
+import { AES, enc } from "crypto-js";
 const { eddsa, babyJub, mimc7 } = require("circomlib");
 const HDKey = require("hdkey");
 const BigInt = require("big-integer");
 const BigNumber = require("bignumber.js");
+
+export function decryptQRData(qrData) {
+  const data = AES.decrypt(qrData, "zk-elite-platform-HUST").toString(enc.Utf8);
+  return data;
+}
 
 export function generatePublicAndPrivateKeyStringFromMnemonic(mnemonic) {
   const hdkey = HDKey.fromMasterSeed(mnemonic);
@@ -27,6 +34,7 @@ export function generatePublicKeyStringFromPrivateKeyString(privateKeyString) {
 }
 
 export function generatePublicKeyPair(publicKeyString) {
+  if (publicKeyString === undefined) return null;
   const publicKeyBuffer = Buffer.from(publicKeyString, "hex");
   const publicKeyPair = babyJub
     .unpackPoint(publicKeyBuffer)
@@ -52,12 +60,22 @@ export function getSignMessage({ privateKey, expireTime, value }) {
   };
 }
 
+export function changeDateFormat(originalDateFormat) {
+  const day = originalDateFormat?.toString().slice(0, 2);
+  const month = originalDateFormat?.toString().slice(2, 4);
+  const year = originalDateFormat?.toString().slice(4, 8);
+
+  const newDateFormat = year.toString() + month.toString() + day.toString();
+  console.log(newDateFormat);
+  return Number(newDateFormat.toString());
+}
+
 export function hashValue(infoObject, privateKey) {
   const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
   const CCCD = infoObject.CCCD;
-  const sex = infoObject.sex;
-  const DoBdate = infoObject.DoBdate;
-  const BirthPlace = infoObject.BirthPlace;
+  const sex = infoObject.sexID;
+  const DoBdate = infoObject.dob;
+  const BirthPlace = infoObject.birthPlaceID;
   const hashValue = mimc7.multiHash([
     ...publicKey,
     BigInt(CCCD).value,
@@ -80,13 +98,15 @@ export function getAgeInput({
   privateKey,
   infoObject,
 }) {
+  console.log(serverInfo);
   const publicKey = eddsa.prv2pub(Buffer.from(privateKey, "hex"));
 
+  console.log(infoObject);
   const info = {
     CCCD: Number(infoObject.CCCD),
-    sex: infoObject.sex,
-    DoBdate: Number(infoObject.DoBdate),
-    BirthPlace: Number(infoObject.BirthPlace),
+    sex: infoObject.sexID,
+    DoBdate: Number(infoObject.dob),
+    BirthPlace: Number(infoObject.birthPlaceID),
     publicKey: publicKey.map((e) => e.toString()),
   };
   const ageInput = {
@@ -108,6 +128,7 @@ export function getAgeInput({
 }
 
 export async function calculateAgeProof(input) {
+  console.log(input);
   try {
     const { proof, publicSignals } = await window.snarkjs.groth16.fullProve(
       input,
@@ -131,6 +152,26 @@ export async function calculateAgeProof(input) {
     console.log(err);
     return -1;
   }
+}
+
+function convertVietnameseToEnglish(word) {
+  const normalized = unorm.nfd(word);
+
+  const replaced = normalized.replace(/Đ/g, "D").replace(/đ/g, "d");
+  const stripped = replaced.replace(/[\u0300-\u036f]/g, "");
+  const composed = unorm.nfc(stripped);
+
+  return composed;
+}
+
+export function extractPlaceInformation(rawString) {
+  if (!rawString) return undefined;
+  var informationArray = rawString.split(",").map((e, index) => {
+    return e.trim();
+  });
+  var place = informationArray[informationArray.length - 1];
+  var normalizedPlace = convertVietnameseToEnglish(place);
+  return data[normalizedPlace]["index"];
 }
 
 export function calculatePlace(places) {
@@ -161,9 +202,9 @@ export function getProvinceInput({
 
   const info = {
     CCCD: Number(infoObject.CCCD),
-    sex: infoObject.sex,
-    DoBdate: Number(infoObject.DoBdate),
-    BirthPlace: Number(infoObject.BirthPlace),
+    sex: infoObject.sexID,
+    DoBdate: Number(infoObject.dob),
+    BirthPlace: Number(infoObject.birthPlaceID),
     publicKey: publicKey.map((e) => e.toString()),
   };
   const provinceInput = {

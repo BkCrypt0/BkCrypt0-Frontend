@@ -49,12 +49,9 @@ function IdentityCardUploader({ activeStep, setActiveStep }) {
                 accounts[activeAccount].publicKey,
                 identity?.CCCD,
                 identity?.name,
-                identity?.name,
-                identity?.name,
                 identity?.sex,
                 identity?.dob,
                 identity?.birthPlace,
-                identity?.expireDate
               )
             );
           })
