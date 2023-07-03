@@ -35,9 +35,10 @@ export const updateRootClaim = async (
   currentRoot
 ) => {
   try {
-    await contractSender.methods
+    const data = await contractSender.methods
       .updateRootClaim(optionName, pi_a, pi_b, pi_c, input, currentRoot)
       .send({ from: account });
+    console.log(data);
     return 1;
   } catch (err) {
     console.log(err);
@@ -55,9 +56,10 @@ export const updateRootRevoke = async (
   currentRoot
 ) => {
   try {
-    await contractSender.methods
+    const data = await contractSender.methods
       .updateRootRevoke(optionName, pi_a, pi_b, pi_c, input, currentRoot)
       .send({ from: account });
+    console.log(data);
     return 1;
   } catch (err) {
     console.log(err);

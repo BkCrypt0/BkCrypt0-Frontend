@@ -59,7 +59,7 @@ export const ID_STATUS = [
 export const BASE_API_URL = "http://localhost:8000";
 // export const BASE_API_URL = "http://192.168.1.37:8000";
 
-export const CONTRACT_ADDRESS = "0x82559921806e305D55739E523bc4887A12401Aa7";
+export const CONTRACT_ADDRESS = "0xC34E9f0CFe22fAA390E0656319B559B71552354B";
 
 export const PROVIDER_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/";
 
